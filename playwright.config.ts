@@ -8,6 +8,8 @@ const executablePath = process.env.PW_CHROMIUM_PATH ?? (existsSync(localChromium
 export default defineConfig({
   testDir: "tests/e2e",
   fullyParallel: true,
+  // One retry in CI absorbs runner hiccups; tests that only pass on retry are still reported as flaky.
+  retries: process.env.CI ? 1 : 0,
   // In CI, the GitHub reporter turns each failure into an annotation on the run.
   reporter: process.env.CI ? [["github"], ["list"]] : "list",
   use: {
