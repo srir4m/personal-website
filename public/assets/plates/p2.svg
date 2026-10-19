@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900">
+  
+  <defs>
+    <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="7" stroke="#8A6B47" stroke-width="1.1"/>
+    </pattern>
+    <pattern id="cross" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(-30)">
+      <line x1="0" y1="0" x2="0" y2="9" stroke="#2B2118" stroke-width="0.8" opacity="0.5"/>
+      <line x1="0" y1="0" x2="9" y2="0" stroke="#2B2118" stroke-width="0.8" opacity="0.5"/>
+    </pattern>
+    <pattern id="water" width="24" height="10" patternUnits="userSpaceOnUse">
+      <path d="M0,5 Q6,2 12,5 T24,5" fill="none" stroke="#8A6B47" stroke-width="0.8" opacity="0.55"/>
+    </pattern>
+  </defs>
+  <rect width="1600" height="900" fill="#EFE4CC"/>
+  
+        <path d="M1080,0H1600V900H1120Q1060,700 1110,520T1080,0Z" fill="url(#water)"/>
+        <path d="M1080,0Q1110,260 1100,420T1120,900" fill="none" stroke="#2B2118" stroke-width="1.5"/>
+        <g transform="rotate(-6 560 450)"><path d="M100,60V840" stroke="#2B2118" stroke-width="1" opacity="0.6"/><path d="M170,60V840" stroke="#2B2118" stroke-width="1" opacity="0.6"/><path d="M240,60V840" stroke="#2B2118" stroke-width="1" opacity="0.6"/><path d="M310,60V840" stroke="#2B2118" stroke-width="1" opacity="0.6"/><path d="M380,60V840" stroke="#2B2118" stroke-width="1" opacity="0.6"/><path d="M450,60V840" stroke="#2B2118" stroke-width="1" opacity="0.6"/><path d="M520,60V840" stroke="#2B2118" stroke-width="1" opacity="0.6"/><path d="M590,60V840" stroke="#2B2118" stroke-width="1" opacity="0.6"/><path d="M660,60V840" stroke="#2B2118" stroke-width="1" opacity="0.6"/><path d="M730,60V840" stroke="#2B2118" stroke-width="1" opacity="0.6"/><path d="M800,60V840" stroke="#2B2118" stroke-width="1" opacity="0.6"/><path d="M870,60V840" stroke="#2B2118" stroke-width="1" opacity="0.6"/><path d="M940,60V840" stroke="#2B2118" stroke-width="1" opacity="0.6"/><path d="M1010,60V840" stroke="#2B2118" stroke-width="1" opacity="0.6"/><path d="M60,80H1080" stroke="#2B2118" stroke-width="0.8" opacity="0.5"/><path d="M60,126H1080" stroke="#2B2118" stroke-width="0.8" opacity="0.5"/><path d="M60,172H1080" stroke="#2B2118" stroke-width="0.8" opacity="0.5"/><path d="M60,218H1080" stroke="#2B2118" stroke-width="0.8" opacity="0.5"/><path d="M60,264H1080" stroke="#2B2118" stroke-width="0.8" opacity="0.5"/><path d="M60,310H1080" stroke="#2B2118" stroke-width="0.8" opacity="0.5"/><path d="M60,356H1080" stroke="#2B2118" stroke-width="0.8" opacity="0.5"/><path d="M60,402H1080" stroke="#2B2118" stroke-width="0.8" opacity="0.5"/><path d="M60,448H1080" stroke="#2B2118" stroke-width="0.8" opacity="0.5"/><path d="M60,494H1080" stroke="#2B2118" stroke-width="0.8" opacity="0.5"/><path d="M60,540H1080" stroke="#2B2118" stroke-width="0.8" opacity="0.5"/><path d="M60,586H1080" stroke="#2B2118" stroke-width="0.8" opacity="0.5"/><path d="M60,632H1080" stroke="#2B2118" stroke-width="0.8" opacity="0.5"/><path d="M60,678H1080" stroke="#2B2118" stroke-width="0.8" opacity="0.5"/><path d="M60,724H1080" stroke="#2B2118" stroke-width="0.8" opacity="0.5"/><path d="M60,770H1080" stroke="#2B2118" stroke-width="0.8" opacity="0.5"/><path d="M60,816H1080" stroke="#2B2118" stroke-width="0.8" opacity="0.5"/></g>
+        <path d="M860,230L1090,250L1100,480L880,500Z" fill="url(#hatch)" stroke="#2B2118" stroke-width="1.5"/>
+        <text x="880" y="220" font-family="Cormorant Garamond, serif" font-size="22" font-style="italic" fill="#2B2118" letter-spacing="2">Stevens campus</text>
+        <text x="1250" y="420" font-family="Cormorant Garamond, serif" font-size="28" font-style="italic" fill="#2B2118" letter-spacing="2">Hudson River</text>
+        <text x="300" y="880" font-family="Cormorant Garamond, serif" font-size="16"  fill="#2B2118" letter-spacing="2">Washington St · Hudson St · River St</text>
+  
+    <rect x="896.0" y="324.0" width="160.0" height="90.0" fill="#E2D3B0" stroke="#A8432F" stroke-width="1.5" stroke-dasharray="6 4"/>
+    <text x="896.0" y="316.0" font-family="IBM Plex Mono, monospace" font-size="13" letter-spacing="2" fill="#A8432F">P3 →</text>
+  
+  
+    <rect x="28" y="28" width="1544" height="844" fill="none" stroke="#2B2118" stroke-width="1.5"/>
+    <rect x="40" y="40" width="1520" height="820" fill="none" stroke="#2B2118" stroke-width="0.75"/>
+    <path d="M40.0,40V56M40.0,860V844" stroke="#2B2118" stroke-width="1"/><path d="M87.5,40V48M87.5,860V852" stroke="#2B2118" stroke-width="1"/><path d="M135.0,40V48M135.0,860V852" stroke="#2B2118" stroke-width="1"/><path d="M182.5,40V48M182.5,860V852" stroke="#2B2118" stroke-width="1"/><path d="M230.0,40V56M230.0,860V844" stroke="#2B2118" stroke-width="1"/><path d="M277.5,40V48M277.5,860V852" stroke="#2B2118" stroke-width="1"/><path d="M325.0,40V48M325.0,860V852" stroke="#2B2118" stroke-width="1"/><path d="M372.5,40V48M372.5,860V852" stroke="#2B2118" stroke-width="1"/><path d="M420.0,40V56M420.0,860V844" stroke="#2B2118" stroke-width="1"/><path d="M467.5,40V48M467.5,860V852" stroke="#2B2118" stroke-width="1"/><path d="M515.0,40V48M515.0,860V852" stroke="#2B2118" stroke-width="1"/><path d="M562.5,40V48M562.5,860V852" stroke="#2B2118" stroke-width="1"/><path d="M610.0,40V56M610.0,860V844" stroke="#2B2118" stroke-width="1"/><path d="M657.5,40V48M657.5,860V852" stroke="#2B2118" stroke-width="1"/><path d="M705.0,40V48M705.0,860V852" stroke="#2B2118" stroke-width="1"/><path d="M752.5,40V48M752.5,860V852" stroke="#2B2118" stroke-width="1"/><path d="M800.0,40V56M800.0,860V844" stroke="#2B2118" stroke-width="1"/><path d="M847.5,40V48M847.5,860V852" stroke="#2B2118" stroke-width="1"/><path d="M895.0,40V48M895.0,860V852" stroke="#2B2118" stroke-width="1"/><path d="M942.5,40V48M942.5,860V852" stroke="#2B2118" stroke-width="1"/><path d="M990.0,40V56M990.0,860V844" stroke="#2B2118" stroke-width="1"/><path d="M1037.5,40V48M1037.5,860V852" stroke="#2B2118" stroke-width="1"/><path d="M1085.0,40V48M1085.0,860V852" stroke="#2B2118" stroke-width="1"/><path d="M1132.5,40V48M1132.5,860V852" stroke="#2B2118" stroke-width="1"/><path d="M1180.0,40V56M1180.0,860V844" stroke="#2B2118" stroke-width="1"/><path d="M1227.5,40V48M1227.5,860V852" stroke="#2B2118" stroke-width="1"/><path d="M1275.0,40V48M1275.0,860V852" stroke="#2B2118" stroke-width="1"/><path d="M1322.5,40V48M1322.5,860V852" stroke="#2B2118" stroke-width="1"/><path d="M1370.0,40V56M1370.0,860V844" stroke="#2B2118" stroke-width="1"/><path d="M1417.5,40V48M1417.5,860V852" stroke="#2B2118" stroke-width="1"/><path d="M1465.0,40V48M1465.0,860V852" stroke="#2B2118" stroke-width="1"/><path d="M1512.5,40V48M1512.5,860V852" stroke="#2B2118" stroke-width="1"/><path d="M1560.0,40V56M1560.0,860V844" stroke="#2B2118" stroke-width="1"/>
+    <g font-family="IBM Plex Mono, monospace" fill="#2B2118">
+      <rect x="64" y="64" width="420" height="78" fill="#EFE4CC" stroke="#2B2118" stroke-width="1"/>
+      <text x="80" y="94" font-size="20" letter-spacing="4">P2 · HOBOKEN</text>
+      <text x="80" y="124" font-size="14" letter-spacing="3" fill="#A8432F">PLACEHOLDER PLATE · 1 : 25,000</text>
+    </g>
+</svg>

@@ -18,7 +18,7 @@ const PHONE = "(max-width: 767px)";
 const safeData: Promise<GlobeData | null> = loadGlobeData().catch(() => null);
 
 /** The scrubbed parts of Act 1 that live in the DOM: the HUD card and its leader line. */
-function useCardReveal(index: number, targets: React.RefObject<Element | null>[]) {
+function useCardReveal(index: number, targets: React.RefObject<Element | null>[], markerLayer: React.RefObject<Element | null>) {
   useLayoutEffect(() => {
     const elements = targets.map((t) => t.current).filter(Boolean);
     const tl = gsap.timeline({ paused: true, defaults: { ease: "none" } });
@@ -28,8 +28,10 @@ function useCardReveal(index: number, targets: React.RefObject<Element | null>[]
       .to(elements, { autoAlpha: 0.15, duration: 0.012 }, 0.372)
       .to(elements, { autoAlpha: 1, duration: 0.03 }, 0.384);
     gsap.set(elements, { autoAlpha: 0 });
+    // Clear the HUD before P1 arrives over the marker (the last 10% of the act).
+    tl.to([...elements, markerLayer.current], { autoAlpha: 0, duration: 0.04 }, 0.86);
     return registerActTimeline(index, tl);
-  }, [index, targets]);
+  }, [index, targets, markerLayer]);
 }
 
 function Hud({ children, index }: { children: (setFrame: React.RefObject<(f: HudFrame) => void>) => React.ReactNode; index: number }) {
@@ -40,8 +42,9 @@ function Hud({ children, index }: { children: (setFrame: React.RefObject<(f: Hud
   const path = useRef<SVGPathElement>(null);
   const endA = useRef<SVGRectElement>(null);
   const endB = useRef<SVGRectElement>(null);
+  const markerLayer = useRef<HTMLDivElement>(null);
   const targets = useRef([card, leader]).current;
-  useCardReveal(index, targets);
+  useCardReveal(index, targets, markerLayer);
 
   const setFrame = useRef((f: HudFrame) => {
     if (!marker.current || !card.current || !path.current) return;
@@ -72,7 +75,9 @@ function Hud({ children, index }: { children: (setFrame: React.RefObject<(f: Hud
           <rect ref={endB} width="4" height="4" />
         </g>
       </svg>
-      <MarkerHud ref={marker} />
+      <div ref={markerLayer} className="pointer-events-none absolute inset-0">
+        <MarkerHud ref={marker} />
+      </div>
       <EducationCard ref={card} />
     </div>
   );

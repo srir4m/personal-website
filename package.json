@@ -1,7 +1,7 @@
 {
   "name": "microcosm",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.3.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "globe:data": "node scripts/build-globe-data.ts"
+    "globe:data": "node scripts/build-globe-data.ts",
+    "plates:placeholder": "node scripts/build-placeholder-plates.ts"
   },
   "dependencies": {
     "@fontsource/cormorant-garamond": "^5.3.0",

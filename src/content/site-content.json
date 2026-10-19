@@ -38,6 +38,7 @@
       { "code": "MA 232",   "title": "Linear Algebra", "term": "2026 Spring", "termOrder": 20261, "status": "completed" },
       { "code": "PRV 201",  "title": null, "term": "2026 Spring", "termOrder": 20261, "status": "completed" },
 
+      { "code": "CS 392",   "title": "Systems Programming", "term": "2026 Summer", "termOrder": 20262, "status": "completed" },
       { "code": "CS 496",   "title": "Principles of Programming Languages", "term": "2026 Summer", "termOrder": 20262, "status": "completed" },
 
       { "code": "CS 334",   "title": "Theory of Computation", "term": "2026 Fall", "termOrder": 20263, "status": "in-progress" },

@@ -5,6 +5,8 @@
   `null`/`"TODO"` render nothing (use `text()` from `src/content/text.ts`), drafts never render in production.
 - Never hard-code the vault passphrase or commit `vault/` or `.env*`.
 - Do not redraw game logos; use files in `public/assets/games/` or neutral placeholder glyphs.
+- Track owner-input items, open questions, and later ideas as GitHub issues on srir4m/personal-website
+  (`gh api repos/srir4m/personal-website/issues`). Reference them in milestone notes instead of re-listing.
 - Bump `SITE_VERSION` in `src/version.ts` (and `package.json` version) at every milestone.
 
 ## Scroll architecture

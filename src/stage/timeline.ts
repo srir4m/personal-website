@@ -1,7 +1,7 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
-import { ACTS, ACT_RANGES, SCROLL_VIEWPORTS, actAt, settleProgress, type ActIndex } from "./acts";
+import { ACTS, ACT_RANGES, SCROLL_VIEWPORTS, actAt, actFades, settleProgress, type ActIndex } from "./acts";
 import { useStage, writeProgress } from "./store";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -57,9 +57,16 @@ function buildMaster(layers: HTMLElement[]) {
   gsap.set(layers, { autoAlpha: 0 });
   gsap.set(layers[0]!, { autoAlpha: 1 });
   for (let i = 1; i < layers.length; i++) {
-    const at = ACT_RANGES[i]!.start - ACT_FADE / 2;
-    tl.fromTo(layers[i - 1]!, { autoAlpha: 1 }, { autoAlpha: 0, duration: ACT_FADE, immediateRender: false }, at);
-    tl.fromTo(layers[i]!, { autoAlpha: 0 }, { autoAlpha: 1, duration: ACT_FADE, immediateRender: false }, at);
+    const boundary = ACT_RANGES[i]!.start;
+    const prevLength = boundary - ACT_RANGES[i - 1]!.start;
+    const nextLength = ACT_RANGES[i]!.end - boundary;
+    const lead = actFades(i).enterLead;
+    const lag = actFades(i - 1).exitLag;
+    const fadeIn = lead ? { at: boundary - lead * prevLength, duration: lead * prevLength } : { at: boundary - ACT_FADE / 2, duration: ACT_FADE };
+    const fadeOut = lag ? { at: boundary, duration: lag * nextLength } : { at: boundary - ACT_FADE / 2, duration: ACT_FADE };
+    const opts = { immediateRender: false };
+    tl.fromTo(layers[i - 1]!, { autoAlpha: 1 }, { autoAlpha: 0, duration: fadeOut.duration, ...opts }, fadeOut.at);
+    tl.fromTo(layers[i]!, { autoAlpha: 0 }, { autoAlpha: 1, duration: fadeIn.duration, ...opts }, fadeIn.at);
   }
   return tl;
 }

@@ -440,3 +440,54 @@ html.lenis body {
     mask-image: none;
   }
 }
+
+/* ---- Act 2 descent ----------------------------------------------------------- */
+
+.descent-plate {
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-width: none;
+  transform-origin: 0 0;
+  user-select: none;
+  pointer-events: none;
+}
+/* P1 arrives as a small inset over the globe; feather its edges into the page. */
+.descent-plate--feathered {
+  mask-image:
+    linear-gradient(to right, transparent, #000 5%, #000 95%, transparent),
+    linear-gradient(to bottom, transparent, #000 8%, #000 92%, transparent);
+  mask-composite: intersect;
+}
+
+.descent-hud {
+  position: absolute;
+  right: max(1.5rem, env(safe-area-inset-right, 0px));
+  bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+  min-width: 13rem;
+  padding: 0.7rem 0.9rem 0.8rem;
+}
+.descent-hud .hud-readout {
+  margin-top: 0.15rem;
+  font-size: 0.95rem;
+}
+@media (max-width: 767px) {
+  .descent-hud {
+    right: auto;
+    left: max(16px, env(safe-area-inset-left, 0px));
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+.scale-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+}
+.scale-bar__rule {
+  height: 6px;
+  border: 1px solid var(--hud-cyan);
+  border-top: 0;
+  max-width: 100%;
+}
