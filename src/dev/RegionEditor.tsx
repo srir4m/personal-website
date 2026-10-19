@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState } from "react";
 import initial from "../content/regions.json";
 import { BODY_REGION_IDS, MASK_IDS, type Polygon, type RegionsFile, type ShapeKey } from "../content/regionsSchema";
-import { FIGURE_MARKUP, VIEWBOX, VITRUVIAN } from "../vitruvian/figure";
+import { FIGURE_MARKUP, FRAME, VIEWBOX, VITRUVIAN } from "../vitruvian/figure";
 
 const [, , VB_W, VB_H] = VITRUVIAN.viewBox;
 const KEYS: ShapeKey[] = [
@@ -73,7 +73,7 @@ export default function RegionEditor() {
         onPointerUp={() => (drag.current = null)}
       >
         <g className="editor-figure" dangerouslySetInnerHTML={{ __html: FIGURE_MARKUP }} />
-        <rect x={VITRUVIAN.square.x} y={VITRUVIAN.square.y} width={VITRUVIAN.square.size} height={VITRUVIAN.square.size} className="vitruvian-line" />
+        <rect x={FRAME.left} y={FRAME.top} width={FRAME.right - FRAME.left} height={FRAME.bottom - FRAME.top} className="vitruvian-line" />
         <circle cx={VITRUVIAN.circle.cx} cy={VITRUVIAN.circle.cy} r={VITRUVIAN.circle.r} className="vitruvian-line" />
         {KEYS.map((key) =>
           polygons(key).map((poly, pi) => {

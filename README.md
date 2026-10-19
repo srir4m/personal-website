@@ -52,9 +52,11 @@ Owner input and later ideas are tracked as [GitHub issues](https://github.com/sr
 
 ## The Vitruvian figure
 
-- `npm run vitruvian:trace` traces `assets-src/vitruvian-source.jpg` (Leonardo's drawing, public domain):
-  it thresholds the scan, fits and strips the circle and square, and vectorises the figure with potrace.
-  The outputs are `public/assets/vitruvian/figure.svg` and `src/content/vitruvian.json` (circle and square geometry).
+- `npm run vitruvian:trace` traces `assets-src/vitruvian-source.jpg`, Luc Viatour's photograph of Leonardo's
+  drawing (Wikimedia Commons, public domain). It crops to the drawing, flattens the paper tone, and thresholds
+  the ink. It then follows and erases Leonardo's hand-drawn circle and square, clears his notes and stray
+  specks, and vectorises the figure with potrace. The site redraws the circle and square as clean lines from
+  `src/content/vitruvian.json`. The default crop matches that photograph; for another scan, pass `--crop x,y,w,h`.
 - `npm run vitruvian:placeholder` writes the placeholder mannequin used until a scan is traced (#6).
 - Body regions and pose masks live in `src/content/regions.json`, normalised to the figure. To edit them,
   run `npm run dev`, open `/?edit=regions`, and Save. The editor is dev-only.

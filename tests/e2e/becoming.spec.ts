@@ -12,16 +12,20 @@ test("the globe's circle lands exactly on the Vitruvian circle, in coastline ink
     const c = ring.getBoundingClientRect();
     const cs = getComputedStyle(ring);
     return {
-      stage: { x: s.x, y: s.y, w: s.width },
+      stage: { x: s.x, y: s.y, w: s.width, h: s.height },
       circle: { x: c.x, y: c.y, w: c.width, h: c.height },
       style: { stroke: cs.stroke, width: cs.strokeWidth },
     };
   });
+  // The SVG letterboxes its viewBox (preserveAspectRatio "xMidYMid meet").
   const vbW = geometry.viewBox[2]!;
-  const k = stage.w / vbW;
+  const vbH = geometry.viewBox[3]!;
+  const k = Math.min(stage.w / vbW, stage.h / vbH);
+  const offX = (stage.w - vbW * k) / 2;
+  const offY = (stage.h - vbH * k) / 2;
   const expected = {
-    x: stage.x + (geometry.circle.cx - geometry.circle.r) * k,
-    y: stage.y + (geometry.circle.cy - geometry.circle.r) * k,
+    x: stage.x + offX + (geometry.circle.cx - geometry.circle.r) * k,
+    y: stage.y + offY + (geometry.circle.cy - geometry.circle.r) * k,
     d: 2 * geometry.circle.r * k,
   };
   expect(Math.abs(circle.x - expected.x)).toBeLessThan(1.5);

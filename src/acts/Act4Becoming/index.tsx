@@ -3,7 +3,7 @@ import gsap from "gsap";
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
 import { content } from "../../content";
 import { registerActTimeline } from "../../stage/timeline";
-import { FIGURE_MARKUP, VIEWBOX, VITRUVIAN } from "../../vitruvian/figure";
+import { FIGURE_MARKUP, FRAME, VIEWBOX, VITRUVIAN } from "../../vitruvian/figure";
 import { graticulePaths } from "../Act1Globe/ortho";
 import { IDLE_START_LNG, IDLE_TILT_DEG } from "../Act1Globe/layout";
 import type { ActProps } from "../registry";
@@ -54,7 +54,7 @@ export default function Act4Becoming({ index }: ActProps) {
   const centre = { x: square.x + square.size / 2, y: square.y + square.size / 2 };
   const silhouetteTransform = (dx: number, scale: number) =>
     `translate(${square.x + (dx + (1 - scale) / 2) * square.size} ${square.y + (1 - scale) * square.size}) scale(${square.size * scale})`;
-  const squarePath = `M${square.x},${square.y}h${square.size}v${square.size}h${-square.size}Z`;
+  const squarePath = `M${FRAME.left},${FRAME.top}H${FRAME.right}V${FRAME.bottom}H${FRAME.left}Z`;
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {

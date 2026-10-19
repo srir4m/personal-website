@@ -26,7 +26,8 @@ export function CreditsDialog({ open, onClose }: Props) {
       </h2>
       <ul className="list-disc space-y-2 pl-5">
         <li>
-          Leonardo da Vinci, <em>Vitruvian Man</em>, c. 1490 (public domain).
+          Leonardo da Vinci, <em>Vitruvian Man</em>, c. 1490 (public domain). Traced from a photograph by Luc
+          Viatour, via Wikimedia Commons.
         </li>
         <li>Map data: Natural Earth (public domain).</li>
         <li>Game names and logos are trademarks of their respective owners.</li>
