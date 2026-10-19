@@ -11,6 +11,7 @@ npm run dev          # http://localhost:5173
 npm run build        # typecheck + content validation + production build
 npm test             # unit tests (Vitest)
 npm run test:e2e     # smoke tests (Playwright, builds and serves the site itself)
+npm run globe:data   # regenerate public/assets/globe/* from Natural Earth (outputs are committed)
 ```
 
 ## Editing content
@@ -49,5 +50,6 @@ tests/e2e           Playwright
 | M | Status |
 |---|---|
 | M0 Scaffold, Stage, master timeline, progress rail, placeholder acts, schema, Content Status | ✅ v0.1.0 |
-| M1 Boot + globe + education card | next |
+| M1 Boot + globe + education card | ✅ v0.2.0 |
+| M2 Infinite zoom with placeholder plates | next |
 | M2 – M8 | see PRD §11 |

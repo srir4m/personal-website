@@ -186,3 +186,257 @@ html.lenis body {
     transition: none;
   }
 }
+
+/* ---- Globe and Act 0 --------------------------------------------------------- */
+
+/* An SVG whose viewBox is -1.02..1.02 with the globe circle at r = 1, centred on the stage. */
+.globe-circle {
+  left: 50%;
+  top: 50%;
+  width: calc(var(--globe-r) * 2.04);
+  height: calc(var(--globe-r) * 2.04);
+  transform: translate(-50%, -50%);
+  overflow: visible;
+}
+
+/* Title ink-in: a soft-edged mask sweeps left to right (PRD Act 0, "mask reveal"). */
+.ink-reveal {
+  mask-image: linear-gradient(90deg, #000 45%, transparent 55%);
+  mask-size: 250% 100%;
+  mask-position: 100% 0;
+  animation: ink-in 1.4s cubic-bezier(0.33, 1, 0.68, 1) 0.2s forwards;
+}
+@keyframes ink-in {
+  to {
+    mask-position: 0 0;
+  }
+}
+
+.scroll-cue {
+  position: absolute;
+  bottom: calc(2.5rem + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 400ms ease-out;
+}
+.scroll-cue[data-shown="true"] {
+  opacity: 1;
+}
+
+/* ---- HUD --------------------------------------------------------------------- */
+
+.hud-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+/* Dark HUD panel: ink ground, so cyan numerals and amber tags stay legible (PRD §5.1). */
+.hud-panel {
+  position: relative;
+  background: color-mix(in srgb, var(--ink) 94%, transparent);
+  color: var(--parchment);
+  padding: 1.1rem 1.25rem 1.2rem;
+  border: 1px solid color-mix(in srgb, var(--hud-cyan) 55%, transparent);
+  box-shadow: 0 18px 40px -24px var(--ink);
+}
+/* Square corner ticks in cyan. */
+.hud-panel::before,
+.hud-panel::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border: 1px solid var(--hud-cyan);
+}
+.hud-panel::before {
+  top: -4px;
+  left: -4px;
+  border-right: 0;
+  border-bottom: 0;
+}
+.hud-panel::after {
+  right: -4px;
+  bottom: -4px;
+  border-left: 0;
+  border-top: 0;
+}
+.hud-panel .hud-label {
+  color: color-mix(in srgb, var(--parchment) 70%, transparent);
+}
+
+.hud-readout {
+  margin-top: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+  color: var(--hud-cyan);
+}
+
+.hud-button {
+  margin-top: 0.9rem;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--hud-cyan);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--parchment);
+  cursor: pointer;
+}
+.hud-button:hover {
+  background: color-mix(in srgb, var(--hud-cyan) 18%, transparent);
+}
+
+.hud-tag {
+  margin-left: auto;
+  padding: 0 0.35rem;
+  border: 1px solid var(--hud-amber);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--hud-amber);
+  white-space: nowrap;
+}
+
+.edu-card {
+  position: absolute;
+  top: 50%;
+  left: 60%;
+  width: min(23rem, 34vw);
+  transform: translateY(-50%);
+  cursor: default;
+}
+@media (max-width: 767px) {
+  .edu-card {
+    top: auto;
+    left: max(16px, env(safe-area-inset-left, 0px));
+    right: max(16px, env(safe-area-inset-right, 0px));
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    width: auto;
+    transform: none;
+  }
+}
+
+.course-log {
+  max-height: min(46vh, 26rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  margin-top: 0.4rem;
+  padding-right: 0.4rem;
+}
+@media (max-width: 767px) {
+  .course-log {
+    max-height: 38vh;
+  }
+}
+.course-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0.2rem 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--parchment) 12%, transparent);
+  font-size: 1rem;
+}
+.course-code {
+  flex: none;
+  width: 4.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+}
+.course-title {
+  min-width: 0;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  line-height: 1.25;
+}
+
+/* HUD leader line: 1 px cyan with square terminals (PRD §5.3). */
+.hud-leader path {
+  fill: none;
+  stroke: var(--hud-cyan);
+  stroke-width: 1;
+}
+.hud-leader rect {
+  fill: var(--hud-cyan);
+}
+.hud-leader {
+  opacity: var(--marker-visible, 1);
+}
+
+/* Marker: positioned each frame by transform from the projected coordinates. */
+.globe-marker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  will-change: transform;
+}
+.globe-marker > * {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(-50%, -50%);
+}
+.marker-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--sanguine);
+  box-shadow: 0 0 0 1.5px var(--parchment);
+}
+.marker-cross {
+  width: 40px;
+  height: 40px;
+  fill: none;
+  stroke: var(--hud-cyan);
+  stroke-width: 1;
+}
+.marker-ring {
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--hud-cyan);
+  border-radius: 50%;
+  animation: marker-ring 2.4s cubic-bezier(0.33, 1, 0.68, 1) infinite;
+}
+.marker-ring--late {
+  animation-delay: 1.2s;
+}
+@keyframes marker-ring {
+  from {
+    width: 14px;
+    height: 14px;
+    opacity: 0.9;
+  }
+  to {
+    width: 64px;
+    height: 64px;
+    opacity: 0;
+  }
+}
+[data-motion="calm"] .marker-ring {
+  animation: none;
+  opacity: 0.5;
+}
+[data-motion="calm"] .marker-ring--late {
+  width: 30px;
+  height: 30px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ink-reveal {
+    animation: none;
+    mask-image: none;
+  }
+}

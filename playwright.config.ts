@@ -11,7 +11,8 @@ export default defineConfig({
   reporter: "list",
   use: {
     baseURL: "http://localhost:4173",
-    launchOptions: { executablePath },
+    // SwiftShader gives headless Chromium a software WebGL, so the globe really renders.
+    launchOptions: { executablePath, args: ["--enable-unsafe-swiftshader"] },
   },
   projects: [
     { name: "desktop", use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 900 } } },

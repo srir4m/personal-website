@@ -19,6 +19,7 @@ function jumpToHash(immediate: boolean) {
   const link = parseHash(window.location.hash);
   if (!link) return;
   if (link.region) useStage.getState().setOpenPanel(link.region);
+  useStage.setState({ bootReady: true });
   scrollToAct(link.act, { immediate });
 }
 
@@ -29,6 +30,7 @@ export function Stage() {
   const motion = useStage((s) => s.motion);
   const activeAct = useStage((s) => s.activeAct);
   const openPanel = useStage((s) => s.openPanel);
+  const bootReady = useStage((s) => s.bootReady);
   const synced = useRef({ activeAct, openPanel });
 
   useLayoutEffect(() => {
@@ -60,7 +62,12 @@ export function Stage() {
   }, [activeAct, openPanel]);
 
   return (
-    <div ref={stageRef} className="relative h-dvh w-full overflow-hidden" data-active-act={ACTS[activeAct]!.id}>
+    <div
+      ref={stageRef}
+      className="relative h-dvh w-full overflow-hidden"
+      data-active-act={ACTS[activeAct]!.id}
+      data-boot-ready={bootReady}
+    >
       {ACTS.map((act, i) => (
         <section
           key={act.id}

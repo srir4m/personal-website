@@ -45,7 +45,12 @@ export function registerActTimeline(index: ActIndex, tl: gsap.core.Timeline): ()
 }
 
 function buildMaster(layers: HTMLElement[]) {
-  const tl = gsap.timeline({ paused: true, defaults: { ease: "none" } });
+  // The store mirrors the timeline's playhead, not the raw scroll: in Calm mode the two differ.
+  const tl: gsap.core.Timeline = gsap.timeline({
+    paused: true,
+    defaults: { ease: "none" },
+    onUpdate: () => writeProgress(tl.progress(), actAt(tl.progress())),
+  });
   tl.set({}, {}, 1);
   ACTS.forEach((act, i) => tl.addLabel(act.id, ACT_RANGES[i]!.start));
 
@@ -87,16 +92,17 @@ export function startTimeline({ stage, layers, calm }: TimelineOptions): () => v
     animation: calm ? undefined : master,
     snap: calm ? { snapTo: settlePoints, duration: CALM_FADE, ease: "power2.out" } : undefined,
     invalidateOnRefresh: true,
-    onUpdate: (self) => {
-      const act = actAt(self.progress);
-      if (calm && act !== useStage.getState().activeAct) {
-        calmTween?.kill();
-        calmTween = master!.tweenTo(settleProgress(act), { duration: CALM_FADE, ease: "power2.out" });
-      }
-      writeProgress(self.progress, act);
-    },
+    onUpdate: calm
+      ? (self) => {
+          const target = settleProgress(actAt(self.progress));
+          if (calmTween?.vars.progress === target || master!.progress() === target) return;
+          calmTween?.kill();
+          calmTween = gsap.to(master!, { progress: target, duration: CALM_FADE, ease: "power2.out" });
+        }
+      : undefined,
   });
   if (calm) master.progress(settleProgress(actAt(trigger.progress)));
+  applyScrollLock();
 
   let resizeTimer = 0;
   const onResize = () => {
@@ -120,6 +126,17 @@ export function startTimeline({ stage, layers, calm }: TimelineOptions): () => v
     master = null;
   };
 }
+
+/** While Act 0 is still loading, scrolling is held (PRD Act 0). */
+function applyScrollLock() {
+  const locked = !useStage.getState().bootReady;
+  document.documentElement.style.overflow = locked ? "hidden" : "";
+  if (locked) lenis?.stop();
+  else lenis?.start();
+}
+useStage.subscribe((state, prev) => {
+  if (state.bootReady !== prev.bootReady) applyScrollLock();
+});
 
 /** Scrolls to an act's settled state. Calm mode always jumps without smoothing. */
 export function scrollToAct(index: ActIndex, { immediate = false } = {}) {

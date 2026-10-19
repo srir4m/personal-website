@@ -25,6 +25,10 @@ function contentValidation(): Plugin {
 
 export default defineConfig({
   plugins: [contentValidation(), react(), tailwindcss()],
+  build: {
+    // three.js makes the globe chunk large by nature; scripts/check-budget.ts enforces the real budget.
+    chunkSizeWarningLimit: 1200,
+  },
   test: {
     include: ["tests/unit/**/*.test.ts"],
   },

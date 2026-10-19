@@ -35,6 +35,7 @@ export function ProgressRail() {
               className="mirror-host group"
               onClick={(event) => {
                 event.preventDefault();
+                useStage.setState({ bootReady: true });
                 scrollToAct(i);
               }}
             >

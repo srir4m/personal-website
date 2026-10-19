@@ -8,6 +8,9 @@
   --hud-cyan: #3fd6e0;
   --hud-amber: #f2a33a;
 
+  /* The globe's circle radius; keep in step with GLOBE_RADIUS_VMIN in src/acts/Act1Globe/layout.ts. */
+  --globe-r: 34vmin;
+
   --font-display: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
   --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 }

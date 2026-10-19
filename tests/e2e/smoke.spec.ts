@@ -14,6 +14,7 @@ test("renders all seven act sections with headings", async ({ page }) => {
 
 test("scrolling moves through every act in order", async ({ page }) => {
   await page.goto("/");
+  await expect(page.locator("[data-boot-ready]")).toHaveAttribute("data-boot-ready", "true", { timeout: 5000 });
   const seen: string[] = [];
   const total = await page.evaluate(() => document.documentElement.scrollHeight - window.innerHeight);
   for (let y = 0; y <= total; y += Math.round(total / 60)) {

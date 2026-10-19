@@ -12,6 +12,10 @@ type StageState = {
   poseMode: PoseMode;
   /** Region id of the open codex panel, if any. */
   openPanel: string | null;
+  /** Act 0 has finished its loading role, so scrolling is allowed (PRD Act 0). */
+  bootReady: boolean;
+  /** The globe has its data and has drawn a frame. */
+  globeReady: boolean;
   setMotion: (motion: MotionMode) => void;
   setPoseMode: (mode: PoseMode) => void;
   setOpenPanel: (region: string | null) => void;
@@ -26,10 +30,17 @@ export const useStage = create<StageState>()((set) => ({
   motion: prefersReducedMotion ? "calm" : "full",
   poseMode: "now",
   openPanel: null,
+  bootReady: false,
+  globeReady: false,
   setMotion: (motion) => set({ motion }),
   setPoseMode: (poseMode) => set({ poseMode }),
   setOpenPanel: (openPanel) => set({ openPanel }),
 }));
+
+/** Master-timeline progress within one act, clamped to 0–1. */
+export function actProgress(range: { start: number; end: number }, progress: number) {
+  return Math.min(1, Math.max(0, (progress - range.start) / (range.end - range.start)));
+}
 
 /**
  * Setter for the scroll loop. Zustand only re-renders components whose selected slice
