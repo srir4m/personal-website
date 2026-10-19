@@ -10,7 +10,8 @@ npm install
 npm run dev          # http://localhost:5173
 npm run build        # typecheck + content validation + production build
 npm test             # unit tests (Vitest)
-npm run test:e2e     # smoke tests (Playwright, builds and serves the site itself)
+npm run test:e2e     # smoke tests (Playwright; builds with the fixture vault and serves it)
+npm run vault:encrypt  # encrypt vault/vault.md into src/content/vault.enc.json
 npm run globe:data   # regenerate public/assets/globe/* from Natural Earth (outputs are committed)
 npm run plates:placeholder  # regenerate the placeholder plates in public/assets/plates/
 ```
@@ -36,6 +37,19 @@ globe handoff) are set in `src/acts/Act2Descent/plates.ts`; keep them in step wi
 ## Open items
 
 Owner input and later ideas are tracked as [GitHub issues](https://github.com/srir4m/personal-website/issues).
+
+## The heart vault
+
+Private notes behind a passphrase (PRD §9). Casual visitors can't read them; a determined
+offline attacker with the page could still try passphrases, so use a long one.
+
+1. Write your notes in `vault/vault.md` (gitignored; never commit it).
+2. Put `VAULT_PASSPHRASE=…` in `.env.local` (gitignored), or let the script prompt you.
+3. Run `npm run vault:encrypt`. This writes `src/content/vault.enc.json`; commit that file only.
+4. Re-run step 3 after every edit to `vault.md`.
+
+Without `vault.enc.json` the heart still opens and says "The vault is empty." Tests use
+`tests/fixtures/vault.enc.json` (passphrase `test-passphrase-not-real`), never the real vault.
 
 ## Deep links
 
@@ -63,5 +77,6 @@ tests/e2e           Playwright
 | M0 Scaffold, Stage, master timeline, progress rail, placeholder acts, schema, Content Status | ✅ v0.1.0 |
 | M1 Boot + globe + education card | ✅ v0.2.0 |
 | M2 Infinite zoom with placeholder plates, globe handoff, rebasing | ✅ v0.3.0 |
-| M3 Squad: silhouettes, emblems, cards | next |
+| M3 Squad: silhouettes, emblems, cards | on hold, see #5 |
+| M6 Heart vault (script, UI, tests) | ✅ v0.4.0 |
 | M2 – M8 | see PRD §11 |

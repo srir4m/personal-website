@@ -19,7 +19,8 @@ export default defineConfig({
     { name: "phone", use: { ...devices["Pixel 7"], viewport: { width: 390, height: 844 } } },
   ],
   webServer: {
-    command: "npm run build && npm run preview -- --port 4173 --strictPort",
+    // The e2e build swaps in the fixture vault (see vaultModule in vite.config.ts).
+    command: "npx vite build --mode e2e --outDir dist-e2e && npx vite preview --outDir dist-e2e --port 4173 --strictPort",
     url: "http://localhost:4173",
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,

@@ -491,3 +491,213 @@ html.lenis body {
   border-top: 0;
   max-width: 100%;
 }
+
+/* ---- Codex panel ------------------------------------------------------------- */
+
+.codex-panel {
+  position: fixed;
+  inset: 0 0 0 auto;
+  width: min(420px, 100vw);
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-left: 1px solid var(--sepia);
+  background: var(--parchment-deep);
+  color: var(--ink);
+  transform: translateX(0);
+  transition:
+    transform 320ms cubic-bezier(0.33, 1, 0.68, 1),
+    display 320ms allow-discrete,
+    overlay 320ms allow-discrete;
+}
+.codex-panel:not([open]) {
+  transform: translateX(100%);
+}
+@starting-style {
+  .codex-panel[open] {
+    transform: translateX(100%);
+  }
+}
+.codex-panel::backdrop {
+  background: color-mix(in srgb, var(--ink) 35%, transparent);
+}
+@media (max-width: 767px) {
+  .codex-panel {
+    inset: auto 0 0 0;
+    width: 100vw;
+    height: auto;
+    max-height: 85dvh;
+    border-left: 0;
+    border-top: 1px solid var(--sepia);
+  }
+  .codex-panel:not([open]) {
+    transform: translateY(100%);
+  }
+  @starting-style {
+    .codex-panel[open] {
+      transform: translateY(100%);
+    }
+  }
+}
+.codex-panel__body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2rem max(1.5rem, env(safe-area-inset-right, 0px)) calc(2rem + env(safe-area-inset-bottom, 0px)) 1.5rem;
+}
+.codex-panel__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--sepia) 50%, transparent);
+}
+.codex-panel__close {
+  width: 44px;
+  height: 44px;
+  font-size: 1.75rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* ---- Heart vault --------------------------------------------------------------- */
+
+.heart-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+  padding: 0.6rem 1rem;
+  border: 1px solid var(--sanguine);
+  cursor: pointer;
+}
+.heart-button svg {
+  width: 1.4rem;
+  height: 1.4rem;
+  fill: var(--sanguine);
+}
+
+.vault-lock {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+.vault-lock--shake {
+  animation: vault-shake 360ms ease-out;
+}
+@keyframes vault-shake {
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+.vault-input {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--sepia);
+  background: var(--parchment);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+}
+.vault-input:disabled {
+  opacity: 0.5;
+}
+.vault-button {
+  padding: 0.5rem 0.9rem;
+  background: var(--ink);
+  color: var(--parchment);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.vault-button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.wax-seal {
+  width: 7rem;
+  height: 7rem;
+  margin: 0 auto 0.5rem;
+  align-self: center;
+}
+.wax-seal path,
+.wax-seal circle {
+  fill: var(--sanguine);
+}
+.wax-seal__emboss circle {
+  fill: none;
+  stroke: color-mix(in srgb, var(--ink) 35%, transparent);
+  stroke-width: 1.5;
+}
+.wax-seal__emboss path {
+  fill: color-mix(in srgb, var(--ink) 25%, transparent);
+}
+.wax-seal__left,
+.wax-seal__right {
+  transition: transform 400ms cubic-bezier(0.33, 1, 0.68, 1), opacity 400ms ease-out;
+}
+.wax-seal--crack .wax-seal__left {
+  transform: translate(-10px, 6px) rotate(-14deg);
+  opacity: 0.4;
+}
+.wax-seal--crack .wax-seal__right {
+  transform: translate(10px, 6px) rotate(14deg);
+  opacity: 0.4;
+}
+.wax-seal--crack .wax-seal__emboss {
+  opacity: 0;
+  transition: opacity 200ms;
+}
+
+.ink-blot {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  fill: var(--ink);
+  opacity: 0.8;
+  animation: ink-spread 300ms ease-out;
+}
+@keyframes ink-spread {
+  from { transform: scale(0.2); opacity: 0; }
+}
+
+.prose-codex {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  line-height: 1.55;
+}
+.prose-codex h1,
+.prose-codex h2,
+.prose-codex h3 {
+  margin: 1rem 0 0.4rem;
+  font-weight: 600;
+  line-height: 1.15;
+}
+.prose-codex h1 { font-size: 2rem; }
+.prose-codex h2 { font-size: 1.6rem; }
+.prose-codex ul { list-style: disc; padding-left: 1.25rem; }
+.prose-codex ol { list-style: decimal; padding-left: 1.25rem; }
+.prose-codex p { margin: 0.6rem 0; }
+.prose-codex code { font-family: var(--font-mono); font-size: 0.9em; }
+.prose-codex a { color: var(--sanguine); text-decoration: underline; }
+
+@media (prefers-reduced-motion: reduce) {
+  .codex-panel,
+  .wax-seal__left,
+  .wax-seal__right {
+    transition: none;
+  }
+  .vault-lock--shake,
+  .ink-blot {
+    animation: none;
+  }
+}

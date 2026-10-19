@@ -13,6 +13,22 @@ async function scrollToProgress(page: Page, progress: number) {
   await page.waitForTimeout(60);
 }
 
+/** Scrolls to an exact pixel and waits until the page has drawn that position. */
+async function scrollExact(page: Page, y: number) {
+  for (let attempt = 0; attempt < 5; attempt++) {
+    await page.evaluate((top) => window.scrollTo(0, top), y);
+    const settled = await page.evaluate(
+      (top) =>
+        new Promise<boolean>((resolve) =>
+          requestAnimationFrame(() => requestAnimationFrame(() => resolve(Math.round(window.scrollY) === top))),
+        ),
+      y,
+    );
+    if (settled) return;
+  }
+  throw new Error(`could not settle the scroll at ${y}`);
+}
+
 const segment = (page: Page) => page.locator("[data-segment]").getAttribute("data-segment").then(Number);
 const plateRect = (page: Page, which: "outer" | "inner") =>
   page.evaluate((w) => {
@@ -48,21 +64,17 @@ test("rebasing is seamless: the inner plate becomes the outer plate in place", a
   for (let boundary = 0; boundary < 4; boundary++) {
     // Bisect to the last scroll pixel of this segment.
     let hi = hi0;
-    await page.evaluate((y) => window.scrollTo(0, y), lo);
-    await page.waitForTimeout(40);
+    await scrollExact(page, lo);
     const startSegment = await segment(page);
     while (hi - lo > 1) {
       const mid = Math.floor((lo + hi) / 2);
-      await page.evaluate((y) => window.scrollTo(0, y), mid);
-      await page.waitForTimeout(30);
+      await scrollExact(page, mid);
       if ((await segment(page)) === startSegment) lo = mid;
       else hi = mid;
     }
-    await page.evaluate((y) => window.scrollTo(0, y), lo);
-    await page.waitForTimeout(40);
+    await scrollExact(page, lo);
     const before = await plateRect(page, "inner");
-    await page.evaluate((y) => window.scrollTo(0, y), hi);
-    await page.waitForTimeout(40);
+    await scrollExact(page, hi);
     expect(await segment(page)).toBe(startSegment + 1);
     const after = await plateRect(page, "outer");
     // One scroll pixel apart, the plate may grow by well under 2%, but never jump.
