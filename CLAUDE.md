@@ -7,6 +7,8 @@
 - Do not redraw game logos; use files in `public/assets/games/` or neutral placeholder glyphs.
 - Track owner-input items, open questions, and later ideas as GitHub issues on srir4m/personal-website
   (`gh api repos/srir4m/personal-website/issues`). Reference them in milestone notes instead of re-listing.
+- The narrative is being reworked (issues #1, #4, #5): don't build Act 2/3 further as PRD v1.0 specs them
+  (campus zoom, Squad room) without checking those issues for the current direction.
 - Bump `SITE_VERSION` in `src/version.ts` (and `package.json` version) at every milestone.
 
 ## Scroll architecture
