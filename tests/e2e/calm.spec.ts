@@ -1,4 +1,7 @@
 import { expect, test } from "@playwright/test";
+import { rangeOf } from "../../src/stage/acts";
+
+const GLOBE = rangeOf("globe");
 
 test.describe("Calm mode (prefers-reduced-motion)", () => {
   test.use({ reducedMotion: "reduce" });
@@ -13,10 +16,10 @@ test.describe("Calm mode (prefers-reduced-motion)", () => {
     await page.goto("/");
     await expect(page.locator("[data-boot-ready]")).toHaveAttribute("data-boot-ready", "true");
     // Scroll a little way into the globe act: the timeline settles on the act's frame.
-    const y = await page.evaluate(() => {
+    const y = await page.evaluate((at) => {
       const spacer = document.querySelector(".pin-spacer") as HTMLElement;
-      return spacer.offsetTop + (spacer.offsetHeight - innerHeight) * (8 / 105);
-    });
+      return spacer.offsetTop + (spacer.offsetHeight - innerHeight) * at;
+    }, GLOBE.start + (GLOBE.end - GLOBE.start) * 0.2);
     await page.evaluate((top) => window.scrollTo(0, top), y);
     await expect(page.locator("[data-active-act]")).toHaveAttribute("data-active-act", "globe");
     // The education card only shows from the middle of the act, so seeing it proves the settle.

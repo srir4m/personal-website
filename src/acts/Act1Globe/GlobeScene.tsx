@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { content } from "../../content";
-import { ACT_RANGES } from "../../stage/acts";
+import { rangeOf } from "../../stage/acts";
 import { actProgress, useStage } from "../../stage/store";
 import { facingRotation, latLngToVector } from "./geo";
 import type { GlobeData } from "./globeData";
@@ -10,9 +10,10 @@ import { DOLLY_DISTANCE, GLOBE_RADIUS_VMIN, IDLE_START_LNG, IDLE_TILT_DEG, camer
 import { globeFragment, globeVertex } from "./shaders";
 import { subsolarPoint } from "./sun";
 
-const RANGE = ACT_RANGES[1]!;
+const RANGE = rangeOf("globe");
 /** Past this point of the master timeline the globe layer is fully faded out. */
-const VISIBLE_UNTIL = ACT_RANGES[2]!.start + (ACT_RANGES[2]!.end - ACT_RANGES[2]!.start) * 0.1;
+const DESCENT = rangeOf("descent");
+const VISIBLE_UNTIL = DESCENT.start + (DESCENT.end - DESCENT.start) * 0.1;
 const { lat: MARKER_LAT, lng: MARKER_LNG } = content.education.location;
 const FACING = facingRotation(MARKER_LAT, MARKER_LNG);
 const IDLE = facingRotation(IDLE_TILT_DEG, IDLE_START_LNG);

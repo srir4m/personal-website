@@ -1,10 +1,10 @@
 import { expect, test, type Page } from "@playwright/test";
 
-const ACTS = ["boot", "globe", "descent", "squad", "becoming", "body", "outro"];
+const ACTS = ["boot", "about", "globe", "descent", "squad", "becoming", "body", "outro"];
 
 const activeAct = (page: Page) => page.locator("[data-active-act]").getAttribute("data-active-act");
 
-test("renders all seven act sections with headings", async ({ page }) => {
+test("renders every act section with a heading", async ({ page }) => {
   await page.goto("/");
   for (const id of ACTS) {
     await expect(page.locator(`section#act-${id} h2`)).toHaveCount(1);
@@ -69,4 +69,14 @@ test("production build shows no TODO text, robots noindex, and the version", asy
 test("content status overlay is stripped from production", async ({ page }) => {
   await page.goto("/?status=1");
   await expect(page.getByRole("complementary", { name: "Content status" })).toHaveCount(0);
+});
+
+test("the opening shows the owner's name and one-liner; About shows the intro", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator("#act-boot")).toContainText("Sriram");
+  await expect(page.locator("#act-boot")).toContainText("Architecting perfection");
+  await page.goto("/#about");
+  await expect(page.locator("[data-active-act]")).toHaveAttribute("data-active-act", "about");
+  await expect(page.locator("#act-about")).toContainText("Stevens Institute of Technology");
+  await expect(page.locator("#act-about")).toContainText("New York area");
 });

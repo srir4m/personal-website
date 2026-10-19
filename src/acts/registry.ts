@@ -5,6 +5,7 @@ export type ActProps = { index: number };
 /** One lazily loaded chunk per act (PRD §7.3). Order matches ACTS. */
 export const ACT_COMPONENTS: ComponentType<ActProps>[] = [
   lazy(() => import("./Act0Boot")),
+  lazy(() => import("./About")),
   lazy(() => import("./Act1Globe")),
   lazy(() => import("./Act2Descent")),
   lazy(() => import("./Act3Squad")),

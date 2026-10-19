@@ -19,6 +19,8 @@ type ActDef = {
 
 export const ACTS = [
   { id: "boot", hash: "", name: "Boot", share: 5, settle: 0 },
+  // PRD v1.1 decision Q2: About gets its own section, right after the name.
+  { id: "about", hash: "about", name: "About", share: 10, settle: 0.6 },
   // The globe stays under P1 until the plate has taken over, then fades (PRD Act 2 handoff).
   { id: "globe", hash: "globe", name: "Globe", share: 15, settle: 0.5, exitLag: 0.08 },
   { id: "descent", hash: "descent", name: "Descent", share: 20, settle: 0.5, enterLead: 0.1 },
@@ -47,6 +49,16 @@ export const ACT_RANGES = ACTS.reduce<{ start: number; end: number }[]>((ranges,
 
 /** How many viewport heights of scroll the whole timeline spans. */
 export const SCROLL_VIEWPORTS = 14;
+
+/** An act's index by id, so code never hard-codes positions in the act order. */
+export function actIndex(id: ActId): ActIndex {
+  return ACTS.findIndex((act) => act.id === id);
+}
+
+/** An act's normalised range on the master timeline, by id. */
+export function rangeOf(id: ActId): { start: number; end: number } {
+  return ACT_RANGES[actIndex(id)]!;
+}
 
 export function actAt(progress: number): ActIndex {
   const index = ACT_RANGES.findIndex((r) => progress < r.end);

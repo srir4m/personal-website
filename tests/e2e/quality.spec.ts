@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-const ACTS = ["", "globe", "descent", "squad", "becoming", "body", "outro"];
+const ACTS = ["", "about", "globe", "descent", "squad", "becoming", "body", "outro"];
 
 test("no act scrolls the page sideways", async ({ page }) => {
   for (const act of ACTS) {

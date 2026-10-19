@@ -1,11 +1,13 @@
 {
   "version": "1.0",
   "owner": {
-    "name": "TODO",
-    "tagline": "TODO",
+    "name": "Sriram",
+    "tagline": "Architecting perfection",
+    "intro": "I am Sriram, a student at Stevens Institute of Technology. I co-founded Sponge, an AI-native technical assessment platform, and I develop for ISNNetwork, a revenue-generating server network built for advanced players. My hackathon project Morphexis, which measures epistemic drift in news coverage, placed in the top 7 at RAISE-26.\n\nOff the keyboard I was a three-time state placer in high school wrestling, swam competitively for ten years, and was selected for the national round of the Darien Young Composers competition on piano. I lift, climb, play chess (1850 on chess.com, 1600 FIDE), and hold a 17,000 Premier rating in Counter-Strike 2.",
+    "area": { "label": "New York area", "lat": 40.71, "lng": -74.01 },
     "contact": {
       "email": null,
-      "github": null,
+      "github": "https://github.com/srir4m",
       "linkedin": null
     }
   },
@@ -53,7 +55,7 @@
     "intro": null,
     "silhouetteCount": 5,
     "games": [
-      { "id": "cs2",       "name": "Counter-Strike 2",   "emblem": "/assets/games/cs2.svg",       "main": null, "rank": null, "story": null },
+      { "id": "cs2",       "name": "Counter-Strike 2",   "emblem": "/assets/games/cs2.svg",       "main": null, "rank": "17,000 Premier", "story": null },
       { "id": "valorant",  "name": "VALORANT",           "emblem": "/assets/games/valorant.svg",  "main": null, "rank": null, "story": null },
       { "id": "r6",        "name": "Rainbow Six Siege",  "emblem": "/assets/games/r6.svg",        "main": null, "rank": null, "story": null },
       { "id": "minecraft", "name": "Minecraft",          "emblem": "/assets/games/minecraft.svg", "main": null, "rank": null, "story": null },

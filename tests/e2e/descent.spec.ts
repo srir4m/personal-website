@@ -1,7 +1,8 @@
 import { expect, test, type Page } from "@playwright/test";
+import { rangeOf } from "../../src/stage/acts";
 
-// Act 2's slice of the master timeline (src/stage/acts.ts shares: 5, 15, 20 of 105).
-const ACT2 = { start: 20 / 105, end: 40 / 105 };
+// The descent's slice of the master timeline.
+const ACT2 = rangeOf("descent");
 
 async function scrollToProgress(page: Page, progress: number) {
   const y = await page.evaluate((p) => {

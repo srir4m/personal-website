@@ -43,6 +43,12 @@ export const SiteContentSchema = z.object({
   owner: z.object({
     name: z.string().nullable(),
     tagline: z.string().nullable(),
+    /** The About section's text; blank lines separate paragraphs. */
+    intro: z.string().nullable(),
+    /** The owner's area at city or metro precision only (PRD v1.1 §5): never a point or address. */
+    area: z
+      .object({ label: z.string(), lat: z.number().min(-90).max(90), lng: z.number().min(-180).max(180) })
+      .nullable(),
     contact: z.object({
       email: z.email().nullable(),
       github: z.url().nullable(),

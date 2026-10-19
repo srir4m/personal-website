@@ -52,7 +52,7 @@ describe("renderableItems", () => {
 describe("content status", () => {
   it("lists every null, TODO and draft field", () => {
     const entries = collectStatus(raw);
-    expect(entries).toContainEqual({ path: "owner.name", kind: "TODO" });
+    expect(entries).toContainEqual({ path: "education.degree", kind: "TODO" });
     expect(entries).toContainEqual({ path: "owner.contact.email", kind: "null" });
     expect(entries).toContainEqual({ path: "body.regions.head.items[5]", kind: "draft" });
   });

@@ -87,7 +87,7 @@ function WebGLGlobe({ index }: { index: number }) {
   const data = use(safeData);
   const [phone] = useState(() => window.matchMedia(PHONE).matches);
   // Render continuously only while the globe is on screen and idling; otherwise on demand.
-  const frameloop = useStage((s) => (s.activeAct === 1 && s.motion === "full" ? "always" : "demand"));
+  const frameloop = useStage((s) => (s.activeAct === index && s.motion === "full" ? "always" : "demand"));
 
   if (!data) return <FallbackGlobe index={index} />;
   return (
