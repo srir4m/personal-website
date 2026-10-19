@@ -10,10 +10,24 @@ import { useStage } from "./stage/store";
 
 // `import.meta.env.DEV` is false in production builds, so these chunks are tree-shaken away.
 const ContentStatus = import.meta.env.DEV ? lazy(() => import("./dev/ContentStatus")) : null;
-const showStatus = new URLSearchParams(window.location.search).get("status") === "1";
+const RegionEditor = import.meta.env.DEV ? lazy(() => import("./dev/RegionEditor")) : null;
+const params = new URLSearchParams(window.location.search);
+const showStatus = params.get("status") === "1";
+const editRegions = params.get("edit") === "regions";
 const BODY_ACT = ACTS.findIndex((act) => act.id === "body");
 
 export function App() {
+  if (RegionEditor && editRegions) {
+    return (
+      <Suspense fallback={null}>
+        <RegionEditor />
+      </Suspense>
+    );
+  }
+  return <Site />;
+}
+
+function Site() {
   useBootGate();
   const motion = useStage((s) => s.motion);
   useEffect(() => {

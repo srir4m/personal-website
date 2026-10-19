@@ -1,10 +1,11 @@
 /// <reference types="vitest/config" />
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { validateContent } from "./src/content/schema.ts";
+import { RegionsSchema } from "./src/content/regionsSchema.ts";
 
 const contentPath = fileURLToPath(new URL("./src/content/site-content.json", import.meta.url));
 
@@ -19,6 +20,39 @@ function contentValidation(): Plugin {
     buildStart: check,
     handleHotUpdate(ctx) {
       if (ctx.file === contentPath) check();
+    },
+  };
+}
+
+/**
+ * Dev-only endpoint for the region editor (`/?edit=regions`): POST the edited regions
+ * to write src/content/regions.json, after validating them.
+ */
+function regionsEndpoint(): Plugin {
+  const file = fileURLToPath(new URL("./src/content/regions.json", import.meta.url));
+  return {
+    name: "microcosm:regions-endpoint",
+    apply: "serve",
+    configureServer(server) {
+      server.middlewares.use("/__regions", (req, res) => {
+        if (req.method !== "POST") {
+          res.statusCode = 405;
+          res.end();
+          return;
+        }
+        let body = "";
+        req.on("data", (chunk) => (body += chunk));
+        req.on("end", () => {
+          const result = RegionsSchema.safeParse(JSON.parse(body));
+          if (!result.success) {
+            res.statusCode = 400;
+            res.end(result.error.message);
+            return;
+          }
+          writeFileSync(file, `${JSON.stringify(result.data, null, 2)}\n`);
+          res.end("saved");
+        });
+      });
     },
   };
 }
@@ -45,7 +79,7 @@ function vaultModule(mode: string): Plugin {
 }
 
 export default defineConfig(({ mode }) => ({
-  plugins: [contentValidation(), vaultModule(mode), react(), tailwindcss()],
+  plugins: [contentValidation(), vaultModule(mode), regionsEndpoint(), react(), tailwindcss()],
   build: {
     // three.js makes the globe chunk large by nature; scripts/check-budget.ts enforces the real budget.
     chunkSizeWarningLimit: 1200,

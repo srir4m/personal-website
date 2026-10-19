@@ -701,3 +701,103 @@ html.lenis body {
     animation: none;
   }
 }
+
+/* ---- Vitruvian figure (Acts 4–5) --------------------------------------------- */
+
+/* The figure fills up to 85% of the viewport height (PRD Act 5; 70% on phones). */
+.vitruvian-stage {
+  width: min(85dvh, 94vw);
+  height: min(85dvh, 94vw);
+  overflow: visible;
+  color: var(--ink);
+}
+@media (max-width: 767px) {
+  .vitruvian-stage {
+    width: min(70dvh, 94vw);
+    height: min(70dvh, 94vw);
+  }
+}
+/* Same ink and weight as the globe's coastlines (PRD Act 4 acceptance). */
+.vitruvian-line {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.25px;
+  vector-effect: non-scaling-stroke;
+}
+.vitruvian-graticule {
+  fill: none;
+  stroke: var(--sepia);
+  stroke-width: 0.75px;
+  vector-effect: non-scaling-stroke;
+}
+.becoming-silhouette {
+  fill: var(--ink);
+}
+
+/* ---- Region editor (dev only) ------------------------------------------------ */
+
+.region-editor {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 22rem;
+  height: 100dvh;
+  background: var(--parchment);
+}
+.region-editor__canvas {
+  width: 100%;
+  height: 100dvh;
+  color: var(--ink);
+  cursor: crosshair;
+  touch-action: none;
+}
+.region-editor__panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding: 1.25rem;
+  overflow: auto;
+  border-left: 1px solid var(--sepia);
+  background: var(--parchment-deep);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+}
+.region-editor__panel button {
+  padding: 0.2rem 0.5rem;
+  border: 1px solid var(--sepia);
+  cursor: pointer;
+}
+.region-editor__panel button[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--parchment);
+}
+.region-editor__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.region-editor__json {
+  flex: 1;
+  min-height: 12rem;
+  font-size: 0.7rem;
+  background: var(--parchment);
+}
+.editor-poly polygon {
+  fill: color-mix(in srgb, var(--sepia) 18%, transparent);
+  stroke: var(--sepia);
+  stroke-width: 1px;
+  vector-effect: non-scaling-stroke;
+  cursor: pointer;
+}
+.editor-poly--active polygon {
+  fill: color-mix(in srgb, var(--sanguine) 28%, transparent);
+  stroke: var(--sanguine);
+}
+.editor-point {
+  fill: var(--parchment);
+  stroke: var(--sanguine);
+  stroke-width: 2px;
+  vector-effect: non-scaling-stroke;
+  cursor: move;
+}
+.editor-point--current {
+  fill: var(--sanguine);
+}

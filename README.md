@@ -38,6 +38,15 @@ globe handoff) are set in `src/acts/Act2Descent/plates.ts`; keep them in step wi
 
 Owner input and later ideas are tracked as [GitHub issues](https://github.com/srir4m/personal-website/issues).
 
+## The Vitruvian figure
+
+- `npm run vitruvian:trace` traces `assets-src/vitruvian-source.jpg` (Leonardo's drawing, public domain):
+  it thresholds the scan, fits and strips the circle and square, and vectorises the figure with potrace.
+  The outputs are `public/assets/vitruvian/figure.svg` and `src/content/vitruvian.json` (circle and square geometry).
+- `npm run vitruvian:placeholder` writes the placeholder mannequin used until a scan is traced (#6).
+- Body regions and pose masks live in `src/content/regions.json`, normalised to the figure. To edit them,
+  run `npm run dev`, open `/?edit=regions`, and Save. The editor is dev-only.
+
 ## The heart vault
 
 Private notes behind a passphrase (PRD §9). Casual visitors can't read them; a determined
@@ -78,5 +87,6 @@ tests/e2e           Playwright
 | M1 Boot + globe + education card | ✅ v0.2.0 |
 | M2 Infinite zoom with placeholder plates, globe handoff, rebasing | ✅ v0.3.0 |
 | M3 Squad: silhouettes, emblems, cards | on hold, see #5 |
+| M4 Vitruvian pipeline, region editor, Becoming transition | ✅ v0.5.0 (placeholder figure, see #6) |
 | M6 Heart vault (script, UI, tests) | ✅ v0.4.0 |
 | M2 – M8 | see PRD §11 |
