@@ -1,0 +1,13 @@
+/* Codex HUD colour tokens (PRD §5.1). Mirrored into the Tailwind theme in globals.css. */
+:root {
+  --parchment: #efe4cc;
+  --parchment-deep: #e2d3b0;
+  --ink: #2b2118;
+  --sepia: #8a6b47;
+  --sanguine: #a8432f;
+  --hud-cyan: #3fd6e0;
+  --hud-amber: #f2a33a;
+
+  --font-display: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}

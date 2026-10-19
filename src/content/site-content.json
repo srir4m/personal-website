@@ -1,0 +1,132 @@
+{
+  "version": "1.0",
+  "owner": {
+    "name": "TODO",
+    "tagline": "TODO",
+    "contact": {
+      "email": null,
+      "github": null,
+      "linkedin": null
+    }
+  },
+  "education": {
+    "school": "Stevens Institute of Technology",
+    "degree": "TODO",
+    "classOf": "TODO",
+    "location": { "label": "Castle Point, Hoboken, NJ", "lat": 40.745, "lng": -74.024 },
+    "courses": [
+      { "code": "CS 115",   "title": "Introduction to Computer Science", "term": "2024 Fall",   "termOrder": 20243, "status": "completed" },
+      { "code": "HASS 103", "title": null, "term": "2024 Fall",   "termOrder": 20243, "status": "completed" },
+      { "code": "MA 125",   "title": null, "term": "2024 Fall",   "termOrder": 20243, "status": "completed" },
+      { "code": "MA 126",   "title": null, "term": "2024 Fall",   "termOrder": 20243, "status": "completed" },
+      { "code": "PEP 111",  "title": null, "term": "2024 Fall",   "termOrder": 20243, "status": "completed" },
+      { "code": "PRV 101",  "title": null, "term": "2024 Fall",   "termOrder": 20243, "status": "completed" },
+
+      { "code": "CS 284",   "title": "Data Structures", "term": "2025 Spring", "termOrder": 20251, "status": "completed" },
+      { "code": "HASS 105", "title": null, "term": "2025 Spring", "termOrder": 20251, "status": "completed" },
+      { "code": "IDE 105",  "title": null, "term": "2025 Spring", "termOrder": 20251, "status": "completed" },
+      { "code": "MA 222",   "title": null, "term": "2025 Spring", "termOrder": 20251, "status": "completed" },
+      { "code": "PEP 221",  "title": null, "term": "2025 Spring", "termOrder": 20251, "status": "completed" },
+
+      { "code": "CS 135",   "title": "Discrete Structures", "term": "2025 Fall", "termOrder": 20253, "status": "completed" },
+      { "code": "IDE 314",  "title": null, "term": "2025 Fall", "termOrder": 20253, "status": "completed" },
+      { "code": "PRV 202",  "title": null, "term": "2025 Fall", "termOrder": 20253, "status": "completed" },
+
+      { "code": "CS 382",   "title": "Computer Architecture and Organization", "term": "2026 Spring", "termOrder": 20261, "status": "completed" },
+      { "code": "CS 385",   "title": "Algorithms", "term": "2026 Spring", "termOrder": 20261, "status": "completed" },
+      { "code": "IDE 315",  "title": null, "term": "2026 Spring", "termOrder": 20261, "status": "completed" },
+      { "code": "MA 232",   "title": "Linear Algebra", "term": "2026 Spring", "termOrder": 20261, "status": "completed" },
+      { "code": "PRV 201",  "title": null, "term": "2026 Spring", "termOrder": 20261, "status": "completed" },
+
+      { "code": "CS 496",   "title": "Principles of Programming Languages", "term": "2026 Summer", "termOrder": 20262, "status": "completed" },
+
+      { "code": "CS 334",   "title": "Theory of Computation", "term": "2026 Fall", "termOrder": 20263, "status": "in-progress" },
+      { "code": "CS 396",   "title": "Security, Privacy, and Society", "term": "2026 Fall", "termOrder": 20263, "status": "in-progress" },
+      { "code": "CS 561",   "title": "Database Management Systems", "term": "2026 Fall", "termOrder": 20263, "status": "in-progress" },
+      { "code": "HSSC 371", "title": null, "term": "2026 Fall", "termOrder": 20263, "status": "in-progress" },
+      { "code": "MA 331",   "title": null, "term": "2026 Fall", "termOrder": 20263, "status": "in-progress" },
+      { "code": "PRV 203",  "title": null, "term": "2026 Fall", "termOrder": 20263, "status": "in-progress" }
+    ]
+  },
+  "squad": {
+    "intro": null,
+    "silhouetteCount": 5,
+    "games": [
+      { "id": "cs2",       "name": "Counter-Strike 2",   "emblem": "/assets/games/cs2.svg",       "main": null, "rank": null, "story": null },
+      { "id": "valorant",  "name": "VALORANT",           "emblem": "/assets/games/valorant.svg",  "main": null, "rank": null, "story": null },
+      { "id": "r6",        "name": "Rainbow Six Siege",  "emblem": "/assets/games/r6.svg",        "main": null, "rank": null, "story": null },
+      { "id": "minecraft", "name": "Minecraft",          "emblem": "/assets/games/minecraft.svg", "main": null, "rank": null, "story": null },
+      { "id": "roblox",    "name": "Roblox",             "emblem": "/assets/games/roblox.svg",    "main": null, "rank": null, "story": null }
+    ]
+  },
+  "body": {
+    "regions": {
+      "head": {
+        "label": "Mind",
+        "theme": "What I build and play",
+        "items": [
+          { "title": "Sponge", "subtitle": "Co-founder", "body": "AI-native technical assessment platform.", "link": "https://getsponge.ai" },
+          { "title": "ISNNetwork", "subtitle": "Developer", "body": "Online server farm selling an enhanced gaming experience to advanced players; revenue-generating.", "link": "https://isnserver.net" },
+          { "title": "Mineman-style knockback plugin", "subtitle": "Minecraft plugin", "body": "Recreates minemen.club-style knockback and combat for PvP on my 1.21.11 factions server." },
+          { "title": "Morphexis", "subtitle": "RAISE-26 hackathon", "body": "Measuring epistemic drift in news coverage.", "badge": "Top 7" },
+          { "title": "Chess", "subtitle": "chess.com 1850 · FIDE 1600" },
+          { "title": "Open to junior-year internships", "mode": "reaching", "draft": true }
+        ]
+      },
+      "ears": {
+        "label": "Ears",
+        "theme": "What I hear and compose",
+        "items": [
+          { "title": "Darien Young Composers", "subtitle": "Piano", "body": "Selected for the National competition.", "badge": "National" },
+          { "title": "Guitar", "subtitle": "Electric — just started", "body": "First chords: Em, Am, C, G.", "mode": "reaching" }
+        ]
+      },
+      "chest": {
+        "label": "Chest",
+        "theme": "Strength",
+        "items": [
+          { "title": "Lifting", "subtitle": "Lifting and bodybuilding" }
+        ]
+      },
+      "spine": {
+        "label": "Backbone",
+        "theme": "Highlights and credentials",
+        "items": [
+          { "title": "3× state placer — wrestling", "subtitle": "High school" },
+          { "title": "National selection — Darien Young Composers", "subtitle": "Piano" },
+          { "title": "Top 7 — RAISE-26", "subtitle": "Morphexis" },
+          { "title": "TODO additional credentials", "draft": true }
+        ]
+      },
+      "arms": {
+        "label": "Arms",
+        "theme": "Grapple and climb",
+        "items": [
+          { "title": "Wrestling", "subtitle": "3× state placer in high school" },
+          { "title": "Climbing", "subtitle": null, "body": null }
+        ]
+      },
+      "stomach": {
+        "label": "Stomach",
+        "theme": "Fuel",
+        "items": [
+          { "title": "Japanese", "subtitle": "Chicken katsu above all" },
+          { "title": "Indian", "subtitle": null },
+          { "title": "TODO more favorites", "draft": true }
+        ]
+      },
+      "legs": {
+        "label": "Legs",
+        "theme": "Endurance",
+        "items": [
+          { "title": "Swimming", "subtitle": "Competitive swimmer for 10 years" }
+        ]
+      },
+      "feet": {
+        "label": "Feet",
+        "theme": "Roots and places",
+        "items": []
+      }
+    }
+  }
+}

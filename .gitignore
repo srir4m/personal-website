@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.vercel/
+*.log
+.DS_Store
+
+# Vault: plaintext and passphrase never enter the repo (PRD §9)
+/vault/
+.env
+.env.*
+
+# Test output
+/test-results/
+/playwright-report/
+/blob-report/
+*.tsbuildinfo
