@@ -1,5 +1,5 @@
-# Publishes the site to GitHub Pages on every push to main. The PRD's target host is
-# Vercel (vercel.json); Pages serves the same static build under /personal-website/.
+# Publishes the site to GitHub Pages (the site's host, PRD §7.1) on every push to main,
+# served under /personal-website/. One-time setup: Settings → Pages → Source: GitHub Actions.
 name: Deploy to GitHub Pages
 
 on:

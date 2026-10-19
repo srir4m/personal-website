@@ -36,14 +36,15 @@ globe handoff) are set in `src/acts/Act2Descent/plates.ts`; keep them in step wi
 
 ## Deploying
 
-- **GitHub Pages (live):** every push to `main` builds and publishes to
-  https://srir4m.github.io/personal-website/ (`.github/workflows/pages.yml`).
-- **Vercel (PRD target):** import the repo at vercel.com/new. `vercel.json` sets the build,
-  output directory, and a `X-Robots-Tag: noindex` header, and nothing else needs configuring.
+The site is hosted on **GitHub Pages**. Every push to `main` builds and publishes it to
+https://srir4m.github.io/personal-website/ (`.github/workflows/pages.yml`). The build sets
+`BASE_PATH=/personal-website/`, so all asset URLs go through `import.meta.env.BASE_URL`.
+
+One-time setup: in the repo's **Settings → Pages**, set **Source** to **GitHub Actions**.
 - **CI** (`.github/workflows/ci.yml`) runs the build, the unit tests and the e2e tests on every push and pull request.
 
-The site is unlisted rather than secret. It has `noindex, nofollow` in the HTML, plus `robots.txt` and the
-`X-Robots-Tag` header on Vercel. No analytics, cookies, or third-party requests.
+The site is unlisted rather than secret: every page carries `<meta name="robots" content="noindex, nofollow">`.
+(On a project site, GitHub serves `robots.txt` from the user domain's root rather than from `/personal-website/`, so the meta tag is what keeps it out of search results.) No analytics, cookies, or third-party requests.
 
 ## Open items
 
@@ -100,5 +101,5 @@ tests/e2e           Playwright
 | M3 Squad: silhouettes, emblems, cards | on hold, see #5 |
 | M4 Vitruvian pipeline, region editor, Becoming transition | ✅ v0.5.0 (placeholder figure, see #6) |
 | M6 Heart vault (script, UI, tests) | ✅ v0.4.0 |
-| M8 Credits, noindex, deploy | ✅ v0.6.0 (GitHub Pages live; Vercel ready to connect) |
+| M8 Credits, noindex, GitHub Pages deploy | ✅ v0.6.0 |
 | M2 – M8 | see PRD §11 |

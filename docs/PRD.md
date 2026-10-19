@@ -271,7 +271,7 @@ The full root object is in `site-content.json`.
 | Validation | Zod |
 | Markdown (vault only) | `marked` + `DOMPurify` |
 | Testing | Vitest (unit), Playwright (e2e) |
-| Hosting | Vercel (static output) |
+| Hosting | GitHub Pages (static output, deployed by GitHub Actions) |
 
 **Explicitly excluded:** Next.js, Electron, SSR, and third-party prefab animation-component libraries.
 
@@ -433,7 +433,7 @@ Each milestone ends with: a version bump, `npm run build` passing, Playwright sm
 | M5 | Act 5 body map, panels, pose toggle, dormant states | Acceptance criteria for Act 5 pass |
 | M6 | Heart vault (script + UI + tests) | Fixture decrypts; wrong passphrase is handled |
 | M7 | Act 6 outro, Calm mode, no-WebGL fallback, responsive passes, performance tuning | Budgets in §10.3 met |
-| M8 | Credits, noindex, Vercel deploy | Live URL works on desktop and phone |
+| M8 | Credits, noindex, GitHub Pages deploy | Live URL works on desktop and phone |
 
 ---
 

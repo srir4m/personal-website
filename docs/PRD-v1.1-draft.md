@@ -135,7 +135,7 @@ squad: { ... }                               // DEPRECATED → migrate into acti
 
 - **Q7: Live location source.**
   - A. Manual: the owner edits the coarse area in content and redeploys. Simplest; no backend.
-  - B. **Recommended if live is wanted:** a phone shortcut snaps on-device, then POSTs to a tiny store on the same host (e.g. Vercel Edge Config or KV) behind a secret token. The page reads it at load.
+  - B. **Recommended if live is wanted:** a phone shortcut snaps on-device, then commits a small `location.json` to the repo through the GitHub API, using a fine-grained token limited to this repo's contents. Pages redeploys in about a minute and the page reads the file at load. There is no server, since the site is hosted on GitHub Pages; the trade-off is that each update is a commit in the public history.
   - C. Drop "live"; the default area only.
 - **Q8: Precision when on**: city or neighbourhood? Default-off area label: *owner supplies*.
 

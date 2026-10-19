@@ -9,6 +9,8 @@
   (`gh api repos/srir4m/personal-website/issues`). Reference them in milestone notes instead of re-listing.
 - The narrative is being reworked (issues #1, #4, #5): don't build Act 2/3 further as PRD v1.0 specs them
   (campus zoom, Squad room) without checking those issues for the current direction.
+- Hosting is GitHub Pages under `/personal-website/`: reference public assets through
+  `import.meta.env.BASE_URL`, never a bare leading `/`. There is no server, so any runtime data has to be a static file.
 - Bump `SITE_VERSION` in `src/version.ts` (and `package.json` version) at every milestone.
 
 ## Scroll architecture
