@@ -5,6 +5,23 @@
 **Tracks:** [#1 Name and one-liner first, plus About me](https://github.com/srir4m/personal-website/issues/1) · [#4 Live-map zoom to a generic area](https://github.com/srir4m/personal-website/issues/4) · [#5 Narrative rework](https://github.com/srir4m/personal-website/issues/5)
 
 Items marked **OPEN QUESTION** need an owner decision. Where a recommendation is given, it is a suggestion only.
+
+### Owner decisions (2026-10-19)
+
+The owner answered Q1–Q8. These override the options listed below.
+
+| Q | Decision |
+|---|---|
+| Q1 Education | Lives in the **body map** (an item in the Mind or Backbone region). The globe no longer carries an education card. |
+| Q2 About me | Gets **its own section** right after the opening name and one-liner, before any map. |
+| Q3 Body map | **Stays the centrepiece.** Regions that duplicate the new Activities section get trimmed. |
+| Q4 Wordmark | **No persistent wordmark.** Name and one-liner appear on the opening screen only. |
+| Q5 Logo | A **typed line** in the display face, inked in on load. No graphic mark. |
+| Q6 Tone | **Balanced:** keep the Leonardo-notebook look, with a lighter touch of HUD where it helps. |
+| Q7 Location source | **Manual and coarse:** the owner sets the area in `site-content.json`. No live updates, no phone shortcut, no store. |
+| Q8 Precision | **City or metro area** (for example "New York area"), never a neighbourhood, point or address. |
+
+Still needed from the owner: the name and one-liner, the About text, the activities list, and the area label. See §7.
 Nothing personal is written into this draft: anything marked *owner supplies* comes from `site-content.json`.
 
 ---
