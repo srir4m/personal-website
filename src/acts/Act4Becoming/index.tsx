@@ -28,18 +28,21 @@ const SQUAD = Array.from({ length: Math.max(0, content.squad.silhouetteCount - 1
  * function's intercept from `visible` to `hidden` dissolves the masked content in ink-like
  * blotches; the reverse inks it in.
  */
-function InkMask({ id, seed, frequency = 0.012 }: { id: string; seed: number; frequency?: number }) {
+type Box = { x: number; y: number; width: number; height: number };
+
+function InkMask({ id, seed, frequency = 0.012, box }: { id: string; seed: number; frequency?: number; box: Box }) {
+  // The filter and mask cover only `box`: turbulence costs per pixel, every frame it animates.
   return (
     <>
-      <filter id={`${id}-noise`} x="-50%" y="-50%" width="200%" height="200%" colorInterpolationFilters="sRGB">
-        <feTurbulence type="fractalNoise" baseFrequency={frequency} numOctaves={3} seed={seed} />
+      <filter id={`${id}-noise`} filterUnits="userSpaceOnUse" {...box} colorInterpolationFilters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency={frequency} numOctaves={2} seed={seed} />
         <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  1 0 0 0 0" />
         <feComponentTransfer>
           <feFuncA className={`${id}-threshold`} type="linear" slope="7" intercept="1" />
         </feComponentTransfer>
       </filter>
-      <mask id={id} maskUnits="userSpaceOnUse" x="-2000" y="-2000" width="5000" height="5000">
-        <rect x="-2000" y="-2000" width="5000" height="5000" fill="white" filter={`url(#${id}-noise)`} />
+      <mask id={id} maskUnits="userSpaceOnUse" {...box}>
+        <rect {...box} fill="white" filter={`url(#${id}-noise)`} />
       </mask>
     </>
   );
@@ -47,6 +50,15 @@ function InkMask({ id, seed, frequency = 0.012 }: { id: string; seed: number; fr
 
 const VISIBLE = 1;
 const HIDDEN = -6;
+
+const [, , VB_W, VB_H] = VITRUVIAN.viewBox;
+const SPREAD = Math.max(0, ...SQUAD.map((s) => Math.abs(s.dx)));
+/** Regions each mask has to cover, in viewBox units. */
+const BOXES = {
+  others: { x: square.x - SPREAD * square.size, y: square.y - 20, width: square.size * (1 + 2 * SPREAD), height: square.size + 40 },
+  silhouette: { x: square.x - 20, y: square.y - 20, width: square.size + 40, height: square.size + 40 },
+  figure: { x: 0, y: 0, width: VB_W, height: VB_H },
+};
 
 export default function Act4Becoming({ index }: ActProps) {
   const scope = useRef<SVGSVGElement>(null);
@@ -63,6 +75,18 @@ export default function Act4Becoming({ index }: ActProps) {
       // Camera pushes toward the centre silhouette while the others wash away.
       tl.fromTo(".becoming-squad", { scale: 0.62, svgOrigin: `${centre.x} ${centre.y + square.size * 0.1}` }, { scale: 1, duration: 0.28 }, 0);
       tl.fromTo(".wash-others-threshold", { attr: { intercept: VISIBLE } }, { attr: { intercept: HIDDEN }, duration: 0.24 }, 0.04);
+      // Each ink mask is attached only while its dissolve runs; a masked 360 KB figure
+      // is expensive to repaint. Timeline sets revert when scrubbing back.
+      const masked = (selector: string, mask: string, on: number, off: number, hideAfter: boolean) => {
+        gsap.set(selector, { attr: { mask: "none" } });
+        tl.set(selector, { attr: { mask: `url(#${mask})` } }, on);
+        tl.set(selector, { attr: { mask: "none" }, ...(hideAfter ? { autoAlpha: 0 } : {}) }, off);
+      };
+      masked(".becoming-others", "wash-others", 0.04, 0.28, true);
+      masked(".becoming-centre", "bleed-out", 0.28, 0.5, true);
+      masked(".becoming-figure", "bleed-in", 0.26, 0.5, false);
+      gsap.set(".becoming-figure", { autoAlpha: 0 });
+      tl.set(".becoming-figure", { autoAlpha: 1 }, 0.26);
       // The silhouette bleeds out as the figure bleeds in (no path morph: PRD Act 4).
       tl.fromTo(".bleed-out-threshold", { attr: { intercept: VISIBLE } }, { attr: { intercept: HIDDEN }, duration: 0.22 }, 0.28);
       tl.fromTo(".bleed-in-threshold", { attr: { intercept: HIDDEN } }, { attr: { intercept: VISIBLE }, duration: 0.24 }, 0.26);
@@ -86,23 +110,23 @@ export default function Act4Becoming({ index }: ActProps) {
     <div className="relative flex h-full w-full items-center justify-center overflow-hidden bg-parchment text-ink">
       <svg ref={scope} viewBox={VIEWBOX} className="vitruvian-stage" aria-hidden="true">
         <defs>
-          <InkMask id="wash-others" seed={4} frequency={0.01} />
-          <InkMask id="bleed-out" seed={11} frequency={0.016} />
-          <InkMask id="bleed-in" seed={27} frequency={0.016} />
+          <InkMask id="wash-others" seed={4} frequency={0.01} box={BOXES.others} />
+          <InkMask id="bleed-out" seed={11} frequency={0.016} box={BOXES.silhouette} />
+          <InkMask id="bleed-in" seed={27} frequency={0.016} box={BOXES.figure} />
         </defs>
 
         <g className="becoming-squad">
-          <g mask="url(#wash-others)">
+          <g className="becoming-others">
             {SQUAD.map(({ dx, scale }) => (
               <path key={dx} d={SILHOUETTE_PATH} transform={silhouetteTransform(dx, scale)} className="becoming-silhouette" />
             ))}
           </g>
-          <g mask="url(#bleed-out)">
+          <g className="becoming-centre">
             <path d={SILHOUETTE_PATH} transform={silhouetteTransform(0, 1)} className="becoming-silhouette" />
           </g>
         </g>
 
-        <g mask="url(#bleed-in)" dangerouslySetInnerHTML={{ __html: FIGURE_MARKUP }} />
+        <g className="becoming-figure" dangerouslySetInnerHTML={{ __html: FIGURE_MARKUP }} />
 
         <path d={squarePath} className="vitruvian-line becoming-square" />
 

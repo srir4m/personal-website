@@ -11,6 +11,8 @@ import { globeFragment, globeVertex } from "./shaders";
 import { subsolarPoint } from "./sun";
 
 const RANGE = ACT_RANGES[1]!;
+/** Past this point of the master timeline the globe layer is fully faded out. */
+const VISIBLE_UNTIL = ACT_RANGES[2]!.start + (ACT_RANGES[2]!.end - ACT_RANGES[2]!.start) * 0.1;
 const { lat: MARKER_LAT, lng: MARKER_LNG } = content.education.location;
 const FACING = facingRotation(MARKER_LAT, MARKER_LNG);
 const IDLE = facingRotation(IDLE_TILT_DEG, IDLE_START_LNG);
@@ -102,8 +104,15 @@ export function GlobeScene({ data, phone, hud }: Props) {
   useEffect(() => () => coastlines.dispose(), [coastlines]);
   useEffect(() => () => graticule.dispose(), [graticule]);
 
-  // In demand mode, redraw whenever the playhead moves.
-  useEffect(() => useStage.subscribe((s, prev) => s.progress !== prev.progress && invalidate()), [invalidate]);
+  // In demand mode, redraw when the playhead moves, but only while the globe can be seen:
+  // through Act 1 and the start of Act 2, where it fades out under P1.
+  useEffect(
+    () =>
+      useStage.subscribe((s, prev) => {
+        if (s.progress !== prev.progress && s.progress <= VISIBLE_UNTIL) invalidate();
+      }),
+    [invalidate],
+  );
 
   useFrame((state, delta) => {
     const globe = group.current;

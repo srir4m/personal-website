@@ -86,7 +86,8 @@ function Hud({ children, index }: { children: (setFrame: React.RefObject<(f: Hud
 function WebGLGlobe({ index }: { index: number }) {
   const data = use(safeData);
   const [phone] = useState(() => window.matchMedia(PHONE).matches);
-  const frameloop = useStage((s) => (s.activeAct <= 1 && s.motion === "full" ? "always" : "demand"));
+  // Render continuously only while the globe is on screen and idling; otherwise on demand.
+  const frameloop = useStage((s) => (s.activeAct === 1 && s.motion === "full" ? "always" : "demand"));
 
   if (!data) return <FallbackGlobe index={index} />;
   return (
@@ -128,9 +129,13 @@ function FallbackDrawing({ paths, onLayout }: { paths: string[]; onLayout: (x: n
       const parent = ref.current?.parentElement;
       if (parent) onLayout(parent.clientWidth / 2, parent.clientHeight / 2, parent.clientWidth, parent.clientHeight);
     };
-    place();
+    // Wait a frame: the marker and card are later siblings, so their refs aren't attached yet.
+    const frame = requestAnimationFrame(place);
     window.addEventListener("resize", place);
-    return () => window.removeEventListener("resize", place);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("resize", place);
+    };
   }, [onLayout]);
   return (
     <svg ref={ref} viewBox="-1.02 -1.02 2.04 2.04" className="globe-circle absolute" aria-hidden="true">

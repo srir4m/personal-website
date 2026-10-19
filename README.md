@@ -104,5 +104,6 @@ tests/e2e           Playwright
 | M4 Vitruvian pipeline, region editor, Becoming transition | ✅ v0.5.0 (placeholder figure, see #6) |
 | M5 Body map: regions, panels, Now / Reaching, dormant regions | ✅ v0.7.0 |
 | M6 Heart vault (script, UI, tests) | ✅ v0.4.0 |
+| M7 Outro, Calm mode, no-WebGL fallback, responsive and performance passes | ✅ v0.8.0 (fps to confirm on real hardware) |
 | M8 Credits, noindex, GitHub Pages deploy | ✅ v0.6.0 |
 | M2 – M8 | see PRD §11 |

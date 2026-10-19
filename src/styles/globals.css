@@ -1005,3 +1005,26 @@ html.lenis body {
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+
+/* ---- Act 6 outro --------------------------------------------------------------- */
+
+.outro-sphere {
+  fill: var(--parchment-deep);
+}
+.outro-links {
+  position: absolute;
+  left: 50%;
+  bottom: calc(12% + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  transform: translateX(-50%);
+}
+.outro-link {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 5px;
+}
