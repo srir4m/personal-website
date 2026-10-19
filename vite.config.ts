@@ -79,6 +79,8 @@ function vaultModule(mode: string): Plugin {
 }
 
 export default defineConfig(({ mode }) => ({
+  // GitHub Pages serves the site under /personal-website/; Vercel and local use "/".
+  base: process.env.BASE_PATH ?? "/",
   plugins: [contentValidation(), vaultModule(mode), regionsEndpoint(), react(), tailwindcss()],
   build: {
     // three.js makes the globe chunk large by nature; scripts/check-budget.ts enforces the real budget.
