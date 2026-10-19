@@ -2,7 +2,7 @@
 
 **Status:** Draft for owner review. Not yet approved; v1.0 (`docs/PRD.md`) remains the spec until this is accepted.
 **Date:** 2026-10-19
-**Tracks:** [#1 Name and one-liner first, plus About me](https://github.com/srir4m/personal-website/issues/1) · [#4 Live-map zoom to a generic area](https://github.com/srir4m/personal-website/issues/4) · [#5 Narrative rework](https://github.com/srir4m/personal-website/issues/5)
+**Tracks:** [#1 Name and one-liner first, plus About me](https://github.com/srir4m/srir4m.github.io/issues/1) · [#4 Live-map zoom to a generic area](https://github.com/srir4m/srir4m.github.io/issues/4) · [#5 Narrative rework](https://github.com/srir4m/srir4m.github.io/issues/5)
 
 Items marked **OPEN QUESTION** need an owner decision. Where a recommendation is given, it is a suggestion only.
 

@@ -79,7 +79,7 @@ function vaultModule(mode: string): Plugin {
 }
 
 export default defineConfig(({ mode }) => ({
-  // GitHub Pages serves the site under /personal-website/; Vercel and local use "/".
+  // The site is served from the root of srir4m.github.io; BASE_PATH overrides it (e.g. "./" for previews).
   base: process.env.BASE_PATH ?? "/",
   plugins: [contentValidation(), vaultModule(mode), regionsEndpoint(), react(), tailwindcss()],
   build: {

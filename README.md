@@ -36,19 +36,19 @@ globe handoff) are set in `src/acts/Act2Descent/plates.ts`; keep them in step wi
 
 ## Deploying
 
-The site is hosted on **GitHub Pages**. Every push to `main` builds and publishes it to
-https://srir4m.github.io/personal-website/ (`.github/workflows/pages.yml`). The build sets
-`BASE_PATH=/personal-website/`, so all asset URLs go through `import.meta.env.BASE_URL`.
+The site is hosted on **GitHub Pages**. This repo is the owner's user site, `srir4m.github.io`, so
+every push to `main` builds and publishes it at https://srir4m.github.io/ (`.github/workflows/pages.yml`).
+Asset URLs go through `import.meta.env.BASE_URL`, so a `BASE_PATH` override still works.
 
 One-time setup: in the repo's **Settings → Pages**, set **Source** to **GitHub Actions**.
 - **CI** (`.github/workflows/ci.yml`) runs the build, the unit tests and the e2e tests on every push and pull request.
 
-The site is unlisted rather than secret: every page carries `<meta name="robots" content="noindex, nofollow">`.
-(On a project site, GitHub serves `robots.txt` from the user domain's root rather than from `/personal-website/`, so the meta tag is what keeps it out of search results.) No analytics, cookies, or third-party requests.
+The site is unlisted rather than secret: every page carries `<meta name="robots" content="noindex, nofollow">`,
+and `robots.txt` at the root disallows all crawlers. No analytics, cookies, or third-party requests.
 
 ## Open items
 
-Owner input and later ideas are tracked as [GitHub issues](https://github.com/srir4m/personal-website/issues).
+Owner input and later ideas are tracked as [GitHub issues](https://github.com/srir4m/srir4m.github.io/issues).
 
 ## The Vitruvian figure
 
