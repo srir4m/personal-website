@@ -42,7 +42,9 @@ test("a wrong passphrase shakes, blots, and locks after five tries", async ({ pa
 test("closing clears the vault and returns focus to the heart", async ({ page }) => {
   await page.goto("/#body");
   const heart = page.getByRole("button", { name: "Heart: the vault" });
-  await heart.click();
+  // Keyboard, not a click: the heart sits inside the chest, so its centre is ambiguous to click.
+  await heart.focus();
+  await page.keyboard.press("Enter");
   await field(page).fill(TEST_PASSPHRASE);
   await field(page).press("Enter");
   await expect(page.getByTestId("vault-content")).toBeVisible({ timeout: 10_000 });
@@ -50,7 +52,7 @@ test("closing clears the vault and returns focus to the heart", async ({ page })
   await expect(panel(page)).toBeHidden();
   await expect(heart).toBeFocused();
   await expect(page.getByTestId("vault-content")).toHaveCount(0);
-  await heart.click();
+  await page.keyboard.press("Enter");
   await expect(field(page)).toBeVisible();
   await expect(page.getByTestId("vault-content")).toHaveCount(0);
 });

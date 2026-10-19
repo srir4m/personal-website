@@ -33,6 +33,9 @@ function Site() {
   useEffect(() => {
     document.documentElement.dataset.motion = motion;
   }, [motion]);
+  useEffect(() => {
+    if (import.meta.env.DEV) document.documentElement.dataset.dev = "";
+  }, []);
   return (
     <>
       <a

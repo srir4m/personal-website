@@ -706,8 +706,8 @@ html.lenis body {
 
 /* The figure fills up to 85% of the viewport height (PRD Act 5; 70% on phones). */
 .vitruvian-stage {
-  width: min(85dvh, 94vw);
-  height: min(85dvh, 94vw);
+  width: min(80dvh, 94vw);
+  height: min(80dvh, 94vw);
   overflow: visible;
   color: var(--ink);
 }
@@ -800,4 +800,208 @@ html.lenis body {
 }
 .editor-point--current {
   fill: var(--sanguine);
+}
+
+/* ---- Act 5 body map ------------------------------------------------------------ */
+
+.body-map {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+/* Same width as Act 4's stage, so the figure doesn't move between the acts. */
+.body-frame {
+  position: relative;
+  width: min(80dvh, 94vw);
+}
+@media (max-width: 767px) {
+  .body-frame {
+    width: min(70dvh, 94vw);
+  }
+}
+.body-figure {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  color: var(--ink);
+}
+
+.region {
+  outline: none;
+  cursor: pointer;
+}
+.region-shape {
+  fill: transparent;
+  stroke: transparent;
+  stroke-width: 1px;
+  vector-effect: non-scaling-stroke;
+  transition: stroke 150ms ease-out;
+}
+.region:hover .region-shape,
+.region:focus-visible .region-shape {
+  stroke: var(--sanguine);
+  stroke-width: 1.5px;
+}
+.region:focus-visible .region-shape {
+  stroke: var(--hud-cyan);
+  stroke-width: 2px;
+}
+.region[data-dormant] {
+  pointer-events: none;
+  cursor: default;
+}
+/* Dev builds outline dormant regions in amber, so the owner sees what needs content (PRD §6.3). */
+[data-dev] .region[data-dormant] .region-shape {
+  stroke: var(--hud-amber);
+  stroke-width: 1.5px;
+  stroke-dasharray: 5 4;
+}
+/* Phones: widen every region's hit area to at least 44 px (PRD §10.2). */
+@media (max-width: 767px) {
+  .region-shape {
+    stroke-width: 22px;
+    stroke-linejoin: round;
+  }
+  .region:hover .region-shape,
+  .region:focus-visible .region-shape {
+    stroke: color-mix(in srgb, var(--sanguine) 25%, transparent);
+    stroke-width: 22px;
+  }
+}
+
+.region-hatch-line {
+  stroke: var(--sanguine);
+  stroke-width: 2.4;
+  stroke-dasharray: 12 8;
+}
+.region-hatch-line--faint {
+  opacity: 0.55;
+}
+.region-veil {
+  fill: var(--parchment);
+  opacity: 0.35;
+  pointer-events: none;
+}
+.pose-mask {
+  transition: opacity 600ms ease-in-out;
+}
+[data-motion="calm"] .pose-mask {
+  transition-duration: 0ms;
+}
+
+.region-leader {
+  pointer-events: none;
+}
+.region-leader path {
+  fill: none;
+  stroke: var(--hud-cyan);
+  stroke-width: 1px;
+  vector-effect: non-scaling-stroke;
+}
+.region-leader rect {
+  fill: var(--hud-cyan);
+}
+.region-label {
+  position: absolute;
+  min-width: 10rem;
+  padding: 0.6rem 0.85rem;
+  transform: translateY(-50%);
+  pointer-events: none;
+  animation: hud-scan 140ms steps(2, end);
+}
+.region-label[data-side="left"] {
+  transform: translate(-100%, -50%);
+}
+@keyframes hud-scan {
+  0% { opacity: 0.6; }
+  50% { opacity: 0.2; }
+  100% { opacity: 1; }
+}
+@media (max-width: 767px) {
+  .region-leader {
+    display: none;
+  }
+  .region-label,
+  .region-label[data-side="left"] {
+    top: -0.75rem !important;
+    left: 50% !important;
+    transform: translate(-50%, -100%);
+  }
+}
+
+.pose-toggle {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--ink);
+  background: var(--parchment-deep);
+}
+.pose-toggle__option {
+  position: relative;
+  z-index: 1;
+  min-width: 7.5rem;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 300ms ease-out;
+}
+.pose-toggle__option input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  cursor: pointer;
+}
+.pose-toggle__option:has(input:checked) {
+  color: var(--parchment);
+}
+.pose-toggle__option:has(input:focus-visible) {
+  outline: 2px solid var(--hud-cyan);
+  outline-offset: 2px;
+}
+.pose-toggle__thumb {
+  position: absolute;
+  inset: 2px auto 2px 2px;
+  width: calc(50% - 2px);
+  background: var(--ink);
+  transition: transform 300ms cubic-bezier(0.33, 1, 0.68, 1);
+}
+.pose-toggle[data-mode="reaching"] .pose-toggle__thumb {
+  transform: translateX(100%);
+}
+
+.codex-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+.codex-item {
+  padding-bottom: 1.1rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--sepia) 40%, transparent);
+}
+.codex-badge {
+  flex: none;
+  padding: 0.05rem 0.45rem;
+  background: var(--ink);
+  color: var(--hud-amber);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+.codex-link {
+  display: inline-block;
+  margin-top: 0.5rem;
+  color: var(--sanguine);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }

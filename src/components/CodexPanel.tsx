@@ -7,7 +7,7 @@ type Props = {
   label: string;
   theme: string;
   /** Focus returns here when the panel closes (PRD Act 5). */
-  returnFocus?: React.RefObject<HTMLElement | null>;
+  returnFocus?: React.RefObject<HTMLElement | SVGElement | null>;
   children: ReactNode;
 };
 
@@ -37,6 +37,21 @@ export function CodexPanel({ open, onClose, label, theme, returnFocus, children 
         returnFocus?.current?.focus();
       }}
       onClick={(event) => event.target === ref.current && ref.current?.close()}
+      onKeyDown={(event) => {
+        // A modal dialog lets Tab leave for the browser's own UI; keep it cycling inside (PRD Act 5).
+        if (event.key !== "Tab" || !ref.current) return;
+        const focusable = [...ref.current.querySelectorAll<HTMLElement>("a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex='-1'])")];
+        if (!focusable.length) return;
+        const first = focusable[0]!;
+        const last = focusable.at(-1)!;
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }}
     >
       {open && (
         <div className="codex-panel__body">
