@@ -8,7 +8,8 @@ const executablePath = process.env.PW_CHROMIUM_PATH ?? (existsSync(localChromium
 export default defineConfig({
   testDir: "tests/e2e",
   fullyParallel: true,
-  reporter: "list",
+  // In CI, the GitHub reporter turns each failure into an annotation on the run.
+  reporter: process.env.CI ? [["github"], ["list"]] : "list",
   use: {
     baseURL: "http://localhost:4173",
     // SwiftShader gives headless Chromium a software WebGL, so the globe really renders.
