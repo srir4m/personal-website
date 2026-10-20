@@ -47,9 +47,24 @@ export const SiteContentSchema = z.object({
     tagline: z.string().nullable(),
     /** The About section's text; blank lines separate paragraphs. */
     intro: z.string().nullable(),
-    /** The owner's area at city or metro precision only (PRD v1.1 §5): never a point or address. */
+    /**
+     * The owner's area at city or metro precision (PRD v1.1 §5): the globe's target, the
+     * descent's metro ring, and the "Based in" label.
+     */
     area: z
-      .object({ label: z.string(), lat: z.number().min(-90).max(90), lng: z.number().min(-180).max(180) })
+      .object({
+        label: z.string(),
+        lat: z.number().min(-90).max(90),
+        lng: z.number().min(-180).max(180),
+        /**
+         * Where the descent's street-level dive lands (owner's choice, 2026-10-20). Never
+         * labelled on the page; null ends the descent on the metro ring.
+         */
+        street: z
+          .object({ note: z.string().optional(), lat: z.number().min(-90).max(90), lng: z.number().min(-180).max(180) })
+          .nullable()
+          .optional(),
+      })
       .nullable(),
     contact: z.object({
       email: z.email().nullable(),

@@ -77,7 +77,34 @@ function layersFor(source: keyof TileSources): LayerSpecification[] {
   ];
 }
 
-export function buildStyle(tiles: TileSources, area: [number, number][]): StyleSpecification {
+/** The street address's ring, which becomes the Vitruvian circle, when there is one. */
+export type StreetMarks = { ring: [number, number][] };
+
+export function buildStyle(tiles: TileSources, area: [number, number][], street: StreetMarks | null): StyleSpecification {
+  const streetLayers: StyleSpecification["layers"] = street
+    ? [
+        // The building at the address, raised in red chalk among the parchment blocks.
+        // Its footprint is found at runtime (see MapView), so the source starts empty.
+        {
+          id: "street-building",
+          type: "fill-extrusion",
+          source: "street-building",
+          paint: {
+            "fill-extrusion-color": C.sanguine,
+            "fill-extrusion-height": ["+", ["coalesce", ["get", "height"], 12], 0.6],
+            "fill-extrusion-base": ["coalesce", ["get", "min_height"], 0],
+            "fill-extrusion-opacity": 0,
+            "fill-extrusion-vertical-gradient": true,
+          },
+        },
+        {
+          id: "street-rim",
+          type: "line",
+          source: "street-ring",
+          paint: { "line-color": C.sanguine, "line-width": 1.5, "line-dasharray": [4, 3], "line-opacity": 0 },
+        },
+      ]
+    : [];
   return {
     version: 8,
     sources: {
@@ -88,6 +115,13 @@ export function buildStyle(tiles: TileSources, area: [number, number][]): StyleS
         type: "geojson",
         data: { type: "Feature", properties: {}, geometry: { type: "Polygon", coordinates: [area] } },
       },
+      ...(street && {
+        "street-ring": {
+          type: "geojson",
+          data: { type: "Feature", properties: {}, geometry: { type: "LineString", coordinates: street.ring } },
+        },
+        "street-building": { type: "geojson", data: { type: "FeatureCollection", features: [] } },
+      }),
     },
     layers: [
       { id: "background", type: "background", paint: { "background-color": C.water } },
@@ -117,6 +151,7 @@ export function buildStyle(tiles: TileSources, area: [number, number][]): StyleS
           "fill-extrusion-vertical-gradient": true,
         },
       },
+      ...streetLayers,
     ],
   };
 }

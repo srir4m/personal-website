@@ -31,8 +31,9 @@ export const ACTS = [
   { id: "boot", hash: "", name: "Home", share: 4, settle: 0 },
   // The globe stays under the map until the map has taken over, then fades.
   { id: "globe", hash: "globe", name: "Location", share: 12, settle: 0.5, exitLag: 0.08 },
-  // Settles on the metro view, with the owner's area ringed.
-  { id: "descent", hash: "descent", name: "Descent", share: 9, settle: 0.75, enterLead: 0.1 },
+  // Rings the metro area, dives to street level among the 3D buildings, then rises over the
+  // address. Settles low among the buildings.
+  { id: "descent", hash: "descent", name: "Descent", share: 18, settle: 0.77, enterLead: 0.1 },
   // Becoming takes over the map's ring where it is, so it dissolves over the map.
   { id: "becoming", hash: "becoming", name: "Becoming", share: 9, settle: 0.95, enterLead: 0.08 },
   // Becoming ends on the whole figure the tour opens on: dissolve.

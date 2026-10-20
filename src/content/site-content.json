@@ -7,7 +7,12 @@
     "area": {
       "label": "New York area",
       "lat": 40.71,
-      "lng": -74.01
+      "lng": -74.01,
+      "street": {
+        "note": "800 Willow Ave, Hoboken, NJ: the centre of its OpenStreetMap building footprint",
+        "lat": 40.74704,
+        "lng": -74.03207
+      }
     },
     "contact": {
       "email": "pankanti.sriram@gmail.com",

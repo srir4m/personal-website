@@ -1,12 +1,13 @@
 /**
- * The descent's camera path (issue #4, redesign #8): from the globe's handoff scale down
- * to the owner's area at metro scale, where the highlighted ring settles just outside the
- * Vitruvian circle's size. Becoming then shrinks that ring onto the circle: the world
- * narrows to the person. Zoom moves linearly in t, which is exponential in scale: a
- * constant perceived speed (PRD Act 2).
+ * The descent's camera path (issue #4, redesign #8, owner request 2026-10-20): from the
+ * globe's handoff scale down to the owner's metro area, ringed; then an Apple-Maps-style
+ * dive among the 3D buildings to a street address; then the camera rises to look straight
+ * down, with a ring around the address at the Vitruvian circle's size. Becoming shrinks
+ * that ring onto the circle: the world narrows to the person. Zoom moves linearly in t,
+ * which is exponential in scale: a constant perceived speed (PRD Act 2).
  */
-export type Camera = { zoom: number; pitch: number; bearing: number };
-
+export type Camera = { zoom: number; pitch: number; bearing: number; center: LngLat };
+export type LngLat = { lng: number; lat: number };
 const METRES_PER_CSS_PX = 0.0254 / 96;
 /** Metres per pixel at zoom 0 at the equator, for MapLibre's 512 px tiles. */
 const MERCATOR_MPP_Z0 = 78271.517;
@@ -23,18 +24,27 @@ export function scaleForZoom(zoom: number, lat: number): number {
 
 /** Radius of the highlighted metro area, in km. */
 export const AREA_RADIUS_KM = 32;
+/** Radius of the ring around the street address that becomes the Vitruvian circle, in km. */
+export const STREET_RADIUS_KM = 0.16;
 /** At the end of the descent the ring is this much larger than the Vitruvian circle; Becoming shrinks it by the same. */
 export const RING_OVERSIZE = 1.15;
-/** How much the camera still drifts in while the ring holds, in zoom levels. */
-const DWELL_ZOOM = 0.35;
 
-/** The zoom at which a ring of AREA_RADIUS_KM is `radiusPx` on screen at `lat`. */
-export function zoomForRing(radiusPx: number, lat: number): number {
-  return zoomForScale((AREA_RADIUS_KM * 1000) / (radiusPx * METRES_PER_CSS_PX), lat);
+/** The zoom at which a ring of `radiusKm` is `radiusPx` on screen at `lat`. */
+export function zoomForRing(radiusPx: number, lat: number, radiusKm = AREA_RADIUS_KM): number {
+  return zoomForScale((radiusKm * 1000) / (radiusPx * METRES_PER_CSS_PX), lat);
 }
 
-/** Act progress marks: the metro view arrives, then holds until Becoming takes over. */
-export const PHASES = { arrive: 0.55 } as const;
+/** The street-level view: zoom, tilt, and the heading (east-north-east, across the Hudson to Midtown). */
+export const STREET = { zoom: 16.3, pitch: 62, bearing: 64 } as const;
+
+/**
+ * The street-level tiles (public/assets/map/city.pmtiles) cover this box; the address
+ * must be inside it. Keep in step with .github/workflows/build-map-tiles.yml.
+ */
+export const CITY_BOUNDS = { west: -74.05, south: 40.728, east: -73.975, north: 40.775 } as const;
+
+/** Act progress marks: arrive over the metro area, dive to the street, hold, rise over the address. */
+export const PHASES = { arrive: 0.26, dive: 0.36, street: 0.72, rise: 0.82 } as const;
 
 const clamp01 = (x: number) => Math.min(1, Math.max(0, x));
 const smoothstep = (a: number, b: number, x: number) => {
@@ -43,16 +53,59 @@ const smoothstep = (a: number, b: number, x: number) => {
 };
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
-/** Zoom from `startZoom` (the globe's) to `endZoom` (the ring's size), flat and north-up. */
-export function cameraAt(t: number, startZoom: number, endZoom: number): Camera {
-  const metro = endZoom - DWELL_ZOOM;
-  const zoom = t < PHASES.arrive ? lerp(startZoom, metro, t / PHASES.arrive) : lerp(metro, endZoom, (t - PHASES.arrive) / (1 - PHASES.arrive));
-  return { zoom, pitch: 0, bearing: 0 };
+/** How much the camera still drifts in while it holds over the metro area, in zoom levels. */
+const METRO_DRIFT = 0.25;
+
+/**
+ * The camera at act progress `t`.
+ * - `startZoom`: the globe's scale at the handoff.
+ * - `metroZoom`: where the metro ring is the same size on screen as the final ring.
+ * - `endZoom`: the address's ring at RING_OVERSIZE × the Vitruvian circle.
+ * Without a `street`, the descent ends on the metro ring, flat and north-up.
+ */
+export function cameraAt(t: number, path: { startZoom: number; metroZoom: number; endZoom: number; area: LngLat; street: LngLat | null }): Camera {
+  const { startZoom, metroZoom, area, street } = path;
+  const { arrive, dive, street: atStreet, rise } = PHASES;
+  if (!street) {
+    const zoom = t < arrive ? lerp(startZoom, metroZoom - METRO_DRIFT, t / arrive) : lerp(metroZoom - METRO_DRIFT, metroZoom, (t - arrive) / (1 - arrive));
+    return { zoom, pitch: 0, bearing: 0, center: area };
+  }
+  let zoom: number;
+  if (t < arrive) zoom = lerp(startZoom, metroZoom - METRO_DRIFT, t / arrive);
+  else if (t < dive) zoom = lerp(metroZoom - METRO_DRIFT, metroZoom, (t - arrive) / (dive - arrive));
+  // The dive eases out of the metro hold and into the street, like a map app's fly-to.
+  else if (t < atStreet) zoom = lerp(metroZoom, STREET.zoom, smoothstep(dive, atStreet, t));
+  else if (t < rise) zoom = lerp(STREET.zoom, STREET.zoom + 0.15, (t - atStreet) / (rise - atStreet));
+  else zoom = lerp(STREET.zoom + 0.15, path.endZoom, smoothstep(rise, 1, t));
+  // The address glides to the centre of the screen at a steady on-screen speed: the
+  // geographic offset shrinks with the scale as well as with the dive's progress.
+  const glide = t < dive ? 1 : 2 ** (metroZoom - zoom) * (1 - smoothstep(dive, atStreet, t));
+  const center = { lng: street.lng + (area.lng - street.lng) * glide, lat: street.lat + (area.lat - street.lat) * glide };
+  const tilt = smoothstep(dive + 0.12, atStreet, t) * (1 - smoothstep(rise, 0.97, t));
+  return {
+    zoom,
+    pitch: STREET.pitch * tilt,
+    // The heading turns on the way down and stays: a circle looks the same either way up.
+    // "+ 0" turns -0 into 0 at the start of the path.
+    bearing: STREET.bearing * smoothstep(dive + 0.08, rise, t) + 0,
+    center,
+  };
 }
 
-/** Opacity of the area highlight: it rises as the metro view arrives, then holds for Becoming. */
-export function highlightAt(t: number): number {
-  return smoothstep(0.25, PHASES.arrive, t);
+/** Opacity of the metro area's ring: it rises as the metro view arrives and fades as the dive begins. */
+export function highlightAt(t: number, hasStreet = true): number {
+  const rising = smoothstep(0.12, PHASES.arrive, t);
+  return hasStreet ? rising * (1 - smoothstep(PHASES.dive, PHASES.dive + 0.1, t)) : rising;
+}
+
+/** Opacity of the address's building in red chalk: it lights as the camera tilts in, and stays. */
+export function buildingAt(t: number): number {
+  return smoothstep(PHASES.dive + 0.16, PHASES.street, t);
+}
+
+/** Opacity of the address's ring: it draws in as the camera rises to look straight down. */
+export function streetRingAt(t: number): number {
+  return smoothstep(PHASES.rise + 0.04, 0.96, t);
 }
 
 /** A polygon approximating a circle of `radiusKm` around a point, for the soft metro-area highlight. */
