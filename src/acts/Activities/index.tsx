@@ -1,12 +1,11 @@
-import { useLayoutEffect, useMemo, useRef, useState } from "react";
-import gsap from "gsap";
+import { useMemo, useRef, useState } from "react";
 import emblemFiles from "virtual:game-emblems";
 import { CodexPanel } from "../../components/CodexPanel";
 import { content } from "../../content";
 import { text } from "../../content/text";
 import { actIndex } from "../../stage/acts";
 import { useStage } from "../../stage/store";
-import { registerActTimeline, scrollToAct } from "../../stage/timeline";
+import { scrollToAct } from "../../stage/timeline";
 import type { ActProps } from "../registry";
 import { buildActivities, type ActivityCard } from "./activities";
 import { EmblemGlyph, Glyph } from "./Glyph";
@@ -32,24 +31,13 @@ function GameRow({ id, name, src, detail, story }: { id: string; name: string; s
 
 /**
  * Activities (PRD v1.1): what the owner does, as an index of cards. Each hobby card
- * opens its body-map region; Gaming opens its own panel with the games.
+ * opens its body-map region; Gaming opens its own panel with the games. The index
+ * arrives whole with the act's cross-fade, without a staggered reveal (issue #8).
  */
-export default function Activities({ index }: ActProps) {
-  const scope = useRef<HTMLDivElement>(null);
+export default function Activities(_: ActProps) {
   const gamingButton = useRef<HTMLButtonElement>(null);
   const [gamingOpen, setGamingOpen] = useState(false);
   const cards = useMemo(() => buildActivities(), []);
-
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ paused: true, defaults: { ease: "none" } });
-      tl.set({}, {}, 1);
-      tl.fromTo(".activities-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.2 }, 0);
-      tl.fromTo(".activity-card", { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.12, stagger: 0.035 }, 0.05);
-      registerActTimeline(index, tl);
-    }, scope);
-    return () => ctx.revert();
-  }, [index]);
 
   const open = (card: ActivityCard) => {
     if (!card.region) {
@@ -62,11 +50,11 @@ export default function Activities({ index }: ActProps) {
   };
 
   return (
-    <div ref={scope} className="activities bg-parchment text-ink">
+    <div className="activities bg-parchment text-ink">
       <div className="activities__page">
         <div className="activities__head">
           <p className="hud-label text-sepia">Activities</p>
-          <div className="activities-rule" aria-hidden="true" />
+          <div className="activities__rule" aria-hidden="true" />
         </div>
         {intro && <p className="activities__intro">{intro}</p>}
         <ul className="activities__grid">
