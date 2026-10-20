@@ -7,9 +7,11 @@
 - Do not redraw game logos; use files in `public/assets/games/` or neutral placeholder glyphs.
 - Track owner-input items, open questions, and later ideas as GitHub issues on srir4m/srir4m.github.io
   (`gh api repos/srir4m/srir4m.github.io/issues`). Reference them in milestone notes instead of re-listing.
-- The narrative follows PRD v1.1 (`docs/PRD-v1.1-draft.md`, owner decisions recorded there): name, About,
-  globe to the owner's area, the live-map descent, Activities, Becoming, body map, outro. The v1.0 campus zoom and
-  Squad room are gone.
+- The narrative is the owner-approved redesign (issue #8), which supersedes PRD v1.1's act list: one zoom from
+  the world into the person. Name and role over the globe, the globe to the owner's area, the map descent,
+  Becoming (the circle becomes the Vitruvian circle), the tour (`src/acts/Tour`, stops in `src/stage/tour.ts`:
+  the figure zooms to each region with its content beside it), the body map to explore, contact. The separate
+  About and Activities acts are gone; `#about` and `#activities` land on the tour.
 - The repo is the owner's GitHub Pages user site, `srir4m/srir4m.github.io` (it was renamed from `personal-website`),
   served at the root of https://srir4m.github.io/. Reference public assets through `import.meta.env.BASE_URL`,
   never a bare leading `/`, so preview builds with another base keep working. There is no server, so any

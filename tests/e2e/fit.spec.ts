@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 
-const ACTS = ["", "about", "activities", "body", "outro"];
+// The tour has its own fit check, stop by stop (tour.spec.ts).
+const ACTS = ["", "body", "outro"];
 // The smallest phones (short and narrow), short phones, a tablet, a small laptop.
 const SIZES = [
   [320, 568],

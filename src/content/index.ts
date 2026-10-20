@@ -1,4 +1,4 @@
-import raw from "./site-content.json";
+import raw from "./site-content.json" with { type: "json" };
 import type { SiteContent } from "./schema";
 
 /**

@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-const ACTS = ["", "about", "globe", "descent", "activities", "becoming", "body", "outro"];
+const ACTS = ["", "globe", "descent", "becoming", "profile", "body", "outro"];
 
 test("no act scrolls the page sideways", async ({ page }) => {
   for (const act of ACTS) {
@@ -65,6 +65,6 @@ test("the title is in the served HTML, so it paints before any JavaScript, and A
 });
 
 test("a deep link never shows the opening title", async ({ page }) => {
-  await page.goto("/#about");
+  await page.goto("/#profile");
   await expect(page.locator("#boot-title")).toHaveCount(0);
 });

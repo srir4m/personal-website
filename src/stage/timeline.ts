@@ -1,7 +1,7 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
-import { ACTS, ACT_RANGES, SCROLL_VIEWPORTS, actAt, actFades, settleProgress, type ActIndex } from "./acts";
+import { ACTS, ACT_RANGES, REST_POINTS, SCROLL_VIEWPORTS, actAt, actFades, restPointAt, settleProgress, type ActIndex } from "./acts";
 import { DURATION, EASE } from "./motion";
 import { useStage, writeProgress } from "./store";
 
@@ -94,8 +94,8 @@ export function startTimeline({ stage, layers, calm }: TimelineOptions): () => v
   gsap.ticker.lagSmoothing(0);
 
   // Full mode scrubs the timeline with scroll. Calm mode never scrubs: it snaps to each
-  // act's settled frame and cross-fades there.
-  const settlePoints = ACTS.map((_, i) => settleProgress(i));
+  // act's settled frame (or each tour stop's) and cross-fades there.
+  const settlePoints = REST_POINTS.map((p) => p.at);
   let calmTween: gsap.core.Tween | null = null;
   trigger = ScrollTrigger.create({
     trigger: stage,
@@ -108,14 +108,14 @@ export function startTimeline({ stage, layers, calm }: TimelineOptions): () => v
     invalidateOnRefresh: true,
     onUpdate: calm
       ? (self) => {
-          const target = settleProgress(actAt(self.progress));
+          const target = restPointAt(self.progress);
           if (calmTween?.vars.progress === target || master!.progress() === target) return;
           calmTween?.kill();
           calmTween = gsap.to(master!, { progress: target, duration: CALM_FADE, ease: EASE });
         }
       : undefined,
   });
-  if (calm) master.progress(settleProgress(actAt(trigger.progress)));
+  if (calm) master.progress(restPointAt(trigger.progress));
   applyScrollLock();
 
   let resizeTimer = 0;

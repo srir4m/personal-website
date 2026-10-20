@@ -1086,27 +1086,8 @@ html.lenis body {
   color: var(--ink);
 }
 
-/* ---- About -------------------------------------------------------------------- */
+/* ---- Section titles ----------------------------------------------------------- */
 
-.about {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  padding-inline: max(1.25rem, env(safe-area-inset-left, 0px)) max(1.25rem, env(safe-area-inset-right, 0px));
-  overflow: hidden;
-}
-.about__page {
-  display: grid;
-  grid-template-columns: minmax(0, 40rem) 11rem;
-  grid-template-areas:
-    "head head"
-    "body margin";
-  column-gap: 3rem;
-  row-gap: 1.75rem;
-  max-width: 56rem;
-}
 /* A section's visible title: the display face over a hairline that runs to the margin. */
 .section-head {
   display: flex;
@@ -1124,89 +1105,6 @@ html.lenis body {
   height: 1px;
   background: color-mix(in srgb, var(--sepia) 70%, transparent);
 }
-.about__head {
-  grid-area: head;
-}
-.about__body {
-  grid-area: body;
-  display: flex;
-  flex-direction: column;
-  gap: 1.1rem;
-  font-family: var(--font-display);
-  /* Scales with the shorter of width and height, so the page always fits one screen. */
-  font-size: clamp(0.95rem, min(1.05rem + 0.45vw, 2.55dvh), 1.45rem);
-  line-height: 1.55;
-  text-wrap: pretty;
-}
-/* A red-chalk initial, as in a codex page. */
-.about__lead::first-letter {
-  float: left;
-  margin: 0.08em 0.12em 0 0;
-  font-size: 3.6em;
-  line-height: 0.82;
-  font-weight: 600;
-  color: var(--sanguine);
-}
-.about__margin {
-  grid-area: margin;
-  align-self: start;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-.about__note {
-  padding-left: 1rem;
-  border-left: 1px solid color-mix(in srgb, var(--sepia) 60%, transparent);
-}
-.about__rank {
-  display: block;
-  margin-top: 0;
-  font-size: 0.85rem;
-  color: var(--sanguine);
-}
-@media (max-width: 767px) {
-  .about__margin {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-}
-@media (max-width: 767px) {
-  .about__page {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas:
-      "head"
-      "body"
-      "margin";
-    row-gap: 1.25rem;
-  }
-  .about__body {
-    font-size: clamp(0.92rem, min(2.3dvh, 4.6vw), 1.1rem);
-    line-height: 1.5;
-  }
-}
-/* Short or narrow phones (an iPhone SE and smaller): tighter rhythm so the page fits one screen. */
-@media (max-width: 767px) and (max-height: 700px), (max-width: 340px) {
-  .about__page {
-    row-gap: 0.75rem;
-  }
-  .about__body {
-    gap: 0.7rem;
-    line-height: 1.42;
-  }
-  .about__margin {
-    gap: 1rem;
-  }
-  .about .section-title {
-    font-size: 1.75rem;
-  }
-}
-/* The smallest phones drop the margin notes; the globe and Activities carry the same facts. */
-@media (max-width: 767px) and (max-height: 600px) {
-  .about__margin {
-    display: none;
-  }
-}
-
 /* ---- Descent map ---------------------------------------------------------------- */
 
 .descent-map {
@@ -1256,120 +1154,7 @@ html.lenis body {
   }
 }
 
-/* ---- Activities ------------------------------------------------------------------ */
-
-.activities {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  padding-inline: max(4.5rem, env(safe-area-inset-left, 0px)) max(1.25rem, env(safe-area-inset-right, 0px));
-  overflow: hidden;
-}
-.activities__page {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  width: min(54rem, 100%);
-}
-.activities__intro {
-  max-width: 40rem;
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-}
-/* An index, not a wall of boxes: each entry sits under a hairline, like a contents page. */
-.activities__grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  column-gap: 2rem;
-}
-.activity-card__button {
-  display: grid;
-  grid-template-columns: 2.25rem minmax(0, 1fr);
-  grid-template-rows: auto auto auto;
-  column-gap: 0.85rem;
-  align-items: start;
-  width: 100%;
-  height: 100%;
-  padding: 0.9rem 0.25rem 1.05rem;
-  border-top: 1px solid color-mix(in srgb, var(--sepia) 45%, transparent);
-  text-align: left;
-  cursor: pointer;
-  transition:
-    border-color var(--dur-quick) var(--ease),
-    color var(--dur-quick) var(--ease);
-}
-.activity-card__button:hover {
-  border-color: var(--sanguine);
-}
-.activity-card__button:hover .activity-card__title {
-  color: var(--sanguine);
-}
-.activity-card__button .activity-glyph {
-  grid-row: 1 / span 3;
-}
-.activity-card__title {
-  font-family: var(--font-display);
-  font-size: 1.4rem;
-  line-height: 1.15;
-}
-.activity-card__subtitle {
-  font-family: var(--font-display);
-  font-size: 1rem;
-  font-style: italic;
-  line-height: 1.3;
-  color: color-mix(in srgb, var(--ink) 80%, transparent);
-}
-.activity-glyph,
-.emblem-glyph {
-  width: 2.25rem;
-  height: 2.25rem;
-  fill: none;
-  stroke: var(--ink);
-  stroke-width: 1.4;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-.activity-card__button:hover .activity-glyph {
-  stroke: var(--sanguine);
-}
-@media (max-width: 767px) {
-  .activities {
-    align-items: flex-start;
-    padding: 3.25rem max(16px, env(safe-area-inset-right, 0px)) 1rem max(16px, env(safe-area-inset-left, 0px));
-  }
-  .activities__page {
-    gap: 1rem;
-  }
-  .activities__grid {
-    grid-template-columns: 1fr 1fr;
-    column-gap: 1rem;
-  }
-  /* An odd card out spans the row rather than sitting alone. */
-  .activity-card:last-child:nth-child(odd) {
-    grid-column: 1 / -1;
-  }
-  .activity-card__button {
-    grid-template-columns: 1.6rem minmax(0, 1fr);
-    column-gap: 0.5rem;
-    padding: 0.55rem 0.1rem 0.65rem;
-  }
-  .activity-card__button .activity-glyph {
-    width: 1.6rem;
-    height: 1.6rem;
-  }
-  .activity-card__title {
-    font-size: 1.1rem;
-  }
-  .activity-card__subtitle {
-    font-size: 0.85rem;
-  }
-  .activity-card__button .hud-label {
-    font-size: 0.75rem;
-    letter-spacing: 0.06em;
-  }
-}
+/* ---- Games (the tour's Play stop) ---------------------------------------------- */
 
 .game-emblems {
   display: grid;
@@ -1426,19 +1211,247 @@ html.lenis body {
   margin-top: 0.5rem;
 }
 
-/* Kept last so it wins over each section's own padding. Tablets and small laptops: clear the rail's labels on the left. */
-@media (min-width: 768px) and (max-width: 1279px) {
-  .about,
-  .activities {
-    padding-left: 9rem;
+/* Engraved glyphs: the neutral placeholder for a game without its logo file. */
+.activity-glyph,
+.emblem-glyph {
+  width: 2.25rem;
+  height: 2.25rem;
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ---- Tour (redesign, issue #8) ------------------------------------------------------ */
+
+.tour {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+/*
+ * The figure sits exactly where Becoming leaves it (centred, --figure-size), then steps
+ * aside for the text as --aside goes 0 → 1: to the left on wide screens, up and smaller
+ * on narrow ones. The drawing is clipped to its frame, so a close-up reads as a plate.
+ */
+.tour-figure {
+  --aside: 0;
+  --zoomed: 0;
+  --aside-x: -22vw;
+  --aside-y: 0px;
+  --aside-scale: 0.8;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--figure-size);
+  height: var(--figure-size);
+  translate: -50% -50%;
+  transform: translate(calc(var(--aside) * var(--aside-x)), calc(var(--aside) * var(--aside-y)))
+    scale(calc(1 - var(--aside) * (1 - var(--aside-scale))));
+}
+.tour-figure::after {
+  /* A hairline plate frame once the camera is in close. */
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid color-mix(in srgb, var(--ink) 35%, transparent);
+  opacity: var(--zoomed);
+  pointer-events: none;
+}
+.tour-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  color: var(--ink);
+}
+.tour-hatch {
+  stroke: var(--sanguine);
+  stroke-width: 2;
+  opacity: 0.55;
+}
+.tour-region polygon {
+  stroke: var(--sanguine);
+  stroke-width: 1.5px;
+  vector-effect: non-scaling-stroke;
+}
+
+.tour-column {
+  position: absolute;
+  top: 50%;
+  left: 54vw;
+  width: min(34rem, 40vw);
+  height: min(46rem, calc(100dvh - 7rem));
+  translate: 0 -50%;
+}
+.tour-stop {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.9rem;
+}
+.tour-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sepia);
+}
+.tour-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 1.4rem + 1.4vw, 2.75rem);
+  font-weight: 600;
+  line-height: 1.05;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--sepia) 60%, transparent);
+}
+.tour-intro {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  font-family: var(--font-display);
+  font-size: clamp(1rem, min(0.95rem + 0.35vw, 2.3dvh), 1.3rem);
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+.tour-items {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.5rem, 1.6dvh, 1rem);
+}
+.tour-item__title {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 1rem + 0.4vw, 1.4rem);
+  font-weight: 600;
+  line-height: 1.2;
+}
+.tour-item__title a {
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--sepia) 50%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition: color var(--dur-quick) var(--ease);
+}
+.tour-item__title a:hover {
+  color: var(--sanguine);
+}
+.tour-item__sub {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: var(--sepia);
+}
+.tour-item__body {
+  margin-top: 0.15rem;
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 0.95rem + 0.2vw, 1.12rem);
+  line-height: 1.4;
+  color: color-mix(in srgb, var(--ink) 85%, transparent);
+}
+.tour-games {
+  margin-top: 0.5rem;
+}
+.tour-vault {
+  align-self: flex-start;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* Narrow screens: the figure moves up and shrinks; the text reads below it. */
+@media (max-width: 899px) {
+  .tour-figure {
+    --aside-x: 0px;
+    --aside-scale: 0.42;
+    --aside-y: calc(-50dvh + var(--figure-size) * 0.21 + 3.25rem);
+  }
+  .tour-column {
+    top: calc(var(--figure-size) * 0.42 + 4.5rem);
+    bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+    left: max(1rem, env(safe-area-inset-left, 0px));
+    right: max(1rem, env(safe-area-inset-right, 0px));
+    width: auto;
+    height: auto;
+    translate: none;
+  }
+  .tour-stop {
+    justify-content: flex-start;
+    gap: 0.6rem;
+  }
+  .tour-title {
+    padding-bottom: 0.6rem;
+  }
+  .tour-items {
+    gap: 0.55rem;
+  }
+  .tour-item__title {
+    font-size: 1.05rem;
+  }
+  .tour-item__body {
+    font-size: 0.92rem;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 }
-/* Short phones: the index drops each entry's category line to fit one screen. */
-@media (max-width: 767px) and (max-height: 660px) {
-  .activity-card__button .hud-label {
-    display: none;
+/* Tablets and small laptops: clear the rail's labels on the left. */
+@media (min-width: 768px) and (max-width: 899px) {
+  .tour-column {
+    left: 9rem;
   }
-  .activity-card__button {
-    padding-block: 0.45rem 0.5rem;
+}
+@media (max-width: 899px) {
+  .tour-games .game-emblem {
+    padding: 0.5rem 0;
   }
+  .tour-games .game-emblem__mark {
+    height: 1.35rem;
+  }
+}
+/* The shortest phones: a smaller thumbnail and tighter text, so every stop still fits. */
+@media (max-width: 899px) and (max-height: 620px) {
+  .tour-figure {
+    --aside-scale: 0.3;
+    --aside-y: calc(-50dvh + var(--figure-size) * 0.15 + 3rem);
+  }
+  .tour-column {
+    top: calc(var(--figure-size) * 0.3 + 3.75rem);
+  }
+  .tour-title {
+    font-size: 1.6rem;
+  }
+  .tour-intro {
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+  .tour-games .game-emblem {
+    padding: 0.35rem 0;
+  }
+}
+.tour-note {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: var(--sepia);
+}
+
+/* The opening's role line: what the owner does, under the name and tagline. */
+.boot-role {
+  margin-top: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sepia);
+  text-wrap: balance;
 }
