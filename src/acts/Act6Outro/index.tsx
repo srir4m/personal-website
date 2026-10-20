@@ -95,7 +95,12 @@ export default function Act6Outro({ index }: ActProps) {
 
       <div ref={links} className="outro-links">
         {contacts.length > 0 && (
-          <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2">
+          <p className="section-title" aria-hidden="true">
+            Contact
+          </p>
+        )}
+        {contacts.length > 0 && (
+          <ul className="outro-list">
             {contacts.map((link) => (
               <li key={link.label}>
                 <a href={link.href} target="_blank" rel="noopener" className="outro-link">
@@ -107,13 +112,13 @@ export default function Act6Outro({ index }: ActProps) {
         )}
         <button
           type="button"
-          className="hud-chip font-mono text-xs tracking-[0.25em] uppercase"
+          className="outro-top"
           onClick={() => {
             useStage.setState({ openPanel: null });
             scrollToAct(0);
           }}
         >
-          ↑ Back to top
+          Back to top ↑
         </button>
       </div>
     </div>

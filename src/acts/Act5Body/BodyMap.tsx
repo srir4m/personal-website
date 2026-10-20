@@ -179,6 +179,8 @@ export function BodyMap() {
         )}
       </div>
 
+      <p className="body-hint">Select a part of the figure to read more.</p>
+
       <PoseToggle mode={mode} onChange={setMode} />
 
       <CodexPanel
