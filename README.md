@@ -13,7 +13,6 @@ npm test             # unit tests (Vitest)
 npm run test:e2e     # smoke tests (Playwright; builds with the fixture vault and serves it)
 npm run vault:encrypt  # encrypt vault/vault.md into src/content/vault.enc.json
 npm run globe:data   # regenerate public/assets/globe/* from Natural Earth (outputs are committed)
-npm run plates:placeholder  # regenerate the placeholder plates in public/assets/plates/
 ```
 
 ## Editing content
@@ -28,23 +27,14 @@ You never need to touch component code to change it.
   `npm run dev` and `npm run build` with an error that names the field.
 - Open `http://localhost:5173/?status=1` in dev to see every field still `null`, `TODO`, or draft.
 
-## Replacing the descent plates
+## The map
 
-The zoom plates live in `public/assets/plates/p1.svg` … `p5.svg` (16:9, SVG preferred, under 400 KB each).
-Each plate's `childRect` (where the next plate sits) and P1's `anchor` (Castle Point, for the
-globe handoff) are set in `src/acts/Act2Descent/plates.ts`; keep them in step with the art.
-
-## Deploying
-
-The site is hosted on **GitHub Pages**. This repo is the owner's user site, `srir4m.github.io`, so
-every push to `main` builds and publishes it at https://srir4m.github.io/ (`.github/workflows/pages.yml`).
-Asset URLs go through `import.meta.env.BASE_URL`, so a `BASE_PATH` override still works.
-
-One-time setup: in the repo's **Settings → Pages**, set **Source** to **GitHub Actions**.
-- **CI** (`.github/workflows/ci.yml`) runs the build, the unit tests and the e2e tests on every push and pull request.
-
-The site is unlisted rather than secret: every page carries `<meta name="robots" content="noindex, nofollow">`,
-and `robots.txt` at the root disallows all crawlers. No analytics, cookies, or third-party requests.
+The descent is a live vector map: MapLibre over self-hosted PMTiles in `public/assets/map/`, cut from the
+Protomaps OpenStreetMap basemap by the **Build map tiles** workflow (run it from the Actions tab to refresh).
+There are three extracts: the world at low zoom, the New York region, and a small street-zoom city patch. The style
+(`src/acts/Descent/style.ts`) is drawn in the site's palette, with no labels, so no font files are fetched.
+The camera path is in `src/acts/Descent/camera.ts`. The highlighted area comes from `owner.area` in the
+content, at city or metro precision only. Map data © OpenStreetMap contributors.
 
 ## Open items
 
@@ -103,6 +93,7 @@ tests/e2e           Playwright
 | M3 Squad: silhouettes, emblems, cards | on hold, see #5 |
 | M4 Vitruvian pipeline, region editor, Becoming transition | ✅ v0.5.0 (placeholder figure, see #6) |
 | M5 Body map: regions, panels, Now / Reaching, dormant regions | ✅ v0.7.0 |
+| M2b Live-map descent to the owner's area (replaces the plates) | ✅ v0.10.0 |
 | M6 Heart vault (script, UI, tests) | ✅ v0.4.0 |
 | M7 Outro, Calm mode, no-WebGL fallback, responsive and performance passes | ✅ v0.8.0 (fps to confirm on real hardware) |
 | M8 Credits, noindex, GitHub Pages deploy | ✅ v0.6.0 |

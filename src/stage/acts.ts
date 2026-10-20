@@ -23,7 +23,8 @@ export const ACTS = [
   { id: "about", hash: "about", name: "About", share: 10, settle: 0.6 },
   // The globe stays under P1 until the plate has taken over, then fades (PRD Act 2 handoff).
   { id: "globe", hash: "globe", name: "Globe", share: 15, settle: 0.5, exitLag: 0.08 },
-  { id: "descent", hash: "descent", name: "Descent", share: 20, settle: 0.5, enterLead: 0.1 },
+  // Settles on the metro view, with the owner's area highlighted.
+  { id: "descent", hash: "descent", name: "Descent", share: 20, settle: 0.42, enterLead: 0.1 },
   { id: "squad", hash: "squad", name: "Squad", share: 15, settle: 0.5 },
   { id: "becoming", hash: "becoming", name: "Becoming", share: 15, settle: 0.95 },
   { id: "body", hash: "body", name: "Body map", share: 30, settle: 0.1 },

@@ -22,8 +22,8 @@ test.describe("Calm mode (prefers-reduced-motion)", () => {
     }, GLOBE.start + (GLOBE.end - GLOBE.start) * 0.2);
     await page.evaluate((top) => window.scrollTo(0, top), y);
     await expect(page.locator("[data-active-act]")).toHaveAttribute("data-active-act", "globe");
-    // The education card only shows from the middle of the act, so seeing it proves the settle.
-    await expect(page.locator(".edu-card")).toBeVisible();
+    // The area card only shows from the middle of the act, so seeing it proves the settle.
+    await expect(page.locator(".globe-card")).toBeVisible();
   });
 
   test("the outro shows its settled frame at once", async ({ page }) => {

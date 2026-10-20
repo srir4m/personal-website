@@ -16,26 +16,27 @@ test("boot holds scrolling until the globe is ready, then shows the scroll cue",
   expect(await page.evaluate(() => document.documentElement.style.overflow)).toBe("");
 });
 
-test("education card shows the school and coordinates", async ({ page }) => {
+test("the globe card shows the owner's area, coarsely", async ({ page }) => {
   await page.goto("/#globe");
-  const card = page.locator(".edu-card");
+  const card = page.locator(".globe-card");
   await expect(card).toBeVisible();
-  await expect(card).toContainText("Stevens Institute of Technology");
-  await expect(card).toContainText("40.745°N 74.024°W");
+  await expect(card).toContainText("New York area");
+  await expect(card).toContainText("40.7°N 74.0°W");
+  // Education moved to the body map (PRD v1.1, Q1).
+  await expect(card).not.toContainText("Stevens");
 });
 
-test("course log opens from the keyboard, newest term first", async ({ page }) => {
-  await page.goto("/#globe");
-  const button = page.getByRole("button", { name: "Course log" });
-  await expect(button).toBeVisible();
-  for (let i = 0; i < 25 && !(await button.evaluate((el) => el === document.activeElement)); i++) {
-    await page.keyboard.press("Tab");
-  }
-  await expect(button).toBeFocused();
+test("the course log lives in the Backbone panel, newest term first", async ({ page }) => {
+  await page.goto("/#body");
+  await page.getByRole("button", { name: /^Backbone/ }).focus();
+  await page.keyboard.press("Enter");
+  const panel = page.getByRole("dialog", { name: "Backbone" });
+  await expect(panel).toContainText("B.S. Computer Science");
+  const button = panel.getByRole("button", { name: "Course log" });
+  await button.focus();
   await page.keyboard.press("Enter");
   await expect(button).toHaveAttribute("aria-expanded", "true");
-  const terms = page.locator(".course-log h4");
-  await expect(terms.first()).toHaveText("2026 Fall");
-  await expect(page.locator(".course-log .hud-tag")).toHaveCount(6);
-  await expect(page.locator(".course-log")).toContainText("Theory of Computation");
+  await expect(panel.locator(".course-log h4").first()).toHaveText("2026 Fall");
+  await expect(panel.locator(".course-log .hud-tag")).toHaveCount(6);
+  await expect(panel.locator(".course-log")).toContainText("Systems Programming");
 });

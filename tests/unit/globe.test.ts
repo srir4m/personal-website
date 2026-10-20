@@ -2,7 +2,8 @@ import { describe, expect, it } from "vitest";
 import { Euler, Vector3 } from "three";
 import raw from "../../src/content/site-content.json";
 import { facingRotation, formatCoordinates, latLngToVector, vectorToLatLng } from "../../src/acts/Act1Globe/geo";
-import { groupByTerm } from "../../src/acts/Act1Globe/EducationCard";
+import { groupByTerm } from "../../src/components/CourseLog";
+import { formatCoarse } from "../../src/acts/Act1Globe/AreaCard";
 import { cameraDistanceFor } from "../../src/acts/Act1Globe/layout";
 import { project } from "../../src/acts/Act1Globe/ortho";
 import { subsolarPoint } from "../../src/acts/Act1Globe/sun";
@@ -31,6 +32,10 @@ describe("globe geometry", () => {
 
   it("formats the coordinate readout", () => {
     expect(formatCoordinates(lat, lng)).toBe("40.745°N 74.024°W");
+  });
+
+  it("keeps the area readout coarse (one decimal place, about 10 km)", () => {
+    expect(formatCoarse(raw.owner.area!.lat, raw.owner.area!.lng)).toBe("40.7°N 74.0°W");
   });
 
   it("sizes the globe's circle to the requested pixel radius", () => {

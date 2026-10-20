@@ -4,10 +4,11 @@ import { describe, expect, it } from "vitest";
 const kb = (path: string) => statSync(path).size / 1024;
 
 describe("asset budgets (PRD §10.3)", () => {
-  it("keeps every plate under 400 KB", () => {
-    for (const file of readdirSync("public/assets/plates")) {
-      expect(kb(`public/assets/plates/${file}`), file).toBeLessThan(400);
-    }
+  it("keeps the self-hosted map tiles within a GitHub Pages-friendly size", () => {
+    const total = readdirSync("public/assets/map")
+      .filter((file) => file.endsWith(".pmtiles"))
+      .reduce((sum, file) => sum + kb(`public/assets/map/${file}`), 0);
+    expect(total / 1024).toBeLessThan(60);
   });
 
   it("keeps the traced figure and globe data within reason", () => {

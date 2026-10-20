@@ -29,7 +29,8 @@ export function CreditsDialog({ open, onClose }: Props) {
           Leonardo da Vinci, <em>Vitruvian Man</em>, c. 1490 (public domain). Traced from a photograph by Luc
           Viatour, via Wikimedia Commons.
         </li>
-        <li>Map data: Natural Earth (public domain).</li>
+        <li>Globe data: Natural Earth (public domain).</li>
+        <li>Map data © OpenStreetMap contributors (ODbL), via the Protomaps basemap.</li>
         <li>Game names and logos are trademarks of their respective owners.</li>
         <li>Cormorant Garamond and IBM Plex Mono, SIL Open Font License 1.1.</li>
       </ul>

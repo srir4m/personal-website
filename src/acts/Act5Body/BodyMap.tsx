@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect, useId, useMemo, useRef, useState } from "react";
 import { CodexPanel } from "../../components/CodexPanel";
+import { CourseLog } from "../../components/CourseLog";
 import type { PoseMode } from "../../content/text";
 import { useStage } from "../../stage/store";
 import { FIGURE_MARKUP, FRAME, VIEWBOX, VITRUVIAN } from "../../vitruvian/figure";
@@ -197,7 +198,10 @@ export function BodyMap() {
             <Vault />
           </Suspense>
         ) : (
-          <RegionItems items={items} />
+          <>
+            <RegionItems items={items} />
+            {open?.id === "spine" && <CourseLog />}
+          </>
         )}
       </CodexPanel>
     </div>

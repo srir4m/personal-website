@@ -1,18 +1,17 @@
 import { Suspense, use, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import gsap from "gsap";
-import { content } from "../../content";
 import { useStage } from "../../stage/store";
 import { registerActTimeline } from "../../stage/timeline";
 import type { ActProps } from "../registry";
-import { EducationCard } from "./EducationCard";
+import { AreaCard, GLOBE_TARGET } from "./AreaCard";
 import { GlobeScene, type HudFrame } from "./GlobeScene";
 import { MarkerHud } from "./MarkerHud";
 import { graticulePaths } from "./ortho";
 import { hasWebGL, loadGlobeData, type GlobeData } from "./globeData";
 import { GLOBE_FOV } from "./layout";
 
-const { lat, lng } = content.education.location;
+const { lat, lng } = GLOBE_TARGET;
 const PHONE = "(max-width: 767px)";
 
 const safeData: Promise<GlobeData | null> = loadGlobeData().catch(() => null);
@@ -76,9 +75,9 @@ function Hud({ children, index }: { children: (setFrame: React.RefObject<(f: Hud
         </g>
       </svg>
       <div ref={markerLayer} className="pointer-events-none absolute inset-0">
-        <MarkerHud ref={marker} />
+        <MarkerHud ref={marker} area />
       </div>
-      <EducationCard ref={card} />
+      <AreaCard ref={card} />
     </div>
   );
 }

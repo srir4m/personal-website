@@ -307,7 +307,7 @@ html.lenis body {
   white-space: nowrap;
 }
 
-.edu-card {
+.globe-card {
   position: absolute;
   top: 50%;
   left: 60%;
@@ -316,7 +316,7 @@ html.lenis body {
   cursor: default;
 }
 @media (max-width: 767px) {
-  .edu-card {
+  .globe-card {
     top: auto;
     left: max(16px, env(safe-area-inset-left, 0px));
     right: max(16px, env(safe-area-inset-right, 0px));
@@ -326,6 +326,12 @@ html.lenis body {
   }
 }
 
+.course-log-panel {
+  margin-top: 0.5rem;
+}
+.course-log-panel .hud-button {
+  margin-top: 0.6rem;
+}
 .course-log {
   max-height: min(46vh, 26rem);
   overflow-y: auto;
@@ -395,6 +401,13 @@ html.lenis body {
   border-radius: 50%;
   background: var(--sanguine);
   box-shadow: 0 0 0 1.5px var(--parchment);
+}
+.marker-area {
+  width: 30px;
+  height: 30px;
+  border: 1.5px dashed var(--sanguine);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--sanguine) 18%, transparent);
 }
 .marker-cross {
   width: 40px;
@@ -1117,4 +1130,38 @@ html.lenis body {
     font-size: 1.1rem;
     line-height: 1.5;
   }
+}
+
+/* ---- Descent map ---------------------------------------------------------------- */
+
+.descent-map {
+  background: #d8cbaa;
+}
+.area-pin {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  will-change: transform;
+}
+.area-pin__label {
+  position: absolute;
+  left: 2.5rem;
+  top: -3.5rem;
+  min-width: 11rem;
+  padding: 0.6rem 0.85rem;
+  white-space: nowrap;
+}
+.area-pin__label::after {
+  /* Overridden corner tick: a leader back to the area's centre. */
+  content: "";
+}
+.map-attribution {
+  margin-top: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  opacity: 0.7;
 }

@@ -1,13 +1,10 @@
-import { forwardRef, useId, useState } from "react";
+import { useId, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { content } from "../../content";
-import type { Course } from "../../content/schema";
-import { text } from "../../content/text";
-import { formatCoordinates } from "./geo";
+import { content } from "../content";
+import type { Course } from "../content/schema";
+import { text } from "../content/text";
 
-const { school, degree, classOf, location, courses } = content.education;
-
-/** Courses grouped by term, newest term first (PRD Act 1). */
+/** Courses grouped by term, newest term first. */
 export function groupByTerm(list: Course[]): { term: string; courses: Course[] }[] {
   const terms = new Map<number, { term: string; courses: Course[] }>();
   for (const course of list) {
@@ -18,43 +15,19 @@ export function groupByTerm(list: Course[]): { term: string; courses: Course[] }
   return [...terms.entries()].sort(([a], [b]) => b - a).map(([, group]) => group);
 }
 
-const TERMS = groupByTerm(courses);
+const TERMS = groupByTerm(content.education.courses);
 
-/** The HUD card tied to the Stevens marker: collapsed summary, expandable course log. */
-export const EducationCard = forwardRef<HTMLDivElement>(function EducationCard(_, ref) {
+/**
+ * The course log, a HUD inset in the Backbone panel (PRD v1.1, decision Q1: education
+ * lives in the body map). Collapsed by default; in-progress courses carry an amber tag.
+ */
+export function CourseLog() {
   const [open, setOpen] = useState(false);
   const logId = useId();
-  const degreeText = text(degree);
-  const classText = text(classOf);
-
   return (
-    <div
-      ref={ref}
-      className="edu-card hud-panel"
-      onClick={(event) => {
-        // A click anywhere on the collapsed card opens the log; the button handles its own clicks.
-        if (!open && !(event.target as HTMLElement).closest("button")) setOpen(true);
-      }}
-    >
-      <p className="hud-label">Education · {location.label}</p>
-      <h3 className="font-display text-3xl leading-tight">{school}</h3>
-      {(degreeText || classText) && (
-        <p className="font-display text-lg">
-          {degreeText}
-          {degreeText && classText && " · "}
-          {classText && `Class of ${classText}`}
-        </p>
-      )}
-      <p className="hud-readout" aria-label={`Coordinates ${formatCoordinates(location.lat, location.lng)}`}>
-        {formatCoordinates(location.lat, location.lng)}
-      </p>
-      <button
-        type="button"
-        className="hud-button"
-        aria-expanded={open}
-        aria-controls={logId}
-        onClick={() => setOpen((value) => !value)}
-      >
+    <section className="hud-panel course-log-panel" aria-label="Course log">
+      <p className="hud-label">{content.education.school}</p>
+      <button type="button" className="hud-button" aria-expanded={open} aria-controls={logId} onClick={() => setOpen((v) => !v)}>
         <span aria-hidden="true">{open ? "▾" : "▸"}</span> Course log
       </button>
       <AnimatePresence initial={false}>
@@ -68,7 +41,7 @@ export const EducationCard = forwardRef<HTMLDivElement>(function EducationCard(_
             transition={{ duration: 0.3, ease: [0.33, 1, 0.68, 1] }}
             className="overflow-hidden"
           >
-            <div className="course-log" data-lenis-prevent>
+            <div className="course-log">
               {TERMS.map((group) => (
                 <section key={group.term} aria-label={group.term}>
                   <h4 className="hud-label mt-3 mb-1">{group.term}</h4>
@@ -90,6 +63,6 @@ export const EducationCard = forwardRef<HTMLDivElement>(function EducationCard(_
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </section>
   );
-});
+}

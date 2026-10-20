@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
-import { content } from "../../content";
 import { rangeOf } from "../../stage/acts";
 import { actProgress, useStage } from "../../stage/store";
+import { GLOBE_TARGET } from "./AreaCard";
 import { facingRotation, latLngToVector } from "./geo";
 import type { GlobeData } from "./globeData";
 import { DOLLY_DISTANCE, GLOBE_RADIUS_VMIN, IDLE_START_LNG, IDLE_TILT_DEG, cameraDistanceFor } from "./layout";
@@ -14,7 +14,7 @@ const RANGE = rangeOf("globe");
 /** Past this point of the master timeline the globe layer is fully faded out. */
 const DESCENT = rangeOf("descent");
 const VISIBLE_UNTIL = DESCENT.start + (DESCENT.end - DESCENT.start) * 0.1;
-const { lat: MARKER_LAT, lng: MARKER_LNG } = content.education.location;
+const { lat: MARKER_LAT, lng: MARKER_LNG } = GLOBE_TARGET;
 const FACING = facingRotation(MARKER_LAT, MARKER_LNG);
 const IDLE = facingRotation(IDLE_TILT_DEG, IDLE_START_LNG);
 const IDLE_SPEED = (2 * Math.PI) / 90; // one revolution per 90 s (PRD Act 1)
