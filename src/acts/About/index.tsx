@@ -20,9 +20,10 @@ export default function About(_: ActProps) {
   return (
     <div className="about bg-parchment text-ink">
       <div className="about__page">
-        <div className="about__head">
-          <p className="hud-label text-sepia">About</p>
-          <div className="about__rule" aria-hidden="true" />
+        {/* The act's own <h2> names the section for screen readers; this is its visible title. */}
+        <div className="section-head about__head" aria-hidden="true">
+          <p className="section-title">About</p>
+          <div className="section-rule" />
         </div>
         <div className="about__body">
           {paragraphs.map((paragraph, i) => (
