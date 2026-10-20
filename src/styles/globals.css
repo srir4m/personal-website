@@ -101,6 +101,12 @@ html.lenis body {
   text-decoration: underline;
   text-underline-offset: 0.3em;
 }
+/* Phones: below the top bar's tick targets. */
+@media (max-width: 767px) {
+  .motion-toggle {
+    top: 1.65rem;
+  }
+}
 .motion-toggle:focus-visible {
   outline: 2px solid var(--sanguine);
   outline-offset: 2px;
@@ -182,19 +188,23 @@ html.lenis body {
     height: 3px;
   }
   .rail-fill {
+    --step: 0;
     transform-origin: left;
-    transform: scaleX(var(--progress));
+    transform: scaleX(var(--step));
   }
+  /* Evenly spaced, one segment per act, so every tick is a 44 px tap target. */
   .rail-tick {
     top: 0;
-    left: calc(var(--at) * 100%);
+    left: calc((var(--i) + 0.5) / var(--n) * 100%);
   }
-  .rail-tick a {
+  .rail-tick a,
+  .rail-tick a[data-minor] {
     min-height: 0;
-    width: 24px;
+    width: 44px;
     height: 24px;
-    transform: translateX(-2px);
+    transform: translateX(-50%);
     justify-content: center;
+    align-items: flex-start;
   }
   .rail-mark {
     width: 2px;

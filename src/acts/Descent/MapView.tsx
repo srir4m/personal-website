@@ -60,10 +60,16 @@ export default function MapView({ range, center, areaLabel, radiusKm = 32 }: Pro
       maxPitch: 70,
       pixelRatio: Math.min(window.devicePixelRatio, 1.75),
     });
-    map.on("styleimagemissing", () => undefined);
+    // The hatch patterns are drawn on a canvas, so they're added the moment the style asks.
+    const patterns: Record<string, () => ImageData> = {
+      "water-hatch": () => hatchImage(MAP_COLORS.sepia, 6, 0.45),
+      "area-hatch": () => hatchImage(MAP_COLORS.sanguine, 7, 0.7),
+    };
+    map.setMissingStyleImageResolver((id) => {
+      const draw = patterns[id];
+      if (draw && !map.hasImage(id)) map.addImage(id, draw());
+    });
     map.on("load", () => {
-      map.addImage("water-hatch", hatchImage(MAP_COLORS.sepia, 6, 0.45));
-      map.addImage("area-hatch", hatchImage(MAP_COLORS.sanguine, 7, 0.7));
       element.dataset.ready = "true";
       draw(useStage.getState().progress);
     });
