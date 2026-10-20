@@ -76,14 +76,31 @@ html.lenis body {
   border: 1px solid var(--hud-cyan);
 }
 
-/* Mirror script: flipped until its host is hovered or focused. */
-.mirror-text {
-  transform: scaleX(-1);
-  transition: transform var(--dur-quick) var(--ease);
+/* Motion switch: a quiet text control in the top-right corner, not a chip. */
+.motion-toggle {
+  top: 1.1rem;
+  right: 1.25rem;
+  display: flex;
+  gap: 0.4rem;
+  padding: 0.35rem 0.1rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sepia);
+  cursor: pointer;
 }
-.mirror-host:hover .mirror-text,
-.mirror-host:focus-visible .mirror-text {
-  transform: none;
+.motion-toggle__name {
+  margin-right: 0.2rem;
+}
+.motion-toggle [data-on="true"] {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 0.3em;
+}
+.motion-toggle:focus-visible {
+  outline: 2px solid var(--sanguine);
+  outline-offset: 2px;
 }
 
 /* Progress rail: a codex margin on the left (desktop), a thin top bar (phone). */
@@ -123,26 +140,35 @@ html.lenis body {
   gap: 0.6rem;
   min-height: 44px;
   transform: translate(-6px, -50%);
-  color: var(--ink);
+  color: var(--sepia);
   font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.15em;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   text-decoration: none;
   white-space: nowrap;
+  transition: color var(--dur-quick) var(--ease);
+}
+.rail-tick a:hover,
+.rail-tick a[aria-current="step"] {
+  color: var(--ink);
 }
 .rail-mark {
   width: 14px;
-  height: 2px;
+  height: 1px;
   background: var(--sepia);
+}
+/* Passages between places get a shorter tick and no label. */
+.rail-tick a[data-minor] {
+  min-height: 24px;
+}
+.rail-tick a[data-minor] .rail-mark {
+  width: 8px;
+  margin-left: 3px;
 }
 .rail-tick a[aria-current="step"] .rail-mark {
   background: var(--sanguine);
-  height: 3px;
-}
-.rail-label {
-  padding: 0.1rem 0.35rem;
-  background: color-mix(in srgb, var(--parchment) 85%, transparent);
+  height: 2px;
 }
 
 @media (max-width: 767px) {
@@ -171,19 +197,18 @@ html.lenis body {
     width: 2px;
     height: 8px;
   }
-  /* Keep the screen-reader text; hide only the mirrored glyphs. */
+  /* Phones: the top bar keeps its ticks; the labels stay for screen readers only. */
   .rail-label {
-    padding: 0;
-    background: none;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
   }
-  .rail-label .mirror-text {
-    display: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .mirror-text {
-    transition: none;
+  .rail-tick a[data-minor] .rail-mark {
+    width: 2px;
+    height: 5px;
+    margin-left: 0;
   }
 }
 

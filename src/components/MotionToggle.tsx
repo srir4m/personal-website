@@ -12,10 +12,12 @@ export function MotionToggle() {
       aria-checked={calm}
       aria-label="Calm motion"
       onClick={() => setMotion(calm ? "full" : "calm")}
-      className="hud-chip fixed top-3 right-3 z-30 font-mono text-xs tracking-widest uppercase"
+      className="motion-toggle fixed z-30"
     >
-      Motion: <span className={calm ? "opacity-60" : "text-hud-cyan"}>Full</span> /{" "}
-      <span className={calm ? "text-hud-cyan" : "opacity-60"}>Calm</span>
+      <span className="motion-toggle__name">Motion</span>
+      <span data-on={!calm}>Full</span>
+      <span aria-hidden="true">/</span>
+      <span data-on={calm}>Calm</span>
     </button>
   );
 }
