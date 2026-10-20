@@ -24,12 +24,15 @@ function layersFor(source: keyof TileSources): LayerSpecification[] {
   const z = ZOOMS[source];
   const id = (name: string) => `${source}-${name}`;
   const base = { source, ...z };
+  // The world's land and water stay on (overzoomed) under the region and city extracts,
+  // so the screen never shows an empty edge where a detailed extract's bounding box ends.
+  const fills = source === "world" ? { source } : base;
   const parks: FilterSpecification = ["in", ["get", "kind"], ["literal", ["park", "forest", "wood", "nature_reserve", "grass", "garden", "cemetery", "golf_course", "recreation_ground"]]];
   return [
-    { id: id("earth"), type: "fill", "source-layer": "earth", ...base, paint: { "fill-color": C.parchment } },
+    { id: id("earth"), type: "fill", "source-layer": "earth", ...fills, paint: { "fill-color": C.parchment } },
     { id: id("parks"), type: "fill", "source-layer": "landuse", ...base, filter: parks, paint: { "fill-color": C.park } },
-    { id: id("water"), type: "fill", "source-layer": "water", ...base, paint: { "fill-color": C.water } },
-    { id: id("water-hatch"), type: "fill", "source-layer": "water", ...base, paint: { "fill-pattern": "water-hatch" } },
+    { id: id("water"), type: "fill", "source-layer": "water", ...fills, paint: { "fill-color": C.water } },
+    { id: id("water-hatch"), type: "fill", "source-layer": "water", ...fills, paint: { "fill-pattern": "water-hatch" } },
     {
       id: id("coast"),
       type: "line",

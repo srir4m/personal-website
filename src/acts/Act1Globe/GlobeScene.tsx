@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
-import { rangeOf } from "../../stage/acts";
+import { actFades, actIndex, rangeOf } from "../../stage/acts";
 import { actProgress, useStage } from "../../stage/store";
 import { GLOBE_TARGET } from "./AreaCard";
 import { facingRotation, latLngToVector } from "./geo";
@@ -20,6 +20,11 @@ const IDLE = facingRotation(IDLE_TILT_DEG, IDLE_START_LNG);
 const IDLE_SPEED = (2 * Math.PI) / 90; // one revolution per 90 s (PRD Act 1)
 /** By this share of the act the marker faces the camera; the dolly runs after it. */
 const FACE_BY = 0.4;
+/**
+ * The dolly lands before the map starts fading in over the globe, so the two dissolve
+ * as two still, matching frames instead of a moving globe under a still map.
+ */
+const DOLLY_BY = 1 - (actFades(actIndex("descent")).enterLead ?? 0);
 
 /** Screen-space state the DOM HUD reads every frame, without React renders. */
 export type HudFrame = { x: number; y: number; visible: number; width: number; height: number };
@@ -132,7 +137,7 @@ export function GlobeScene({ data, phone, hud }: Props) {
     );
 
     const rest = cameraDistanceFor(GLOBE_RADIUS_VMIN * Math.min(width, height), height);
-    const dolly = smoothstep(FACE_BY, 1, t);
+    const dolly = smoothstep(FACE_BY, DOLLY_BY, t);
     camera.position.set(0, 0, rest + (DOLLY_DISTANCE - rest) * dolly);
     camera.lookAt(0, 0, 0);
     camera.updateMatrixWorld();
