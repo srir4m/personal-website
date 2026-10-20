@@ -104,7 +104,8 @@ export default function Act6Outro({ index }: ActProps) {
             {contacts.map((link) => (
               <li key={link.label}>
                 <a href={link.href} target="_blank" rel="noopener" className="outro-link">
-                  {link.label}
+                  {/* The address itself, so it can be read or copied without a mail app. */}
+                  {link.href.startsWith("mailto:") ? link.href.slice("mailto:".length) : link.label}
                 </a>
               </li>
             ))}

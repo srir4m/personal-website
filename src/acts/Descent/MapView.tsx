@@ -6,7 +6,8 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import { Protocol } from "pmtiles";
 import { actProgress, useStage } from "../../stage/store";
 import { globeScaleAtDolly } from "../Act1Globe/layout";
-import { cameraAt, circlePolygon, formatScale, highlightAt, scaleBar, scaleForZoom, zoomForScale } from "./camera";
+import geometry from "../../content/vitruvian.json";
+import { AREA_RADIUS_KM, cameraAt, circlePolygon, formatScale, highlightAt, RING_OVERSIZE, scaleBar, scaleForZoom, zoomForRing, zoomForScale } from "./camera";
 import { buildStyle, hatchImage, MAP_COLORS } from "./style";
 
 let protocolAdded = false;
@@ -18,15 +19,27 @@ type Props = {
   range: { start: number; end: number };
   center: { lat: number; lng: number };
   areaLabel: string | null;
-  /** Radius of the metro highlight, in km. */
-  radiusKm?: number;
 };
+
+/**
+ * The Vitruvian circle's radius on screen, in px: the figure is drawn at --figure-size
+ * (globals.css), its viewBox letterboxed to fit. Measured, so it follows the CSS exactly.
+ */
+function vitruvianRadiusPx(host: HTMLElement): number {
+  const probe = document.createElement("div");
+  probe.style.cssText = "position:absolute;visibility:hidden;width:var(--figure-size)";
+  host.appendChild(probe);
+  const size = probe.offsetWidth;
+  probe.remove();
+  const [, , w, h] = geometry.viewBox as [number, number, number, number];
+  return geometry.circle.r * Math.min(size / w, size / h);
+}
 
 /**
  * The live map for the descent: MapLibre over self-hosted PMTiles, never interactive.
  * Scroll progress drives the camera through `cameraAt`; nothing re-renders in React.
  */
-export default function MapView({ range, center, areaLabel, radiusKm = 32 }: Props) {
+export default function MapView({ range, center, areaLabel }: Props) {
   const container = useRef<HTMLDivElement>(null);
   const label = useRef<HTMLDivElement>(null);
   const scaleText = useRef<HTMLParagraphElement>(null);
@@ -41,7 +54,10 @@ export default function MapView({ range, center, areaLabel, radiusKm = 32 }: Pro
     }
     const element = container.current!;
     const startZoom = () => zoomForScale(globeScaleAtDolly(element.clientHeight || window.innerHeight), center.lat);
-    const first = cameraAt(actProgress(range, useStage.getState().progress), startZoom());
+    // The descent ends with the area's ring just outside the Vitruvian circle, which Becoming shrinks it onto.
+    let ringPx = vitruvianRadiusPx(element) * RING_OVERSIZE;
+    const endZoom = () => zoomForRing(ringPx, center.lat);
+    const first = cameraAt(actProgress(range, useStage.getState().progress), startZoom(), endZoom());
     const map = new MapLibreMap({
       container: element,
       style: buildStyle(
@@ -50,7 +66,7 @@ export default function MapView({ range, center, areaLabel, radiusKm = 32 }: Pro
           region: assetUrl("assets/map/region.pmtiles"),
           city: assetUrl("assets/map/city.pmtiles"),
         },
-        circlePolygon(center.lng, center.lat, radiusKm),
+        circlePolygon(center.lng, center.lat, AREA_RADIUS_KM),
       ),
       center: [center.lng, center.lat],
       ...first,
@@ -76,7 +92,7 @@ export default function MapView({ range, center, areaLabel, radiusKm = 32 }: Pro
 
     const draw = (progress: number) => {
       const t = actProgress(range, progress);
-      const camera = cameraAt(t, startZoom());
+      const camera = cameraAt(t, startZoom(), endZoom());
       map.jumpTo({ center: [center.lng, center.lat], ...camera });
       element.dataset.zoom = camera.zoom.toFixed(2);
       const glow = highlightAt(t);
@@ -100,6 +116,7 @@ export default function MapView({ range, center, areaLabel, radiusKm = 32 }: Pro
     draw(useStage.getState().progress);
     const unsubscribe = useStage.subscribe((s, prev) => s.progress !== prev.progress && draw(s.progress));
     const observer = new ResizeObserver(() => {
+      ringPx = vitruvianRadiusPx(element) * RING_OVERSIZE;
       map.resize();
       draw(useStage.getState().progress);
     });
@@ -109,7 +126,7 @@ export default function MapView({ range, center, areaLabel, radiusKm = 32 }: Pro
       observer.disconnect();
       map.remove();
     };
-  }, [range, center.lat, center.lng, radiusKm]);
+  }, [range, center.lat, center.lng]);
 
   return (
     <div className="absolute inset-0">

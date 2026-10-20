@@ -1,17 +1,19 @@
 import { describe, expect, it } from "vitest";
 import {
+  AREA_RADIUS_KM,
   cameraAt,
   circlePolygon,
   formatScale,
   highlightAt,
-  MAX_PITCH,
-  METRO_ZOOM,
   PHASES,
   scaleBar,
   scaleForZoom,
-  STREET_ZOOM,
+  zoomForRing,
   zoomForScale,
 } from "../../src/acts/Descent/camera";
+
+const START = 5.8;
+const END = 9.8;
 
 describe("map camera", () => {
   it("converts between map scale and zoom both ways", () => {
@@ -20,31 +22,33 @@ describe("map camera", () => {
     }
   });
 
-  it("starts at the globe's handoff zoom and ends among the buildings, pitched", () => {
-    const start = 5.8;
-    expect(cameraAt(0, start)).toMatchObject({ zoom: start, pitch: 0, bearing: 0 });
-    const end = cameraAt(1, start);
-    expect(end.zoom).toBeCloseTo(STREET_ZOOM, 6);
-    expect(end.pitch).toBeCloseTo(MAX_PITCH, 6);
+  it("frames the area's ring at the requested size on screen", () => {
+    const radiusPx = 380;
+    const metresPerPx = scaleForZoom(zoomForRing(radiusPx, 40.71), 40.71) * (0.0254 / 96);
+    expect((AREA_RADIUS_KM * 1000) / metresPerPx).toBeCloseTo(radiusPx, 6);
   });
 
-  it("only ever zooms in, at a constant rate within each phase", () => {
+  it("starts at the globe's handoff zoom and ends flat, north-up, at the ring's zoom", () => {
+    expect(cameraAt(0, START, END)).toMatchObject({ zoom: START, pitch: 0, bearing: 0 });
+    expect(cameraAt(1, START, END)).toMatchObject({ zoom: END, pitch: 0, bearing: 0 });
+  });
+
+  it("only ever zooms in, at a constant rate while it travels", () => {
     let last = -Infinity;
     for (let t = 0; t <= 1.0001; t += 0.01) {
-      const { zoom } = cameraAt(t, 5.8);
+      const { zoom } = cameraAt(t, START, END);
       expect(zoom).toBeGreaterThanOrEqual(last);
       last = zoom;
     }
-    const a = cameraAt(0.1, 5.8).zoom - cameraAt(0.05, 5.8).zoom;
-    const b = cameraAt(0.3, 5.8).zoom - cameraAt(0.25, 5.8).zoom;
+    const a = cameraAt(0.1, START, END).zoom - cameraAt(0.05, START, END).zoom;
+    const b = cameraAt(0.3, START, END).zoom - cameraAt(0.25, START, END).zoom;
     expect(a).toBeCloseTo(b, 9);
-    expect(cameraAt(PHASES.arrive, 5.8).zoom).toBeCloseTo(METRO_ZOOM, 9);
   });
 
-  it("highlights the area at metro scale and clears it before the streets", () => {
+  it("highlights the area as the metro view arrives, and holds it for Becoming", () => {
     expect(highlightAt(0)).toBe(0);
-    expect(highlightAt((PHASES.arrive + PHASES.dwell) / 2)).toBeCloseTo(1, 5);
-    expect(highlightAt(0.9)).toBe(0);
+    expect(highlightAt(PHASES.arrive)).toBeCloseTo(1, 5);
+    expect(highlightAt(1)).toBe(1);
   });
 
   it("draws the highlight as a closed ring of the requested radius", () => {
