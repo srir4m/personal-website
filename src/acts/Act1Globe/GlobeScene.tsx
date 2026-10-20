@@ -85,6 +85,9 @@ export function GlobeScene({ data, phone, hud }: Props) {
         uSepia: { value: srgb("#8A6B47") },
         uInk: { value: srgb("#2B2118") },
         uCyan: { value: srgb("#3FD6E0") },
+        // The descent map's water (MAP_COLORS.water in Descent/style.ts).
+        uWater: { value: srgb("#D8CBAA") },
+        uMap: { value: 0 },
       },
     });
   }, [data, phone]);
@@ -139,6 +142,7 @@ export function GlobeScene({ data, phone, hud }: Props) {
     const rest = cameraDistanceFor(GLOBE_RADIUS_VMIN * Math.min(width, height), height);
     const dolly = smoothstep(FACE_BY, DOLLY_BY, t);
     camera.position.set(0, 0, rest + (DOLLY_DISTANCE - rest) * dolly);
+    material.uniforms.uMap!.value = smoothstep(0.45, 1, dolly);
     camera.lookAt(0, 0, 0);
     camera.updateMatrixWorld();
     material.uniforms.uPixelRatio!.value = gl.getPixelRatio();
