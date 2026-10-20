@@ -29,7 +29,7 @@ body {
 }
 
 :focus-visible {
-  outline: 2px solid var(--hud-cyan);
+  outline: 2px solid var(--sanguine);
   outline-offset: 2px;
 }
 
@@ -68,12 +68,15 @@ html.lenis body {
   transform: none;
 }
 
-/* HUD chip: ink background, so cyan readouts stay legible (PRD §5.1). */
+/* Chip: an outlined ink control. */
 .hud-chip {
-  background: var(--ink);
-  color: var(--parchment);
-  padding: 0.4rem 0.7rem;
-  border: 1px solid var(--hud-cyan);
+  color: var(--ink);
+  padding: 0.45rem 0.8rem;
+  border: 1px solid color-mix(in srgb, var(--ink) 40%, transparent);
+  transition: border-color var(--dur-quick) var(--ease);
+}
+.hud-chip:hover {
+  border-color: var(--ink);
 }
 
 /* Motion switch: a quiet text control in the top-right corner, not a chip. */
@@ -262,38 +265,17 @@ html.lenis body {
   text-transform: uppercase;
 }
 
-/* Dark HUD panel: ink ground, so cyan numerals and amber tags stay legible (PRD §5.1). */
+/* Annotation card: ink on parchment with a hairline rule, like a note pinned to the page. */
 .hud-panel {
   position: relative;
-  background: color-mix(in srgb, var(--ink) 94%, transparent);
-  color: var(--parchment);
-  padding: 1.1rem 1.25rem 1.2rem;
-  border: 1px solid color-mix(in srgb, var(--hud-cyan) 55%, transparent);
-  box-shadow: 0 18px 40px -24px var(--ink);
-}
-/* Square corner ticks in cyan. */
-.hud-panel::before,
-.hud-panel::after {
-  content: "";
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  border: 1px solid var(--hud-cyan);
-}
-.hud-panel::before {
-  top: -4px;
-  left: -4px;
-  border-right: 0;
-  border-bottom: 0;
-}
-.hud-panel::after {
-  right: -4px;
-  bottom: -4px;
-  border-left: 0;
-  border-top: 0;
+  background: color-mix(in srgb, var(--parchment) 94%, transparent);
+  color: var(--ink);
+  padding: 1rem 1.2rem 1.1rem;
+  border: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
+  box-shadow: 0 14px 32px -24px color-mix(in srgb, var(--ink) 70%, transparent);
 }
 .hud-panel .hud-label {
-  color: color-mix(in srgb, var(--parchment) 70%, transparent);
+  color: var(--sepia);
 }
 
 .hud-readout {
@@ -302,33 +284,33 @@ html.lenis body {
   font-size: 1.05rem;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.06em;
-  color: var(--hud-cyan);
+  color: var(--ink);
 }
 
 .hud-button {
   margin-top: 0.9rem;
   padding: 0.35rem 0.7rem;
-  border: 1px solid var(--hud-cyan);
+  border: 1px solid color-mix(in srgb, var(--ink) 40%, transparent);
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--parchment);
+  color: var(--ink);
   cursor: pointer;
 }
 .hud-button:hover {
-  background: color-mix(in srgb, var(--hud-cyan) 18%, transparent);
+  border-color: var(--ink);
 }
 
 .hud-tag {
   margin-left: auto;
   padding: 0 0.35rem;
-  border: 1px solid var(--hud-amber);
+  border: 1px solid var(--sepia);
   font-family: var(--font-mono);
   font-size: 0.62rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: var(--hud-amber);
+  color: var(--sepia);
   white-space: nowrap;
 }
 
@@ -391,14 +373,14 @@ html.lenis body {
   line-height: 1.25;
 }
 
-/* HUD leader line: 1 px cyan with square terminals (PRD §5.3). */
+/* Leader line: 1 px red chalk with square terminals (PRD §5.3). */
 .hud-leader path {
   fill: none;
-  stroke: var(--hud-cyan);
+  stroke: var(--sanguine);
   stroke-width: 1;
 }
 .hud-leader rect {
-  fill: var(--hud-cyan);
+  fill: var(--sanguine);
 }
 .hud-leader {
   opacity: var(--marker-visible, 1);
@@ -438,13 +420,13 @@ html.lenis body {
   width: 40px;
   height: 40px;
   fill: none;
-  stroke: var(--hud-cyan);
+  stroke: var(--sepia);
   stroke-width: 1;
 }
 .marker-ring {
   width: 14px;
   height: 14px;
-  border: 1px solid var(--hud-cyan);
+  border: 1px solid var(--sepia);
   border-radius: 50%;
   opacity: 0.5;
 }
@@ -507,7 +489,7 @@ html.lenis body {
 }
 .scale-bar__rule {
   height: 6px;
-  border: 1px solid var(--hud-cyan);
+  border: 1px solid var(--sanguine);
   border-top: 0;
   max-width: 100%;
 }
@@ -859,7 +841,7 @@ html.lenis body {
   stroke-width: 1.5px;
 }
 .region:focus-visible .region-shape {
-  stroke: var(--hud-cyan);
+  stroke: var(--sanguine);
   stroke-width: 2px;
 }
 .region[data-dormant] {
@@ -910,12 +892,12 @@ html.lenis body {
 }
 .region-leader path {
   fill: none;
-  stroke: var(--hud-cyan);
+  stroke: var(--sanguine);
   stroke-width: 1px;
   vector-effect: non-scaling-stroke;
 }
 .region-leader rect {
-  fill: var(--hud-cyan);
+  fill: var(--sanguine);
 }
 .region-label {
   position: absolute;
@@ -974,7 +956,7 @@ html.lenis body {
   color: var(--parchment);
 }
 .pose-toggle__option:has(input:focus-visible) {
-  outline: 2px solid var(--hud-cyan);
+  outline: 2px solid var(--sanguine);
   outline-offset: 2px;
 }
 .pose-toggle__thumb {
@@ -1000,8 +982,8 @@ html.lenis body {
 .codex-badge {
   flex: none;
   padding: 0.05rem 0.45rem;
-  background: var(--ink);
-  color: var(--hud-amber);
+  border: 1px solid var(--sepia);
+  color: var(--sepia);
   font-family: var(--font-mono);
   font-size: 0.68rem;
   letter-spacing: 0.15em;
@@ -1158,10 +1140,6 @@ html.lenis body {
     top: 2.5rem;
     transform: translateX(-50%);
   }
-}
-.area-pin__label::after {
-  /* Overridden corner tick: a leader back to the area's centre. */
-  content: "";
 }
 /* The credit sits on its own quiet line along the map's bottom edge, not in the HUD. */
 .map-attribution {

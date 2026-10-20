@@ -1,5 +1,5 @@
 /**
- * Engraved globe surface: parchment, paper grain, hatched land, hatched night side, cyan
+ * Engraved globe surface: parchment, paper grain, hatched land, hatched night side, sepia
  * rim. As the camera dollies in (uMap 0 → 1) it turns into the descent map's palette, light
  * parchment land over hatched water, with no night side or rim, so the handoff to the
  * map dissolves between two frames in the same tones.
@@ -26,7 +26,7 @@ export const globeFragment = /* glsl */ `
   uniform vec3 uParchment;
   uniform vec3 uSepia;
   uniform vec3 uInk;
-  uniform vec3 uCyan;
+  uniform vec3 uRim;
   uniform vec3 uWater;
   uniform float uMap;
   varying vec3 vObjectNormal;
@@ -62,9 +62,9 @@ export const globeFragment = /* glsl */ `
     float night = smoothstep(0.08, -0.22, dot(n, uSun));
     color = mix(color, uInk, night * mix(0.12, cross * 0.28 + 0.05, uHatch));
 
-    // A thin Fresnel rim in HUD cyan.
+    // A thin Fresnel rim in sepia.
     float facing = max(dot(normalize(vViewNormal), normalize(-vViewPosition)), 0.0);
-    color = mix(color, uCyan, pow(1.0 - facing, 4.0) * 0.35);
+    color = mix(color, uRim, pow(1.0 - facing, 4.0) * 0.35);
 
     // The descent map's palette: parchment land, water tinted and hatched in sepia.
     vec3 mapColor = mix(uWater, uParchment, land) + (hash(floor(gl_FragCoord.xy)) - 0.5) * 0.03;

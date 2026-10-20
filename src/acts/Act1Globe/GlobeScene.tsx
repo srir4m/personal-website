@@ -84,7 +84,7 @@ export function GlobeScene({ data, phone, hud }: Props) {
         uParchment: { value: srgb("#EFE4CC") },
         uSepia: { value: srgb("#8A6B47") },
         uInk: { value: srgb("#2B2118") },
-        uCyan: { value: srgb("#3FD6E0") },
+        uRim: { value: srgb("#8A6B47") },
         // The descent map's water (MAP_COLORS.water in Descent/style.ts).
         uWater: { value: srgb("#D8CBAA") },
         uMap: { value: 0 },
