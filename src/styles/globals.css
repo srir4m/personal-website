@@ -1292,28 +1292,55 @@ html.lenis body {
 
 .game-emblems {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.75rem;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
+/* One row per game: the official mark on the left, the rank in mono on the right. */
 .game-emblem {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: minmax(0, 9.5rem) minmax(0, 1fr);
   align-items: center;
-  gap: 0.35rem;
-  padding: 0.6rem 0.4rem;
-  border: 1px solid color-mix(in srgb, var(--sepia) 45%, transparent);
+  column-gap: 1.25rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--sepia) 35%, transparent);
+}
+.game-emblem__mark {
+  display: flex;
+  align-items: center;
+  height: 1.75rem;
+}
+.game-emblem__mark img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: left center;
+  /* Sit the marks on the parchment as printed ink rather than pasted stickers. */
+  mix-blend-mode: multiply;
+  opacity: 0.9;
+}
+.game-emblem__mark .emblem-glyph {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+.game-emblem__name {
+  grid-column: 1;
   font-family: var(--font-mono);
   font-size: 0.62rem;
   letter-spacing: 0.08em;
-  text-align: center;
   text-transform: uppercase;
 }
-.game-emblem img {
-  width: 2.75rem;
-  height: 2.75rem;
-  object-fit: contain;
+.game-emblem__detail {
+  grid-column: 2;
+  grid-row: 1;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sanguine);
 }
-.game-emblem .emblem-glyph {
-  width: 2.75rem;
-  height: 2.75rem;
+.game-emblem__story {
+  grid-column: 1 / -1;
+  margin-top: 0.5rem;
 }

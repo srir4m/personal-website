@@ -21,12 +21,14 @@ test("a hobby card jumps to its body map region with the panel open", async ({ p
   await expect(panel).toContainText("Competitive swimmer for 10 years");
 });
 
-test("the gaming card opens the games, with neutral emblems and the trademark note", async ({ page }) => {
+test("the gaming card opens the games, with their logos, ranks and the trademark note", async ({ page }) => {
   await page.getByRole("button", { name: /Gaming/ }).click();
   const panel = page.getByRole("dialog", { name: "Gaming" });
   await expect(panel).toBeVisible();
   await expect(panel.locator(".game-emblem")).toHaveCount(5);
+  await expect(panel.getByRole("img", { name: "VALORANT" })).toBeVisible();
   await expect(panel).toContainText("17,000 Premier");
+  await expect(panel).toContainText("Platinum");
   await expect(panel).toContainText("trademarks of their respective owners");
   await page.keyboard.press("Escape");
   await expect(page.getByRole("button", { name: /Gaming/ })).toBeFocused();

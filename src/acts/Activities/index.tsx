@@ -2,9 +2,7 @@ import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
 import emblemFiles from "virtual:game-emblems";
 import { CodexPanel } from "../../components/CodexPanel";
-import { RegionItems } from "../Act5Body/RegionItems";
 import { content } from "../../content";
-import type { Item } from "../../content/schema";
 import { text } from "../../content/text";
 import { actIndex } from "../../stage/acts";
 import { useStage } from "../../stage/store";
@@ -16,20 +14,18 @@ import { EmblemGlyph, Glyph } from "./Glyph";
 const intro = text(content.squad.intro);
 const games = content.squad.games;
 
-/** Each game as a panel item: name, then rank, main and story when filled in (PRD Act 3). */
-const gameItems: Item[] = games.map((g) => ({
-  title: g.name,
-  subtitle: [text(g.rank), text(g.main)].filter(Boolean).join(" · ") || null,
-  body: text(g.story),
-}));
-
-function Emblem({ id, name, src }: { id: string; name: string; src: string }) {
+/** Each game as one row: its logo (or a neutral glyph), then rank, main and story when filled in (PRD Act 3). */
+function GameRow({ id, name, src, detail, story }: { id: string; name: string; src: string; detail: string | null; story: string | null }) {
   const file = src.split("/").pop()!;
   const present = emblemFiles.includes(file);
   return (
     <li className="game-emblem">
-      {present ? <img src={`${import.meta.env.BASE_URL}${src.replace(/^\//, "")}`} alt="" /> : <EmblemGlyph id={id} />}
-      <span>{name}</span>
+      <div className="game-emblem__mark">
+        {present ? <img src={`${import.meta.env.BASE_URL}${src.replace(/^\//, "")}`} alt={name} /> : <EmblemGlyph id={id} />}
+      </div>
+      {!present && <span className="game-emblem__name">{name}</span>}
+      {detail && <span className="game-emblem__detail">{detail}</span>}
+      {story && <p className="game-emblem__story">{story}</p>}
     </li>
   );
 }
@@ -96,10 +92,16 @@ export default function Activities({ index }: ActProps) {
       <CodexPanel open={gamingOpen} onClose={() => setGamingOpen(false)} label="Gaming" theme="Play" returnFocus={gamingButton}>
         <ul className="game-emblems">
           {games.map((g) => (
-            <Emblem key={g.id} id={g.id} name={g.name} src={g.emblem} />
+            <GameRow
+              key={g.id}
+              id={g.id}
+              name={g.name}
+              src={g.emblem}
+              detail={[text(g.rank), text(g.main)].filter(Boolean).join(" · ") || null}
+              story={text(g.story)}
+            />
           ))}
         </ul>
-        <RegionItems items={gameItems} />
         <p className="hud-label text-sepia">Game names and logos are trademarks of their respective owners.</p>
       </CodexPanel>
     </div>

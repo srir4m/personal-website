@@ -23,7 +23,7 @@ describe("activities", () => {
   });
 
   it("summarise gaming with the ranks that are filled in", () => {
-    expect(rankedGames()).toEqual(["Counter-Strike 2 · 17,000 Premier"]);
+    expect(rankedGames()).toEqual(["Counter-Strike 2 · 17,000 Premier", "VALORANT · Platinum"]);
     expect(cards.at(-1)!.subtitle).toBe("Counter-Strike 2 · 17,000 Premier");
   });
 });
