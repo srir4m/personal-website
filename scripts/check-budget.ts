@@ -14,7 +14,7 @@ const dist = new URL("../dist/", import.meta.url);
 const manifest: Record<string, Chunk> = JSON.parse(readFileSync(new URL(".vite/manifest.json", dist), "utf8"));
 
 const roots = Object.entries(manifest)
-  .filter(([key, chunk]) => chunk.isEntry || /src\/acts\/Act[01][A-Za-z]+\/index\.tsx$/.test(key))
+  .filter(([key]) => key === "index.html" || /src\/acts\/Act[01][A-Za-z]+\/index\.tsx$/.test(key))
   .map(([key]) => key);
 
 const seen = new Set<string>();

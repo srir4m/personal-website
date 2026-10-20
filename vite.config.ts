@@ -24,6 +24,47 @@ function contentValidation(): Plugin {
   };
 }
 
+/** The public address of the site, for absolute social preview URLs. */
+const SITE_URL = process.env.SITE_URL ?? "https://srir4m.github.io/";
+
+const escapeHtml = (s: string) => s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+
+/**
+ * Page title, description and social preview tags, all from site-content.json, so nothing
+ * personal is written into the HTML by hand. The description is the first sentence of the intro.
+ */
+function siteMeta(): Plugin {
+  const filled = (v: unknown) => (typeof v === "string" && v.trim() && !/^TODO\b/.test(v) ? v.trim() : null);
+  return {
+    name: "microcosm:site-meta",
+    transformIndexHtml(html, ctx) {
+      const { owner } = JSON.parse(readFileSync(contentPath, "utf8"));
+      const name = filled(owner.name) ?? "Microcosm";
+      const tagline = filled(owner.tagline);
+      const title = tagline ? `${name} · ${tagline}` : name;
+      const description = filled(owner.intro)?.split(/(?<=\.)\s/)[0] ?? tagline;
+      const page = ctx.path.endsWith("404.html") ? `Not found · ${name}` : title;
+      const meta = (attr: "name" | "property", key: string, value: string | null) =>
+        value ? [{ tag: "meta", attrs: { [attr]: key, content: value }, injectTo: "head" as const }] : [];
+      return {
+        html: html.replace(/<title>.*?<\/title>/, `<title>${escapeHtml(page)}</title>`),
+        tags: [
+          ...meta("name", "description", description),
+          ...meta("property", "og:type", "website"),
+          ...meta("property", "og:url", SITE_URL),
+          ...meta("property", "og:title", title),
+          ...meta("property", "og:description", description),
+          ...meta("property", "og:image", new URL("og.png", SITE_URL).href),
+          ...meta("property", "og:image:width", "1200"),
+          ...meta("property", "og:image:height", "630"),
+          ...meta("property", "og:image:alt", `${title}: Leonardo's Vitruvian Man rising from an engraved globe`),
+          ...meta("name", "twitter:card", "summary_large_image"),
+        ],
+      };
+    },
+  };
+}
+
 /**
  * Dev-only endpoint for the region editor (`/?edit=regions`): POST the edited regions
  * to write src/content/regions.json, after validating them.
@@ -99,12 +140,19 @@ function gameEmblems(): Plugin {
 export default defineConfig(({ mode }) => ({
   // The site is served from the root of srir4m.github.io; BASE_PATH overrides it (e.g. "./" for previews).
   base: process.env.BASE_PATH ?? "/",
-  plugins: [contentValidation(), vaultModule(mode), regionsEndpoint(), gameEmblems(), react(), tailwindcss()],
+  plugins: [contentValidation(), siteMeta(), vaultModule(mode), regionsEndpoint(), gameEmblems(), react(), tailwindcss()],
   build: {
     // three.js makes the globe chunk large by nature; scripts/check-budget.ts enforces the real budget.
     chunkSizeWarningLimit: 1200,
     // dist/.vite/manifest.json lets scripts/check-budget.ts follow the real chunk graph.
     manifest: true,
+    // 404.html is GitHub Pages' not-found page: built like the main page so it gets the fonts and base path.
+    rolldownOptions: {
+      input: {
+        main: fileURLToPath(new URL("./index.html", import.meta.url)),
+        notFound: fileURLToPath(new URL("./404.html", import.meta.url)),
+      },
+    },
   },
   test: {
     include: ["tests/unit/**/*.test.ts"],

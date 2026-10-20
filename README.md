@@ -97,4 +97,5 @@ tests/e2e           Playwright
 | M6 Heart vault (script, UI, tests) | ✅ v0.4.0 |
 | M7 Outro, Calm mode, no-WebGL fallback, responsive and performance passes | ✅ v0.8.0 (fps to confirm on real hardware) |
 | M8 Credits, noindex, GitHub Pages deploy | ✅ v0.6.0 |
+| Launch pass: page title and social preview from content, OG image and touch icon (`npm run og`), 404 page | ✅ v0.12.0 (still `noindex` until the owner says go) |
 | M2 – M8 | see PRD §11 |
