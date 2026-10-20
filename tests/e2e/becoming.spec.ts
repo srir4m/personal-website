@@ -37,17 +37,17 @@ test("the globe's circle lands exactly on the Vitruvian circle, in coastline ink
   expect(style.width).toBe("1.25px");
 });
 
-test("at the settled frame the squad has washed out and the square is drawn", async ({ page }) => {
+test("at the settled frame the figure has inked in and the globe has shed its graticule", async ({ page }) => {
   await page.goto("/#becoming");
   await expect(page.locator("[data-active-act]")).toHaveAttribute("data-active-act", "becoming");
   await page.waitForTimeout(600);
   const state = await page.evaluate(() => ({
-    wash: document.querySelector("#act-becoming .wash-others-threshold")!.getAttribute("intercept"),
     bleedIn: document.querySelector("#act-becoming .bleed-in-threshold")!.getAttribute("intercept"),
+    mask: document.querySelector("#act-becoming .becoming-figure")!.getAttribute("mask"),
     graticule: getComputedStyle(document.querySelector("#act-becoming .becoming-graticule")!).opacity,
   }));
-  expect(Number(state.wash)).toBeLessThan(-5);
   expect(Number(state.bleedIn)).toBeGreaterThan(0.9);
+  expect(state.mask).toBe("none");
   expect(Number(state.graticule)).toBe(0);
 });
 

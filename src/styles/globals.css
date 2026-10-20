@@ -747,9 +747,6 @@ html.lenis body {
   stroke-width: 0.75px;
   vector-effect: non-scaling-stroke;
 }
-.becoming-silhouette {
-  fill: var(--ink);
-}
 
 /* ---- Region editor (dev only) ------------------------------------------------ */
 
