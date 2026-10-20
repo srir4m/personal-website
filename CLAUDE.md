@@ -30,3 +30,17 @@
 npm run build && npm test && npm run test:e2e
 ```
 In cloud containers Playwright uses the pre-installed Chromium at `/opt/pw-browsers/chromium` automatically.
+
+## Working with other agents
+
+Two Claude sessions may work on this repo at once:
+
+- **Feature agent:** builds new sections and content-model changes, committing straight to `main`. It owns
+  `src/stage/acts.ts` (act order and shares), `src/content/schema.ts`, `src/content/site-content.json`,
+  and whichever act it is building (announced in the polish backlog issue, #8).
+- **Polish agent:** improves the look and feel of everything else. It works on `polish/<topic>` branches
+  and opens one small PR per change, with before and after screenshots at 1440×900 and 390×844. Its backlog is
+  issue #8. Before starting, it checks #8 for the act the feature agent is currently building, and stays out of it.
+
+Both agents: rebase on `origin/main` before pushing, keep every check green, never invent personal
+content, and never force-push `main`.
