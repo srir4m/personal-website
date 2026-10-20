@@ -87,7 +87,7 @@ html.lenis body {
   gap: 0.4rem;
   padding: 0.35rem 0.1rem;
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--sepia);
@@ -151,7 +151,7 @@ html.lenis body {
   transform: translate(-6px, -50%);
   color: var(--sepia);
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   text-decoration: none;
@@ -237,6 +237,18 @@ html.lenis body {
   overflow: visible;
 }
 
+/* The title as served in the HTML, centred exactly where Act 0 draws it. */
+.boot-title {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink);
+  pointer-events: none;
+}
+
 /* Title ink-in: a soft-edged mask sweeps left to right (PRD Act 0, "mask reveal"). */
 .ink-reveal {
   mask-image: linear-gradient(90deg, #000 45%, transparent 55%);
@@ -270,7 +282,7 @@ html.lenis body {
 
 .hud-label {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
 }
@@ -317,7 +329,7 @@ html.lenis body {
   padding: 0 0.35rem;
   border: 1px solid var(--sepia);
   font-family: var(--font-mono);
-  font-size: 0.62rem;
+  font-size: 0.75rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--sepia);
@@ -790,7 +802,7 @@ html.lenis body {
 .region-editor__json {
   flex: 1;
   min-height: 12rem;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   background: var(--parchment);
 }
 .editor-poly polygon {
@@ -965,7 +977,7 @@ html.lenis body {
   align-items: center;
   justify-content: center;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--sepia);
@@ -1012,7 +1024,7 @@ html.lenis body {
   border: 1px solid var(--sepia);
   color: var(--sepia);
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
 }
@@ -1063,7 +1075,7 @@ html.lenis body {
 }
 .outro-top {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--sepia);
@@ -1168,12 +1180,12 @@ html.lenis body {
     row-gap: 1.25rem;
   }
   .about__body {
-    font-size: clamp(0.92rem, 2.3dvh, 1.1rem);
+    font-size: clamp(0.92rem, min(2.3dvh, 4.6vw), 1.1rem);
     line-height: 1.5;
   }
 }
-/* Short phones (an iPhone SE and smaller): tighter rhythm so the page fits one screen. */
-@media (max-width: 767px) and (max-height: 700px) {
+/* Short or narrow phones (an iPhone SE and smaller): tighter rhythm so the page fits one screen. */
+@media (max-width: 767px) and (max-height: 700px), (max-width: 340px) {
   .about__page {
     row-gap: 0.75rem;
   }
@@ -1233,7 +1245,7 @@ html.lenis body {
   padding: 0.1rem 0.4rem;
   background: color-mix(in srgb, var(--parchment) 75%, transparent);
   font-family: var(--font-mono);
-  font-size: 0.6rem;
+  font-size: 0.75rem;
   letter-spacing: 0.08em;
   color: color-mix(in srgb, var(--ink) 80%, transparent);
 }
@@ -1354,8 +1366,8 @@ html.lenis body {
     font-size: 0.85rem;
   }
   .activity-card__button .hud-label {
-    font-size: 0.58rem;
-    letter-spacing: 0.14em;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
   }
 }
 
@@ -1396,7 +1408,7 @@ html.lenis body {
 .game-emblem__name {
   grid-column: 1;
   font-family: var(--font-mono);
-  font-size: 0.62rem;
+  font-size: 0.75rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -1404,7 +1416,7 @@ html.lenis body {
   grid-column: 2;
   grid-row: 1;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--sanguine);
@@ -1421,8 +1433,8 @@ html.lenis body {
     padding-left: 9rem;
   }
 }
-/* The smallest phones: the index drops each entry's category line to fit one screen. */
-@media (max-width: 767px) and (max-height: 600px) {
+/* Short phones: the index drops each entry's category line to fit one screen. */
+@media (max-width: 767px) and (max-height: 660px) {
   .activity-card__button .hud-label {
     display: none;
   }

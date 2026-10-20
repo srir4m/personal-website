@@ -55,3 +55,16 @@ test("the outro plays its montage and Back to top returns to the start", async (
   await back.click();
   await expect(page.locator("[data-active-act]")).toHaveAttribute("data-active-act", "boot", { timeout: 5000 });
 });
+
+test("the title is in the served HTML, so it paints before any JavaScript, and Act 0 takes it over", async ({ page, request }) => {
+  const html = await (await request.get("/")).text();
+  expect(html).toMatch(/<div id="boot-title"[^>]*>.*Sriram/s);
+  await page.goto("/");
+  await expect(page.locator("#act-boot")).toContainText("Sriram");
+  await expect(page.locator("#boot-title")).toHaveCount(0);
+});
+
+test("a deep link never shows the opening title", async ({ page }) => {
+  await page.goto("/#about");
+  await expect(page.locator("#boot-title")).toHaveCount(0);
+});
