@@ -21,7 +21,8 @@ test("the map loads from self-hosted tiles and zooms in as the page scrolls", as
     await expect.poll(() => zoom(page)).toBeGreaterThan(last);
     last = await zoom(page);
   }
-  expect(last).toBeGreaterThan(14);
+  // It ends at metro scale, with the area's ring on screen for Becoming to take over.
+  expect(last).toBeGreaterThan(8);
   await expect(page.locator(".map-attribution")).toContainText("OpenStreetMap");
 });
 

@@ -1,18 +1,15 @@
-import { useLayoutEffect, useMemo, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
 import { EASE } from "../../stage/motion";
 import { registerActTimeline } from "../../stage/timeline";
 import { FIGURE_MARKUP, FRAME, VIEWBOX, VITRUVIAN } from "../../vitruvian/figure";
-import { graticulePaths } from "../Act1Globe/ortho";
-import { IDLE_START_LNG, IDLE_TILT_DEG } from "../Act1Globe/layout";
+import { RING_OVERSIZE } from "../Descent/camera";
 import type { ActProps } from "../registry";
 
 gsap.registerPlugin(DrawSVGPlugin);
 
 const { circle } = VITRUVIAN;
-/** The globe ghost starts this many times larger than the Vitruvian circle: past the viewport. */
-const GHOST_START_SCALE = 3.2;
 
 /**
  * A noise-thresholded alpha mask (PRD Act 4 "ink-wash"). Animating the transfer
@@ -48,29 +45,33 @@ const FIGURE_BOX = { x: 0, y: 0, width: VB_W, height: VB_H };
 
 export default function Act4Becoming({ index }: ActProps) {
   const scope = useRef<SVGSVGElement>(null);
-  const graticule = useMemo(() => graticulePaths(IDLE_TILT_DEG, IDLE_START_LNG), []);
   const squarePath = `M${FRAME.left},${FRAME.top}H${FRAME.right}V${FRAME.bottom}H${FRAME.left}Z`;
 
-  // Three beats, one after another: the figure inks in, the square draws itself, and the
-  // globe from the start comes back as a ghost and settles onto the Vitruvian circle.
+  // Three beats, one after another. The map's ring around the owner's area (left on screen
+  // as the map dissolves) shrinks onto the Vitruvian circle and turns from red chalk to
+  // ink: the world narrows to the person. Then the figure inks in and the square draws.
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ paused: true, defaults: { ease: "none" } });
       tl.set({}, {}, 1);
+      // From the map's ring (centred on screen, RING_OVERSIZE larger) onto the circle.
+      tl.fromTo(
+        ".becoming-ring",
+        { scale: RING_OVERSIZE, x: VB_W / 2 - circle.cx, y: VB_H / 2 - circle.cy, svgOrigin: `${circle.cx} ${circle.cy}` },
+        { scale: 1, x: 0, y: 0, duration: 0.3, ease: EASE },
+        0,
+      );
+      tl.fromTo(".becoming-ring-chalk", { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.18 }, 0.12);
+      tl.fromTo(".becoming-ring-ink", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.18 }, 0.1);
       // The ink mask is attached only while the figure inks in; a masked 360 KB figure is
       // expensive to repaint. Timeline sets revert when scrubbing back.
       gsap.set(".becoming-figure", { attr: { mask: "url(#bleed-in)" } });
-      tl.fromTo(".bleed-in-threshold", { attr: { intercept: HIDDEN } }, { attr: { intercept: VISIBLE }, duration: 0.3, ease: EASE }, 0);
-      tl.set(".becoming-figure", { attr: { mask: "none" } }, 0.32);
-      tl.fromTo(".becoming-square", { drawSVG: "0% 0%" }, { drawSVG: "0% 100%", duration: 0.2 }, 0.26);
-      tl.fromTo(".becoming-ghost", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.06 }, 0.4);
-      tl.fromTo(
-        ".becoming-ghost-scale",
-        { scale: GHOST_START_SCALE, svgOrigin: `${circle.cx} ${circle.cy}` },
-        { scale: 1, duration: 0.36, ease: EASE },
-        0.42,
-      );
-      tl.fromTo(".becoming-graticule", { autoAlpha: 0.7 }, { autoAlpha: 0, duration: 0.1 }, 0.8);
+      // Hidden while the ring lands, so no ink speck shows before the figure's own beat.
+      gsap.set(".becoming-figure", { autoAlpha: 0 });
+      tl.set(".becoming-figure", { autoAlpha: 1 }, 0.25);
+      tl.fromTo(".bleed-in-threshold", { attr: { intercept: HIDDEN } }, { attr: { intercept: VISIBLE }, duration: 0.3, ease: EASE }, 0.25);
+      tl.set(".becoming-figure", { attr: { mask: "none" } }, 0.56);
+      tl.fromTo(".becoming-square", { drawSVG: "0% 0%" }, { drawSVG: "0% 100%", duration: 0.2 }, 0.45);
       registerActTimeline(index, tl);
     }, scope);
     return () => ctx.revert();
@@ -87,22 +88,16 @@ export default function Act4Becoming({ index }: ActProps) {
 
         <path d={squarePath} className="vitruvian-line becoming-square" />
 
-        <g className="becoming-ghost">
-          <g className="becoming-ghost-scale">
-            <g transform={`translate(${circle.cx} ${circle.cy}) scale(${circle.r})`}>
-              <g className="becoming-graticule">
-                {graticule.map((d, i) => (
-                  <path key={i} d={d} className="vitruvian-graticule" />
-                ))}
-              </g>
-              <circle r="1" className="vitruvian-line" data-testid="vitruvian-circle" />
-            </g>
+        <g className="becoming-ring">
+          <g transform={`translate(${circle.cx} ${circle.cy}) scale(${circle.r})`}>
+            <circle r="1" className="becoming-ring-chalk" />
+            <circle r="1" className="vitruvian-line becoming-ring-ink" data-testid="vitruvian-circle" />
           </g>
         </g>
       </svg>
       <p className="sr-only">
-        Leonardo's Vitruvian figure inks itself onto the page, framed by a square, while the globe from the start
-        shrinks into the circle around it.
+        The ring around the owner's area on the map shrinks into the circle of Leonardo's Vitruvian figure, which
+        inks itself onto the page, framed by a square.
       </p>
     </div>
   );

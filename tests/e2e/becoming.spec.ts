@@ -37,18 +37,40 @@ test("the globe's circle lands exactly on the Vitruvian circle, in coastline ink
   expect(style.width).toBe("1.25px");
 });
 
-test("at the settled frame the figure has inked in and the globe has shed its graticule", async ({ page }) => {
+test("at the settled frame the figure has inked in and the map's ring has become the circle", async ({ page }) => {
   await page.goto("/#becoming");
   await expect(page.locator("[data-active-act]")).toHaveAttribute("data-active-act", "becoming");
   await page.waitForTimeout(600);
   const state = await page.evaluate(() => ({
     bleedIn: document.querySelector("#act-becoming .bleed-in-threshold")!.getAttribute("intercept"),
     mask: document.querySelector("#act-becoming .becoming-figure")!.getAttribute("mask"),
-    graticule: getComputedStyle(document.querySelector("#act-becoming .becoming-graticule")!).opacity,
+    chalk: getComputedStyle(document.querySelector("#act-becoming .becoming-ring-chalk")!).opacity,
   }));
   expect(Number(state.bleedIn)).toBeGreaterThan(0.9);
   expect(state.mask).toBe("none");
-  expect(Number(state.graticule)).toBe(0);
+  expect(Number(state.chalk)).toBe(0);
+});
+
+test("Becoming opens on the map's ring: centred on screen, just outside the circle's size", async ({ page }) => {
+  await page.goto("/#descent");
+  await expect(page.locator(".descent-map")).toHaveAttribute("data-ready", "true", { timeout: 15_000 });
+  // Scroll to the very start of Becoming, where it has dissolved in over the map.
+  const { start } = await import("../../src/stage/acts").then((m) => m.rangeOf("becoming"));
+  await page.evaluate((p) => window.scrollTo(0, Math.round(p * 14 * innerHeight)), start + 0.0005);
+  await page.waitForTimeout(800);
+  const ring = await page.locator("#act-becoming .becoming-ring-chalk").boundingBox();
+  const size = page.viewportSize()!;
+  expect(Math.abs(ring!.x + ring!.width / 2 - size.width / 2)).toBeLessThan(3);
+  expect(Math.abs(ring!.y + ring!.height / 2 - size.height / 2)).toBeLessThan(3);
+  const circle = await page.evaluate(() => {
+    const probe = document.createElement("div");
+    probe.style.cssText = "position:absolute;width:var(--figure-size)";
+    document.body.appendChild(probe);
+    const px = probe.offsetWidth;
+    probe.remove();
+    return px;
+  });
+  expect(ring!.width / circle).toBeGreaterThan(1);
 });
 
 test("the region editor is not in production builds", async ({ page }) => {

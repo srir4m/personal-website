@@ -752,6 +752,14 @@ html.lenis body {
   stroke-width: 1.25px;
   vector-effect: non-scaling-stroke;
 }
+/* The map's ring as Becoming receives it: dashed red chalk, as drawn on the map. */
+.becoming-ring-chalk {
+  fill: none;
+  stroke: var(--sanguine);
+  stroke-width: 1.5px;
+  stroke-dasharray: 6 4.5;
+  vector-effect: non-scaling-stroke;
+}
 .vitruvian-graticule {
   fill: none;
   stroke: var(--sepia);
