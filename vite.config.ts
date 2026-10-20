@@ -41,6 +41,16 @@ function siteMeta(): Plugin {
       const { owner } = JSON.parse(readFileSync(contentPath, "utf8"));
       const name = filled(owner.name) ?? "Microcosm";
       const tagline = filled(owner.tagline);
+      // The opening's role line, as Act0Boot builds it: degree · school · area.
+      const { education } = JSON.parse(readFileSync(contentPath, "utf8"));
+      const role = [filled(education?.degree), filled(education?.school), filled(owner.area?.label)]
+        .filter((fact): fact is string => Boolean(fact))
+        .map((fact, i, all) =>
+          i < all.length - 1
+            ? `<span><span class="whitespace-nowrap">${escapeHtml(fact)} ·</span> </span>`
+            : `<span><span class="whitespace-nowrap">${escapeHtml(fact)}</span></span>`,
+        )
+        .join("");
       const title = tagline ? `${name} · ${tagline}` : name;
       const description = filled(owner.intro)?.split(/(?<=\.)\s/)[0] ?? tagline;
       const page = ctx.path.endsWith("404.html") ? `Not found · ${name}` : title;
@@ -59,6 +69,7 @@ function siteMeta(): Plugin {
                 `<div class="relative flex flex-col items-center gap-3 px-6 text-center ink-reveal">` +
                 `<p class="font-display text-6xl leading-none font-semibold md:text-8xl">${escapeHtml(name)}</p>` +
                 (tagline ? `<p class="font-display text-2xl italic md:text-3xl">${escapeHtml(tagline)}</p>` : "") +
+                (role ? `<p class="boot-role">${role}</p>` : "") +
                 `</div>`,
               injectTo: "body-prepend" as const,
             },

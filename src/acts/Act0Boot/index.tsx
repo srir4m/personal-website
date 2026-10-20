@@ -15,6 +15,10 @@ gsap.registerPlugin(DrawSVGPlugin);
 export default function Act0Boot(_: ActProps) {
   const name = text(content.owner.name);
   const tagline = text(content.owner.tagline);
+  // What the owner does, in one line of existing facts: degree · school · area.
+  const role = [text(content.education.degree), text(content.education.school), content.owner.area && text(content.owner.area.label)].filter(
+    (fact): fact is string => Boolean(fact),
+  );
   const ready = useStage((s) => s.bootReady);
   const calm = useStage((s) => s.motion === "calm");
   const drawing = useRef<SVGSVGElement>(null);
@@ -54,6 +58,17 @@ export default function Act0Boot(_: ActProps) {
         >
           {name && <p className="font-display text-6xl leading-none font-semibold md:text-8xl">{name}</p>}
           {tagline && <p className="font-display text-2xl italic md:text-3xl">{tagline}</p>}
+          {role.length > 0 && (
+            // Each fact wraps as a whole, its separator kept with it, so no line starts with one.
+            <p className="boot-role">
+              {role.map((fact, i) => (
+                <span key={fact}>
+                  <span className="whitespace-nowrap">{i < role.length - 1 ? `${fact} ·` : fact}</span>
+                  {i < role.length - 1 && " "}
+                </span>
+              ))}
+            </p>
+          )}
         </div>
       )}
 

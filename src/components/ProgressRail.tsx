@@ -9,10 +9,9 @@ import { scrollToAct } from "../stage/timeline";
  */
 const RAIL_LABELS: Partial<Record<ActId, string>> = {
   boot: "Home",
-  about: "About",
   globe: "Location",
-  activities: "Activities",
-  body: "Profile",
+  tour: "Profile",
+  body: "Explore",
   outro: "Contact",
 };
 

@@ -1,6 +1,9 @@
 import { expect, test, type Page } from "@playwright/test";
 
-const ACTS = ["boot", "about", "globe", "descent", "activities", "becoming", "body", "outro"];
+const ACTS = ["boot", "globe", "descent", "becoming", "tour", "body", "outro"];
+/** Each act's URL hash (the tour is #profile). */
+const HASH: Record<string, string> = { boot: "", tour: "profile" };
+const hashOf = (id: string) => HASH[id] ?? id;
 
 const activeAct = (page: Page) => page.locator("[data-active-act]").getAttribute("data-active-act");
 
@@ -27,9 +30,16 @@ test("scrolling moves through every act in order", async ({ page }) => {
 });
 
 for (const id of ACTS.slice(1)) {
-  test(`deep link #${id} lands on that act`, async ({ page }) => {
-    await page.goto(`/#${id}`);
+  test(`deep link #${hashOf(id)} lands on that act`, async ({ page }) => {
+    await page.goto(`/#${hashOf(id)}`);
     await expect.poll(() => activeAct(page)).toBe(id);
+  });
+}
+
+for (const old of ["about", "activities"]) {
+  test(`the old #${old} link lands on the tour, which absorbed it`, async ({ page }) => {
+    await page.goto(`/#${old}`);
+    await expect.poll(() => activeAct(page)).toBe("tour");
   });
 }
 
@@ -41,9 +51,9 @@ test("deep link #body/<region> keeps the region in the URL", async ({ page }) =>
 
 test("progress rail ticks jump to their act", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("navigation", { name: "Acts" }).getByRole("link", { name: "Activities" }).click();
-  await expect.poll(() => activeAct(page)).toBe("activities");
-  await expect(page).toHaveURL(/#activities$/);
+  await page.getByRole("navigation", { name: "Acts" }).getByRole("link", { name: "Profile" }).click();
+  await expect.poll(() => activeAct(page)).toBe("tour");
+  await expect(page).toHaveURL(/#profile$/);
 });
 
 test("motion toggle switches to calm mode and still reaches deep links", async ({ page }) => {
@@ -60,7 +70,7 @@ test("production build shows no TODO text, robots noindex, and the version", asy
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "noindex, nofollow");
   await expect(page.locator("footer")).toContainText(/v\d+\.\d+\.\d+/);
   for (const id of ACTS) {
-    await page.goto(`/#${id === "boot" ? "" : id}`);
+    await page.goto(`/#${hashOf(id)}`);
     await page.waitForTimeout(200);
     expect(await page.locator("body").innerText()).not.toMatch(/TODO/);
   }
@@ -71,15 +81,13 @@ test("content status overlay is stripped from production", async ({ page }) => {
   await expect(page.getByRole("complementary", { name: "Content status" })).toHaveCount(0);
 });
 
-test("the opening shows the owner's name and one-liner; About shows the intro", async ({ page }) => {
+test("the opening shows the owner's name and one-liner; the tour opens on the intro", async ({ page }) => {
   await page.goto("/");
   await expect(page.locator("#act-boot")).toContainText("Sriram");
   await expect(page.locator("#act-boot")).toContainText("Architecting perfection");
-  await page.goto("/#about");
-  await expect(page.locator("[data-active-act]")).toHaveAttribute("data-active-act", "about");
-  await expect(page.locator("#act-about")).toContainText("Stevens Institute of Technology");
-  await expect(page.locator("#act-about")).toContainText("New York area");
-  // Gaming is an aside, not part of the intro.
-  await expect(page.locator("#act-about .about__body")).not.toContainText("Counter-Strike");
-  await expect(page.getByRole("complementary", { name: "On the side" })).toContainText("17,000 Premier");
+  await page.goto("/#profile");
+  await expect(page.locator("[data-active-act]")).toHaveAttribute("data-active-act", "tour");
+  const intro = page.locator('#act-tour [data-stop="intro"]');
+  await expect(intro).toBeVisible();
+  await expect(intro).toContainText("Stevens Institute of Technology");
 });
