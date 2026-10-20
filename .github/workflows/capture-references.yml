@@ -1,0 +1,36 @@
+# Design research: captures reference sites (screenshots, scroll frames, style report) and commits them to this branch.
+# Runs only on pushes to tools/reference-capture; never touches main or the deployed site.
+name: Capture reference sites
+
+on:
+  push:
+    branches: [tools/reference-capture]
+    paths-ignore: ["captures/**"]
+
+permissions:
+  contents: write
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install Playwright
+        run: |
+          mkdir -p /tmp/cap && cd /tmp/cap && npm init -y >/dev/null && npm i playwright@1.49.1 >/dev/null
+          npx playwright install --with-deps chromium
+      - name: Capture
+        run: |
+          cp tools/capture/capture.mjs /tmp/cap/ && cd /tmp/cap && node capture.mjs
+          rm -rf "$GITHUB_WORKSPACE/captures" && cp -r /tmp/cap/captures "$GITHUB_WORKSPACE/captures"
+      - name: Commit captures
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add captures
+          git commit -m "Reference captures" || exit 0
+          git push
