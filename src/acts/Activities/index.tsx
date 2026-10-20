@@ -52,9 +52,9 @@ export default function Activities(_: ActProps) {
   return (
     <div className="activities bg-parchment text-ink">
       <div className="activities__page">
-        <div className="activities__head">
-          <p className="hud-label text-sepia">Activities</p>
-          <div className="activities__rule" aria-hidden="true" />
+        <div className="section-head" aria-hidden="true">
+          <p className="section-title">Activities</p>
+          <div className="section-rule" />
         </div>
         {intro && <p className="activities__intro">{intro}</p>}
         <ul className="activities__grid">
