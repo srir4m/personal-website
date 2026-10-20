@@ -1069,11 +1069,10 @@ html.lenis body {
   align-items: center;
   gap: 1rem;
 }
-.about-rule {
+.about__rule {
   flex: 1;
   height: 1px;
   background: var(--sepia);
-  transform-origin: left;
 }
 .about__body {
   grid-area: body;
@@ -1188,11 +1187,10 @@ html.lenis body {
   align-items: center;
   gap: 1rem;
 }
-.activities-rule {
+.activities__rule {
   flex: 1;
   height: 1px;
   background: var(--sepia);
-  transform-origin: left;
 }
 .activities__intro {
   max-width: 40rem;
