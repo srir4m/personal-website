@@ -1,0 +1,128 @@
+{
+ "title": "",
+ "url": "https://www.swerdlow.dev/",
+ "scrollHeight": 2701,
+ "htmlClass": "",
+ "bodyClass": "",
+ "fonts": [
+  [
+   "\"JetBrains Mono\", monospace",
+   64
+  ],
+  [
+   "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+   20
+  ],
+  [
+   "\"Material Symbols Rounded\"",
+   8
+  ],
+  [
+   "\"Material Symbols Outlined\"",
+   1
+  ]
+ ],
+ "fontFaces": [
+  "JetBrains Mono 400 italic unloaded",
+  "JetBrains Mono 400 italic unloaded",
+  "JetBrains Mono 400 italic unloaded",
+  "JetBrains Mono 400 italic unloaded",
+  "JetBrains Mono 400 italic unloaded",
+  "JetBrains Mono 400 italic unloaded",
+  "JetBrains Mono 300 normal unloaded",
+  "JetBrains Mono 300 normal unloaded",
+  "JetBrains Mono 300 normal unloaded",
+  "JetBrains Mono 300 normal unloaded",
+  "JetBrains Mono 300 normal unloaded",
+  "JetBrains Mono 300 normal unloaded",
+  "JetBrains Mono 400 normal unloaded",
+  "JetBrains Mono 400 normal unloaded",
+  "JetBrains Mono 400 normal unloaded",
+  "JetBrains Mono 400 normal unloaded",
+  "JetBrains Mono 400 normal unloaded",
+  "JetBrains Mono 400 normal loaded",
+  "JetBrains Mono 700 normal unloaded",
+  "JetBrains Mono 700 normal unloaded",
+  "JetBrains Mono 700 normal unloaded",
+  "JetBrains Mono 700 normal unloaded",
+  "JetBrains Mono 700 normal unloaded",
+  "JetBrains Mono 700 normal loaded",
+  "JetBrains Mono 800 normal unloaded",
+  "JetBrains Mono 800 normal unloaded",
+  "JetBrains Mono 800 normal unloaded",
+  "JetBrains Mono 800 normal unloaded",
+  "JetBrains Mono 800 normal unloaded",
+  "JetBrains Mono 800 normal loaded",
+  "Material Symbols Rounded 400 normal unloaded",
+  "Material Symbols Outlined 100 700 normal loaded",
+  "Material Symbols Rounded 100 700 normal loaded",
+  "Material Symbols Sharp 100 700 normal unloaded"
+ ],
+ "colors": [
+  [
+   "rgb(0, 0, 0)",
+   80
+  ],
+  [
+   "rgb(75, 85, 99)",
+   6
+  ],
+  [
+   "rgb(156, 163, 175)",
+   6
+  ],
+  [
+   "rgb(255, 255, 255)",
+   1
+  ]
+ ],
+ "backgrounds": [
+  [
+   "rgb(255, 255, 255)",
+   4
+  ],
+  [
+   "rgb(249, 250, 251)",
+   1
+  ]
+ ],
+ "rootVars": {},
+ "animations": [],
+ "transitions": [
+  "all 0.15s cubic-bezier(0.4, 0, 0.2, 1)",
+  "color, background-color, border-color, text-decoration-color, fill, stroke 0.15s cubic-bezier(0.4, 0, 0.2, 1)"
+ ],
+ "libs": {
+  "gsap": false,
+  "ScrollTrigger": false,
+  "lenis": false,
+  "three": true,
+  "framer": false,
+  "next": false,
+  "canvases": 2,
+  "videos": 0,
+  "svgs": 0
+ },
+ "scripts": [],
+ "styles": [
+  "https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,700;0,800;1,400&display=swap",
+  "https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded",
+  "https://www.swerdlow.dev/_app/immutable/assets/0.7ff5174a.css",
+  "https://www.swerdlow.dev/_app/immutable/assets/index.0c4e347e.css",
+  "https://www.swerdlow.dev/_app/immutable/assets/2.2fa7685d.css"
+ ],
+ "text": "Ben Swerdlow\nCreator.\nInterested?\nWho Am I\npublic\n\nI'm co-founder and CEO of Freestyle.\n\nschool\n\nI'm a student dropout from the University of Chicago, YC S24 Grad\n\ncloud\n\nI'm a skilled engineer with experience in distributed systems, cloud infrastructure, and data engineering\n\nsmartphone\n\nI've designed and launched apps with thousands of users\n\nSkills\ncode\n\nRust, TypeScript, JavaScript, Python, Dart (Mostly Rust these days)\n\nlanguage\n\nEnglish, 中文 (4 years/四年)\n\nInterests\nskillet\n\nI'm an amateur cook, still figuring out how to make a good steak\n\npsychology\n\nI'm currently interested in high dimensional structured data and how to make it useful\n\ndashboard\n\nI enjoy building tools to help people interact with their data, build adaptive systems and make the web more accessible\n\nContact Me\nWriting\nBe Intentional About How AI Changes Your Codebase\n\nAs AI Coding Agents write more code, it's more important than ever that we're intentional about the code it writes.\n\nMarch 2026\n\nDrawing with Zero-Width Characters\n\nA set of 18 unicode characters generally only seen in the Qur'an broke my assumptions about text rendering.\n\nDecember 2025\n\nThe Future of AI Coding Agents\n\nWhere AI App Builders and AI Software Engineers are headed next.\n\nAugust 2025\n\nbs - Ben's Bash Script Manager\n\nA basic hierarchical bash script manager that lets me manage scripts easily.\n\nAugust 2025\n\nHow We Revamped Our Docs for AI\n\nWhat do docs look like if people don't read them?\n\nJuly 2025\n\nReverse Engineering OpenAI Code Execution\n\nI figured out exactly how OpenAI's code execution works on accident.\n\nMarch 2025",
+ "outline": [
+  "h1.text-white text-center text-6xl sm:text-8xl font-extrabold heading svelte-uec42j Ben Swerdlow",
+  "h1.text-3xl py-2 col-start-2 Who Am I",
+  "h1.text-3xl pt-2 col-start-2 Skills",
+  "h1.text-3xl pt-2 col-start-2 Interests",
+  "h1.text-3xl font-bold mb-4 Writing",
+  "h2.text-lg font-bold Be Intentional About How AI Changes Your Codebase",
+  "h2.text-lg font-bold Drawing with Zero-Width Characters",
+  "h2.text-lg font-bold The Future of AI Coding Agents",
+  "h2.text-lg font-bold bs - Ben's Bash Script Manager",
+  "h2.text-lg font-bold How We Revamped Our Docs for AI",
+  "h2.text-lg font-bold Reverse Engineering OpenAI Code Execution"
+ ]
+}

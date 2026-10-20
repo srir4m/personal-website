@@ -1,0 +1,160 @@
+{
+ "title": "jiggletaco — Collin Vo",
+ "url": "https://jyrinx.xyz/",
+ "scrollHeight": 3280,
+ "htmlClass": "geist_a71539c9-module__T19VSG__variable geist_mono_8d43a2aa-module__8Li5zG__variable h-full antialiased dark",
+ "bodyClass": "min-h-full bg-background text-foreground",
+ "fonts": [
+  [
+   "Geist, \"Geist Fallback\", system-ui, sans-serif",
+   221
+  ],
+  [
+   "Geist, \"Geist Fallback\"",
+   24
+  ],
+  [
+   "\"Geist Mono\", \"Geist Mono Fallback\"",
+   1
+  ]
+ ],
+ "fontFaces": [
+  "Geist 100 900 normal unloaded",
+  "Geist 100 900 normal unloaded",
+  "Geist 100 900 normal unloaded",
+  "Geist 100 900 normal unloaded",
+  "Geist 100 900 normal loaded",
+  "Geist Fallback normal normal error",
+  "Geist Mono 100 900 normal unloaded",
+  "Geist Mono 100 900 normal unloaded",
+  "Geist Mono 100 900 normal unloaded",
+  "Geist Mono 100 900 normal unloaded",
+  "Geist Mono 100 900 normal unloaded",
+  "Geist Mono 100 900 normal loaded",
+  "Geist Mono Fallback normal normal unloaded"
+ ],
+ "colors": [
+  [
+   "rgb(245, 232, 216)",
+   155
+  ],
+  [
+   "oklab(0.936934 0.00745273 0.0244904 / 0.8)",
+   31
+  ],
+  [
+   "rgb(255, 255, 255)",
+   24
+  ],
+  [
+   "rgb(255, 111, 97)",
+   16
+  ],
+  [
+   "oklab(0.936934 0.00745273 0.0244904 / 0.7)",
+   6
+  ],
+  [
+   "rgba(245, 232, 216, 0.6)",
+   5
+  ],
+  [
+   "oklab(0.936934 0.00745273 0.0244904 / 0.3)",
+   4
+  ],
+  [
+   "rgb(218, 165, 32)",
+   2
+  ],
+  [
+   "oklab(0.936934 0.00745273 0.0244904 / 0.9)",
+   1
+  ],
+  [
+   "oklab(0.936934 0.00745273 0.0244904 / 0.6)",
+   1
+  ],
+  [
+   "oklab(0.936934 0.00745273 0.0244904 / 0.5)",
+   1
+  ]
+ ],
+ "backgrounds": [
+  [
+   "oklab(0.936934 0.00745273 0.0244904 / 0.05)",
+   6
+  ],
+  [
+   "oklab(0.936934 0.00745273 0.0244904 / 0.03)",
+   4
+  ],
+  [
+   "rgb(28, 28, 28)",
+   3
+  ],
+  [
+   "oklab(0.715064 0.157671 0.0837208 / 0.1)",
+   1
+  ]
+ ],
+ "rootVars": {},
+ "animations": [
+  "word-in 0.7s cubic-bezier(0.16, 1, 0.3, 1)",
+  "fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1)"
+ ],
+ "transitions": [
+  "--accent-coral, --accent-gold, --accent-hover 1.2s, 1.2s, 1.2s ease, ease, ease",
+  "background-color, color 0.2s, 0.2s ease, ease",
+  "transform, translate, scale, rotate 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+  "color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to 0.15s cubic-bezier(0.4, 0, 0.2, 1)",
+  "opacity 0.3s ease"
+ ],
+ "libs": {
+  "gsap": false,
+  "ScrollTrigger": false,
+  "lenis": false,
+  "three": false,
+  "framer": false,
+  "next": true,
+  "canvases": 0,
+  "videos": 0,
+  "svgs": 15
+ },
+ "scripts": [
+  "https://jyrinx.xyz/_next/static/immutable/chunks/3qnwfrp8pa_rv.js",
+  "https://jyrinx.xyz/_next/static/immutable/chunks/3qjazji4-tolm.js",
+  "https://jyrinx.xyz/_next/static/immutable/chunks/1u1c-tgzufxvg.js",
+  "https://jyrinx.xyz/_next/static/immutable/chunks/0zat_5ol7ksig.js",
+  "https://jyrinx.xyz/_next/static/immutable/chunks/turbopack-3rvawodpshacv.js",
+  "https://jyrinx.xyz/_next/static/immutable/chunks/30noymdyn0b0y.js",
+  "https://jyrinx.xyz/_next/static/immutable/chunks/36mdoboj-8zj7.js",
+  "https://jyrinx.xyz/_next/static/immutable/chunks/2j0kde0_1aj7g.js",
+  "https://jyrinx.xyz/_next/static/immutable/chunks/2o_7gdbt4dlhp.js",
+  "https://jyrinx.xyz/_next/static/immutable/chunks/1o9fldnx6yhqw.js",
+  "https://jyrinx.xyz/_next/static/immutable/chunks/0c0hxoamwjsbw.js",
+  "https://jyrinx.xyz/_next/static/immutable/chunks/13vbligain1wy.js"
+ ],
+ "styles": [
+  "https://jyrinx.xyz/_next/static/immutable/chunks/3htgvyqltwhov.css"
+ ],
+ "text": "jiggletaco\njiggletaco\nHome\nProjects\nAbout\nBlog\nDark\nI am jiggletaco, I like to make life simple & enjoyable :)\nNot listening right now\n\nWelcome to my domain.\n\nI am currently a CS student at Stevens Institute of Technology and a soon-to-be Software Engineer, passionate about building full-stack applications, machine learning, and engineering personal solutions.\n\nLinkedIn\nEmail\nGitHub\n\nAll else: let's keep this brief and casual. I guess this is where I tell you a bit about myself. Well, I like to climb cool rocks (feel free to reach out to climb), I will definitely try out every piano I spot, and I enjoy nature.\n\nRecently shipped\nall posts →\nThe site finally has a real address: jyrinx.xyz\nOCTOBER 20, 2026\n\nBuying a domain on GoDaddy, pointing it at Vercel, and what actually changes when your URL does\n\nProjects\nNO THUMBNAIL\nSecureLog-AES\n\nRSA encryption / decryption service with audit logging. React frontend, FastAPI backend, PostgreSQL for log storage, all containerized with Docker. Built for the Blueprint Dev Challenge.\n\nSource\nNO THUMBNAIL\nStevens Blueprint Chat CDK\n\nSoftware Developer - Internal Team Built a RAG pipeline using LangChain and Python, embedding internal documents into AWS S3 Vectors to improve LLM response relevance and retrieval accuracy. Architected an event-driven document ingestion pipeline using AWS Lambda, SQS, and API Gateway, enabling scalable and fault-tolerant processing of document updates. Reduced response latency by integrating vector search with streaming LLM inference via AWS Bedrock, improving overall system reliability and performance at scale.\n\nSource\nNO THUMBNAIL\nOshibana Flower Classifier\n\nPyTorch neural net classifying iris species, optimized via weight pruning and FP16 quantization. Held 93% accuracy while shrinking model size by ~9%.\n\nSource\nNO THUMBNAIL\nAirbnb Price Predictor\n\nML regression on the NYC 2019 Airbnb dataset to estimate listing prices. Pandas + Scikit-learn for the model, served through a FastAPI backend.\n\nSource\n> vault",
+ "outline": [
+  "nav.flex flex-col gap-1 Home Projects About Blog",
+  "main.flex-1 lg:ml-64 I am jiggletaco, I like to make life simple & enjoyable :) N",
+  "nav.pointer-events-none fixed z-20 top-[57px] bottom-0 left-0 w-1.5 lg:top-6 lg:bott ",
+  "section.flex flex-col gap-6 scroll-mt-16 I am jiggletaco, I like to make life simple & enjoyable :) N",
+  "h1.text-4xl font-bold tracking-tight text-foreground sm:flex-1 sm:text-5xl I am jiggletaco, I like to make life simple & enjoyable :)",
+  "section.fade-up mt-12 flex flex-col gap-4 scroll-mt-16 I am currently a CS student at Stevens Institute of Technolo",
+  "section.mt-12 All else: let's keep this brief and casual. I guess this is ",
+  "section.mt-16 scroll-mt-16 Recently shipped all posts → The site finally has a real add",
+  "h2.text-2xl font-bold text-foreground Recently shipped",
+  "h3.text-lg font-semibold text-foreground transition-colors group-hover:text-accent- The site finally has a real address: jyrinx.xyz",
+  "section.mt-16 scroll-mt-16 Projects NO THUMBNAIL SecureLog-AES RSA encryption / decryp",
+  "h2.mb-6 text-2xl font-bold text-foreground Projects",
+  "h3.text-lg font-semibold text-foreground transition-colors group-hover:text-accent- SecureLog-AES",
+  "h3.text-lg font-semibold text-foreground transition-colors group-hover:text-accent- Stevens Blueprint Chat CDK",
+  "h3.text-lg font-semibold text-foreground transition-colors group-hover:text-accent- Oshibana Flower Classifier",
+  "h3.text-lg font-semibold text-foreground transition-colors group-hover:text-accent- Airbnb Price Predictor",
+  "footer.mt-24 border-t border-border pt-6 > vault"
+ ]
+}

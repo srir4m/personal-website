@@ -1,0 +1,136 @@
+{
+ "title": "zidan kazi",
+ "url": "https://www.zidankazi.com/",
+ "scrollHeight": 2510,
+ "htmlClass": "",
+ "bodyClass": "",
+ "fonts": [
+  [
+   "Arial",
+   365
+  ],
+  [
+   "\"IM Fell English\", Georgia, serif",
+   170
+  ],
+  [
+   "\"Manuscript Initial\", Furia, serif",
+   52
+  ],
+  [
+   "\"Times New Roman\"",
+   18
+  ],
+  [
+   "Georgia, \"Times New Roman\", serif",
+   2
+  ],
+  [
+   "Furia, \"IM Fell English\", serif",
+   1
+  ]
+ ],
+ "fontFaces": [
+  "Manuscript Initial 400 normal loaded",
+  "Furia 400 normal loaded",
+  "IM Fell English 400 normal loaded",
+  "IM Fell English 400 italic loaded"
+ ],
+ "colors": [
+  [
+   "rgb(0, 0, 0)",
+   383
+  ],
+  [
+   "rgb(53, 46, 37)",
+   82
+  ],
+  [
+   "rgb(249, 243, 229)",
+   75
+  ],
+  [
+   "rgb(43, 40, 34)",
+   44
+  ],
+  [
+   "rgb(42, 26, 10)",
+   13
+  ],
+  [
+   "rgb(100, 56, 46)",
+   10
+  ],
+  [
+   "rgb(255, 226, 168)",
+   1
+  ]
+ ],
+ "backgrounds": [
+  [
+   "rgba(39, 39, 30, 0.86)",
+   25
+  ],
+  [
+   "rgb(249, 243, 229)",
+   24
+  ],
+  [
+   "rgb(93, 102, 80)",
+   1
+  ],
+  [
+   "rgba(252, 249, 239, 0.25)",
+   1
+  ],
+  [
+   "rgb(22, 22, 24)",
+   1
+  ],
+  [
+   "rgb(255, 226, 168)",
+   1
+  ]
+ ],
+ "rootVars": {
+  "--paper": "#f4eee0",
+  "--ink": "#2b2822",
+  "--muted": "#352e25",
+  "--link": "#64382e",
+  "--reading-start": "clamp(320px,78svh,880px)"
+ },
+ "animations": [
+  "scroll-nudge 3.6s ease-in-out"
+ ],
+ "transitions": [
+  "opacity 0.18s ease-out",
+  "opacity 0.14s ease-out",
+  "transform, opacity 0.15s, 0.15s cubic-bezier(0.2, 0, 0, 1), ease-out",
+  "opacity 0.15s ease-out"
+ ],
+ "libs": {
+  "gsap": false,
+  "ScrollTrigger": false,
+  "lenis": false,
+  "three": true,
+  "framer": false,
+  "next": false,
+  "canvases": 2,
+  "videos": 0,
+  "svgs": 0
+ },
+ "scripts": [
+  "https://www.zidankazi.com/assets/site-BKGJJFIR.js"
+ ],
+ "styles": [
+  "https://www.zidankazi.com/assets/site-4e3024e4b373.css"
+ ],
+ "text": "I'm Zidan Kazi\n\nI'm a junior at Stevens Institute of Technology studying Computer Science & Math. I'm currently in Hoboken, New Jersey.\n\nRight now I'm building Mavri. We use fine-tuned diffusion models to make campaign visuals for brands, with tools for production, feedback, and approvals. Some of our clients include Four Seasons, Nespresso, Sephora, and Tiffany & Co.\n\nI also co-founded Relic, a shared memory for teams and AI agents. It connects to the tools a company already uses and makes its decisions, conversations, and context easy to find.\n\nBefore that, I interned at Trenchant Analytics, where I built military drone software that brought real-time computer vision, tactical maps, and augmented reality into HoloLens headsets.\n\nOutside of coding\n\nI like trying new foods.\n\nI play League of Legends. I used to be Challenger (top 300 out of 3,000,000).\n\nI also collect CS2 skins. Right now I have a FN Damascus Steel Karambit and MW Snow Leopards.\n\nI last listened to\nMannequin Challenge (feat. Juice WRLD)\nby Young Thug, Juice WRLD\n\nOct\nNov\nDec\nJan\nFeb\nMar\nApr\nMay\nJun\nJul\nAug\nSep\nOct\n3,409 contributions in the last year\n↓\na few things i've built\nrelic\nsite\n\nthe source of truth for ai-native companies. memory that builds itself from your team's stack and answers agent queries over mcp, with a source behind every fact.\n\nroster\ngithub\n\nterminal multiplexer for claude code agents. run several in real panes and see which one is blocked, working, or done — plus the exact prompt each one is waiting on.\n\nmulti-agent hide and seek\ngithub\n\ntrained with self-play ppo, reproducing the emergent tool use from openai's 2019 paper.\n\nsponge\ngithub\n\ngamified ai-assisted coding interview practice. built in 24 hours at quackhacks '26.\n\nzilean\n\nprivacy-first productivity agent that tracks your digital context to measure focus without sending data to the cloud.\n\nsage\ngithub\n\niMessage supercharged with xAI's Grok, bringing live internet access to your group chats.\n\norbital\ngithub\n\nreal-time satellite tracker for the terminal. renders earth as a 3d ascii globe and tracks satellites utilizing live sgp4 mechanics.\n\ngithub / twitter / email",
+ "outline": [
+  "section.manuscript-surface I'm Zidan Kazi I'm a junior at Stevens Institute of Technol",
+  "main. a few things i've built relic site the source of truth for ",
+  "section. a few things i've built relic site the source of truth for ",
+  "h2.projects-label a few things i've built",
+  "nav.page-ticker aboutabout · 4%about · 8%about · 13%about · 17%about · 21%ab"
+ ]
+}
