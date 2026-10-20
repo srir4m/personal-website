@@ -1121,7 +1121,8 @@ html.lenis body {
   flex-direction: column;
   gap: 1.1rem;
   font-family: var(--font-display);
-  font-size: clamp(1.15rem, 1.05rem + 0.45vw, 1.45rem);
+  /* Scales with the shorter of width and height, so the page always fits one screen. */
+  font-size: clamp(0.95rem, min(1.05rem + 0.45vw, 2.55dvh), 1.45rem);
   line-height: 1.55;
   text-wrap: pretty;
 }
@@ -1167,8 +1168,30 @@ html.lenis body {
     row-gap: 1.25rem;
   }
   .about__body {
-    font-size: 1.1rem;
+    font-size: clamp(0.92rem, 2.3dvh, 1.1rem);
     line-height: 1.5;
+  }
+}
+/* Short phones (an iPhone SE and smaller): tighter rhythm so the page fits one screen. */
+@media (max-width: 767px) and (max-height: 700px) {
+  .about__page {
+    row-gap: 0.75rem;
+  }
+  .about__body {
+    gap: 0.7rem;
+    line-height: 1.42;
+  }
+  .about__margin {
+    gap: 1rem;
+  }
+  .about .section-title {
+    font-size: 1.75rem;
+  }
+}
+/* The smallest phones drop the margin notes; the globe and Activities carry the same facts. */
+@media (max-width: 767px) and (max-height: 600px) {
+  .about__margin {
+    display: none;
   }
 }
 
@@ -1389,4 +1412,21 @@ html.lenis body {
 .game-emblem__story {
   grid-column: 1 / -1;
   margin-top: 0.5rem;
+}
+
+/* Kept last so it wins over each section's own padding. Tablets and small laptops: clear the rail's labels on the left. */
+@media (min-width: 768px) and (max-width: 1279px) {
+  .about,
+  .activities {
+    padding-left: 9rem;
+  }
+}
+/* The smallest phones: the index drops each entry's category line to fit one screen. */
+@media (max-width: 767px) and (max-height: 600px) {
+  .activity-card__button .hud-label {
+    display: none;
+  }
+  .activity-card__button {
+    padding-block: 0.45rem 0.5rem;
+  }
 }
