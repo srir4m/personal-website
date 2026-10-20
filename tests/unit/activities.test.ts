@@ -16,6 +16,8 @@ describe("activities", () => {
   it("link every non-gaming card to its body map region", () => {
     for (const card of cards.filter((c) => c.title !== "Gaming")) expect(card.region, card.title).toBeTruthy();
     expect(cards.find((c) => c.title === "Swimming")!.region).toBe("legs");
+    expect(cards.find((c) => c.title === "Trekking the Himalayas")).toMatchObject({ region: "legs", glyph: "mountain" });
+    expect(cards.find((c) => c.title === "Travel")).toMatchObject({ region: "legs", glyph: "compass" });
   });
 
   it("never show drafts or placeholders in production", () => {

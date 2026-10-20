@@ -9,6 +9,7 @@ const PATHS: Record<GlyphName, string> = {
   mountain: "M3 26l9-14 5 7 3-4 9 11zM12 12l2 4M20 15l2 3",
   wave: "M3 12c3-3 5-3 8 0s5 3 8 0 5-3 8 0M3 18c3-3 5-3 8 0s5 3 8 0 5-3 8 0M3 24c3-3 5-3 8 0s5 3 8 0 5-3 8 0",
   bowl: "M5 15h22c0 6-5 10-11 10S5 21 5 15zM12 25l-1 3h10l-1-3M20 13l6-8M22 13l7-6",
+  compass: "M16 5a11 11 0 1 0 0.01 0M16 8l3 8-3 8-3-8zM13 16h6",
   crosshair: "M16 4v8M16 20v8M4 16h8M20 16h8M16 9a7 7 0 1 0 0.01 0",
 };
 

@@ -3,7 +3,7 @@ import type { Game, RegionId } from "../../content/schema";
 import { renderableItems, text } from "../../content/text";
 import type { BodyRegionId } from "../Act5Body/regions";
 
-export type Glyph = "knight" | "note" | "dumbbell" | "grapple" | "mountain" | "wave" | "bowl" | "crosshair";
+export type Glyph = "knight" | "note" | "dumbbell" | "grapple" | "mountain" | "wave" | "bowl" | "crosshair" | "compass";
 
 export type ActivityCard = {
   id: string;
@@ -54,7 +54,7 @@ export function buildActivities(isProd = import.meta.env.PROD): ActivityCard[] {
         title: item.title,
         subtitle: text(item.subtitle),
         category: region.theme,
-        glyph: id === "arms" && /climb/i.test(item.title) ? "mountain" : glyph,
+        glyph: /climb|trek/i.test(item.title) ? "mountain" : /travel/i.test(item.title) ? "compass" : glyph,
         region: id,
       });
     }
