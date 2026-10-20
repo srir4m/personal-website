@@ -32,7 +32,6 @@ export function BodyMap() {
   const setMode = useStage((s) => s.setPoseMode);
   const openPanel = useStage((s) => s.openPanel);
   const setOpenPanel = useStage((s) => s.setOpenPanel);
-  const calm = useStage((s) => s.motion === "calm");
   const [active, setActive] = useState<string | null>(null);
   const regionEls = useRef<Record<string, SVGGElement | null>>({});
   const returnFocus = useRef<SVGGElement | null>(null);
@@ -55,12 +54,8 @@ export function BodyMap() {
         <svg viewBox={VIEWBOX} className="body-figure" data-pose={mode}>
           <defs>
             <pattern id={ids.hatch} width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(40)">
-              <line x1="0" y1="0" x2="0" y2="16" className="region-hatch-line">
-                {!calm && <animate attributeName="stroke-dashoffset" from="0" to="-20" dur="1.4s" repeatCount="indefinite" />}
-              </line>
-              <line x1="8" y1="0" x2="8" y2="16" className="region-hatch-line region-hatch-line--faint">
-                {!calm && <animate attributeName="stroke-dashoffset" from="0" to="-20" dur="1.4s" repeatCount="indefinite" />}
-              </line>
+              <line x1="0" y1="0" x2="0" y2="16" className="region-hatch-line" />
+              <line x1="8" y1="0" x2="8" y2="16" className="region-hatch-line region-hatch-line--faint" />
             </pattern>
             {/* Inactive-pose limbs drop to 15% (black at 0.85 over white); the active pose stays whole. */}
             <mask id={ids.pose} maskUnits="userSpaceOnUse" x={-VB_W} y={-VB_H} width={VB_W * 3} height={VB_H * 3}>

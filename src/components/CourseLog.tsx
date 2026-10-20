@@ -2,6 +2,7 @@ import { useId, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { content } from "../content";
 import type { Course } from "../content/schema";
+import { DURATION, EASE_BEZIER } from "../stage/motion";
 import { text } from "../content/text";
 
 /** Courses grouped by term, newest term first. */
@@ -38,7 +39,7 @@ export function CourseLog() {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: [0.33, 1, 0.68, 1] }}
+            transition={{ duration: DURATION.base, ease: EASE_BEZIER }}
             className="overflow-hidden"
           >
             <div className="course-log">

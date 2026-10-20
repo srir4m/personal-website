@@ -2,6 +2,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
 import { ACTS, ACT_RANGES, SCROLL_VIEWPORTS, actAt, actFades, settleProgress, type ActIndex } from "./acts";
+import { DURATION, EASE } from "./motion";
 import { useStage, writeProgress } from "./store";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -19,7 +20,7 @@ const actTimelines = new Map<ActIndex, Set<gsap.core.Timeline>>();
 /** Length of each half of a fade through the parchment between acts, in master-timeline units. */
 const ACT_FADE = 0.01;
 /** Calm mode: act-to-act cross-fade, in seconds (PRD §10.1). */
-const CALM_FADE = 0.3;
+const CALM_FADE = DURATION.base;
 
 function attach(index: ActIndex, tl: gsap.core.Timeline) {
   if (!master) return;
@@ -103,14 +104,14 @@ export function startTimeline({ stage, layers, calm }: TimelineOptions): () => v
     pin: true,
     scrub: calm ? false : true,
     animation: calm ? undefined : master,
-    snap: calm ? { snapTo: settlePoints, duration: CALM_FADE, ease: "power2.out" } : undefined,
+    snap: calm ? { snapTo: settlePoints, duration: CALM_FADE, ease: EASE } : undefined,
     invalidateOnRefresh: true,
     onUpdate: calm
       ? (self) => {
           const target = settleProgress(actAt(self.progress));
           if (calmTween?.vars.progress === target || master!.progress() === target) return;
           calmTween?.kill();
-          calmTween = gsap.to(master!, { progress: target, duration: CALM_FADE, ease: "power2.out" });
+          calmTween = gsap.to(master!, { progress: target, duration: CALM_FADE, ease: EASE });
         }
       : undefined,
   });
@@ -159,7 +160,7 @@ export function scrollToAct(index: ActIndex, { immediate = false } = {}) {
   if (lenis) {
     // Lenis caches the scroll limit, which can predate the pin spacer ScrollTrigger adds.
     lenis.resize();
-    lenis.scrollTo(y, { immediate: instant, force: true, duration: 1.4 });
+    lenis.scrollTo(y, { immediate: instant, force: true, duration: DURATION.slow });
   }
   else window.scrollTo({ top: y, behavior: instant ? "instant" : "smooth" });
 }

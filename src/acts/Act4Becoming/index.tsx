@@ -1,6 +1,7 @@
 import { useLayoutEffect, useMemo, useRef } from "react";
 import gsap from "gsap";
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
+import { EASE } from "../../stage/motion";
 import { registerActTimeline } from "../../stage/timeline";
 import { FIGURE_MARKUP, FRAME, VIEWBOX, VITRUVIAN } from "../../vitruvian/figure";
 import { graticulePaths } from "../Act1Globe/ortho";
@@ -39,7 +40,8 @@ function InkMask({ id, seed, frequency = 0.012, box }: { id: string; seed: numbe
 }
 
 const VISIBLE = 1;
-const HIDDEN = -6;
+/** Just below the noise's first specks, so ink starts to show as soon as the wash begins. */
+const HIDDEN = -4.5;
 
 const [, , VB_W, VB_H] = VITRUVIAN.viewBox;
 const FIGURE_BOX = { x: 0, y: 0, width: VB_W, height: VB_H };
@@ -58,20 +60,14 @@ export default function Act4Becoming({ index }: ActProps) {
       // The ink mask is attached only while the figure inks in; a masked 360 KB figure is
       // expensive to repaint. Timeline sets revert when scrubbing back.
       gsap.set(".becoming-figure", { attr: { mask: "url(#bleed-in)" } });
-      // Eased out, so ink starts to show as soon as the act has faded in.
-      tl.fromTo(
-        ".bleed-in-threshold",
-        { attr: { intercept: HIDDEN } },
-        { attr: { intercept: VISIBLE }, duration: 0.3, ease: "power2.out" },
-        0.02,
-      );
+      tl.fromTo(".bleed-in-threshold", { attr: { intercept: HIDDEN } }, { attr: { intercept: VISIBLE }, duration: 0.3, ease: EASE }, 0);
       tl.set(".becoming-figure", { attr: { mask: "none" } }, 0.32);
       tl.fromTo(".becoming-square", { drawSVG: "0% 0%" }, { drawSVG: "0% 100%", duration: 0.2 }, 0.26);
       tl.fromTo(".becoming-ghost", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.06 }, 0.4);
       tl.fromTo(
         ".becoming-ghost-scale",
         { scale: GHOST_START_SCALE, svgOrigin: `${circle.cx} ${circle.cy}` },
-        { scale: 1, duration: 0.36, ease: "power1.inOut" },
+        { scale: 1, duration: 0.36, ease: EASE },
         0.42,
       );
       tl.fromTo(".becoming-graticule", { autoAlpha: 0.7 }, { autoAlpha: 0, duration: 0.1 }, 0.8);

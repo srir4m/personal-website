@@ -22,10 +22,8 @@ function useCardReveal(index: number, targets: React.RefObject<Element | null>[]
     const elements = targets.map((t) => t.current).filter(Boolean);
     const tl = gsap.timeline({ paused: true, defaults: { ease: "none" } });
     tl.set({}, {}, 1);
-    // A HUD "scan": two frames of flicker, then settle (PRD §5.4).
-    tl.fromTo(elements, { autoAlpha: 0 }, { autoAlpha: 0.7, duration: 0.012, immediateRender: false }, 0.36)
-      .to(elements, { autoAlpha: 0.15, duration: 0.012 }, 0.372)
-      .to(elements, { autoAlpha: 1, duration: 0.03 }, 0.384);
+    // The card fades in once the globe has turned to the marker: a plain fade, no flicker.
+    tl.fromTo(elements, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.05, immediateRender: false }, 0.36);
     gsap.set(elements, { autoAlpha: 0 });
     // Clear the HUD before P1 arrives over the marker (the last 10% of the act).
     tl.to([...elements, markerLayer.current], { autoAlpha: 0, duration: 0.04 }, 0.86);

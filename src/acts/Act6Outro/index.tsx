@@ -2,6 +2,7 @@ import { useLayoutEffect, useMemo, useRef } from "react";
 import gsap from "gsap";
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
 import { contactLinks } from "../../content/contacts";
+import { DURATION, EASE } from "../../stage/motion";
 import { useStage } from "../../stage/store";
 import { scrollToAct } from "../../stage/timeline";
 import { FIGURE_MARKUP, FRAME, VIEWBOX, VITRUVIAN } from "../../vitruvian/figure";
@@ -15,7 +16,6 @@ const { circle } = VITRUVIAN;
 const [, , VB_W, VB_H] = VITRUVIAN.viewBox;
 /** The globe's resting size at the end, relative to the Vitruvian circle. */
 const REST_SCALE = 0.42;
-const MONTAGE_SECONDS = 2.5;
 
 /**
  * Act 6 (PRD): a fast pull-back, played in time rather than scrubbed when the act
@@ -34,17 +34,21 @@ export default function Act6Outro({ index }: ActProps) {
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.out" } });
-      tl.fromTo(".outro-wash", { attr: { intercept: 1 } }, { attr: { intercept: -6 }, duration: 0.7, ease: "none" }, 0);
-      tl.fromTo(".outro-square", { drawSVG: "0% 100%" }, { drawSVG: "0% 0%", duration: 0.6 }, 0.1);
-      tl.fromTo([".outro-sphere", ".outro-graticule"], { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5 }, 0.5);
+      const { base, slow } = DURATION;
+      const tl = gsap.timeline({ paused: true, defaults: { ease: EASE } });
+      // The figure washes out and the square undraws together…
+      tl.fromTo(".outro-wash", { attr: { intercept: 1 } }, { attr: { intercept: -6 }, duration: base * 2 }, 0);
+      tl.fromTo(".outro-square", { drawSVG: "0% 100%" }, { drawSVG: "0% 0%", duration: base * 2 }, 0);
+      // …then the circle becomes a globe again and pulls back to rest…
+      tl.fromTo([".outro-sphere", ".outro-graticule"], { autoAlpha: 0 }, { autoAlpha: 1, duration: base }, base);
       tl.fromTo(
         ".outro-globe",
         { scale: 1, x: 0, y: 0, svgOrigin: `${circle.cx} ${circle.cy}` },
-        { scale: REST_SCALE, x: VB_W / 2 - circle.cx, y: VB_H * 0.42 - circle.cy, duration: 1.3, ease: "power3.inOut" },
-        0.6,
+        { scale: REST_SCALE, x: VB_W / 2 - circle.cx, y: VB_H * 0.42 - circle.cy, duration: slow },
+        base,
       );
-      tl.fromTo(links.current, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.5 }, MONTAGE_SECONDS - 0.5);
+      // …and the links arrive once it has settled.
+      tl.fromTo(links.current, { autoAlpha: 0 }, { autoAlpha: 1, duration: base }, base + slow);
       timeline.current = tl;
     }, scope);
     return () => ctx.revert();
