@@ -1,4 +1,4 @@
-import { useLayoutEffect, useMemo, useRef } from "react";
+import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
 import { content } from "../../content";
@@ -19,6 +19,14 @@ export default function Act0Boot(_: ActProps) {
   const calm = useStage((s) => s.motion === "calm");
   const drawing = useRef<SVGSVGElement>(null);
   const paths = useMemo(() => graticulePaths(IDLE_TILT_DEG, IDLE_START_LNG), []);
+  // The HTML already painted the title and started its ink-in (see siteMeta in vite.config).
+  // Pick the ink-in up where it is, then drop the HTML copy, so the hand-over is invisible.
+  const [inkDelay] = useState(() => {
+    const served = document.getElementById("boot-title");
+    const start = Number(served?.dataset.start);
+    return Number.isFinite(start) ? `${-(performance.now() - start) / 1000}s` : undefined;
+  });
+  useLayoutEffect(() => document.getElementById("boot-title")?.remove(), []);
 
   // Time-based, not scrubbed: the codex page inks itself in on load (PRD Act 0). The
   // graticule draws in one stroke with the title's ink-in, on the same curve and time.
@@ -40,7 +48,10 @@ export default function Act0Boot(_: ActProps) {
       </svg>
 
       {(name || tagline) && (
-        <div className={`relative flex flex-col items-center gap-3 px-6 text-center ${calm ? "" : "ink-reveal"}`}>
+        <div
+          className={`relative flex flex-col items-center gap-3 px-6 text-center ${calm ? "" : "ink-reveal"}`}
+          style={inkDelay ? { animationDelay: inkDelay } : undefined}
+        >
           {name && <p className="font-display text-6xl leading-none font-semibold md:text-8xl">{name}</p>}
           {tagline && <p className="font-display text-2xl italic md:text-3xl">{tagline}</p>}
         </div>

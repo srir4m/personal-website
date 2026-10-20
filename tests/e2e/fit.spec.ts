@@ -1,9 +1,11 @@
 import { expect, test } from "@playwright/test";
 
 const ACTS = ["", "about", "activities", "body", "outro"];
-// The smallest phone, a short phone, a tablet, a small laptop.
+// The smallest phones (short and narrow), short phones, a tablet, a small laptop.
 const SIZES = [
   [320, 568],
+  [320, 720],
+  [360, 640],
   [375, 667],
   [768, 1024],
   [1024, 768],

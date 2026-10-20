@@ -46,6 +46,30 @@ function siteMeta(): Plugin {
       const page = ctx.path.endsWith("404.html") ? `Not found · ${name}` : title;
       const meta = (attr: "name" | "property", key: string, value: string | null) =>
         value ? [{ tag: "meta", attrs: { [attr]: key, content: value }, injectTo: "head" as const }] : [];
+      // The opening title, in the HTML itself: it paints and starts inking in before any
+      // JavaScript runs, and Act 0 takes it over seamlessly when it mounts (Act0Boot).
+      // A deep link removes it at once, since the page opens on another act.
+      const bootTitle = ctx.path.endsWith("404.html")
+        ? []
+        : [
+            {
+              tag: "div",
+              attrs: { id: "boot-title", class: "boot-title", "aria-hidden": "true" },
+              children:
+                `<div class="relative flex flex-col items-center gap-3 px-6 text-center ink-reveal">` +
+                `<p class="font-display text-6xl leading-none font-semibold md:text-8xl">${escapeHtml(name)}</p>` +
+                (tagline ? `<p class="font-display text-2xl italic md:text-3xl">${escapeHtml(tagline)}</p>` : "") +
+                `</div>`,
+              injectTo: "body-prepend" as const,
+            },
+            {
+              tag: "script",
+              children:
+                `(function(){var t=document.getElementById("boot-title");` +
+                `if(location.hash.length>1){t.remove();return}t.dataset.start=String(performance.now())})();`,
+              injectTo: "body-prepend" as const,
+            },
+          ];
       return {
         html: html.replace(/<title>.*?<\/title>/, `<title>${escapeHtml(page)}</title>`),
         tags: [
@@ -59,6 +83,7 @@ function siteMeta(): Plugin {
           ...meta("property", "og:image:height", "630"),
           ...meta("property", "og:image:alt", `${title}: Leonardo's Vitruvian Man rising from an engraved globe`),
           ...meta("name", "twitter:card", "summary_large_image"),
+          ...bootTitle,
         ],
       };
     },
