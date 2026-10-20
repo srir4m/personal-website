@@ -718,17 +718,21 @@ html.lenis body {
 /* ---- Vitruvian figure (Acts 4–5) --------------------------------------------- */
 
 /* The figure fills up to 85% of the viewport height (PRD Act 5; 70% on phones). */
-.vitruvian-stage {
-  width: min(80dvh, 94vw);
-  height: min(80dvh, 94vw);
-  overflow: visible;
-  color: var(--ink);
+/* One size for the figure in Becoming, the body map and the Outro, so it never moves
+   between them. It leaves room under the figure for the body map's pose toggle. */
+:root {
+  --figure-size: min(80dvh, 94vw, calc(100dvh - 9rem));
 }
 @media (max-width: 767px) {
-  .vitruvian-stage {
-    width: min(70dvh, 94vw);
-    height: min(70dvh, 94vw);
+  :root {
+    --figure-size: min(70dvh, 94vw, calc(100dvh - 9rem));
   }
+}
+.vitruvian-stage {
+  width: var(--figure-size);
+  height: var(--figure-size);
+  overflow: visible;
+  color: var(--ink);
 }
 /* Same ink and weight as the globe's coastlines (PRD Act 4 acceptance). */
 .vitruvian-line {
@@ -818,20 +822,13 @@ html.lenis body {
 /* ---- Act 5 body map ------------------------------------------------------------ */
 
 .body-map {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.25rem;
+  position: relative;
 }
-/* Same width as Act 4's stage, so the figure doesn't move between the acts. */
+/* Same width as Act 4's stage, and centred alone like it (the pose toggle hangs below,
+   out of flow), so the figure doesn't move between Becoming, the body map and the Outro. */
 .body-frame {
   position: relative;
-  width: min(80dvh, 94vw);
-}
-@media (max-width: 767px) {
-  .body-frame {
-    width: min(70dvh, 94vw);
-  }
+  width: var(--figure-size);
 }
 .body-figure {
   display: block;
@@ -945,7 +942,10 @@ html.lenis body {
 }
 
 .pose-toggle {
-  position: relative;
+  position: absolute;
+  top: calc(100% + 1.25rem);
+  left: 50%;
+  translate: -50% 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
   border: 1px solid var(--ink);
