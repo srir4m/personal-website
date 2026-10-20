@@ -26,21 +26,27 @@ jobs:
           gh release download -R protomaps/go-pmtiles --pattern '*Linux_x86_64.tar.gz' -O pmtiles.tgz
           tar -xzf pmtiles.tgz pmtiles
           ./pmtiles version
-      - name: Find the latest Protomaps build
+      - name: Find the Protomaps build
         run: |
-          KEY=$(curl -fsSL https://build-metadata.protomaps.dev/builds.json | jq -r '[.[].key] | sort | last')
+          # Stay on the build the committed tiles came from, so the three extracts match; else the latest.
+          PINNED=$(jq -r '.build // empty' public/assets/map/manifest.json 2>/dev/null || true)
+          if [ -n "$PINNED" ] && curl -fsI "https://build.protomaps.com/$PINNED" >/dev/null; then KEY=$PINNED
+          else KEY=$(curl -fsSL https://build-metadata.protomaps.dev/builds.json | jq -r '[.[].key] | sort | last'); fi
           echo "SOURCE=https://build.protomaps.com/$KEY" >> "$GITHUB_ENV"
           echo "BUILD=$KEY" >> "$GITHUB_ENV"
           echo "Using $KEY"
       - name: Extract
         run: |
           mkdir -p public/assets/map
+          # World and region change rarely; delete a file to rebuild it.
           # The whole world at low zoom: what the globe hands off to.
-          ./pmtiles extract "$SOURCE" public/assets/map/world.pmtiles --maxzoom=5
+          [ -f public/assets/map/world.pmtiles ] || ./pmtiles extract "$SOURCE" public/assets/map/world.pmtiles --maxzoom=5
           # The New York metro region: the highlighted area.
-          ./pmtiles extract "$SOURCE" public/assets/map/region.pmtiles --bbox=-74.55,40.35,-73.45,41.05 --minzoom=6 --maxzoom=12
-          # A small city patch at street zoom, for the 3D buildings at the end of the zoom.
-          ./pmtiles extract "$SOURCE" public/assets/map/city.pmtiles --bbox=-74.035,40.690,-73.975,40.735 --minzoom=13 --maxzoom=15
+          [ -f public/assets/map/region.pmtiles ] || ./pmtiles extract "$SOURCE" public/assets/map/region.pmtiles --bbox=-74.55,40.35,-73.45,41.05 --minzoom=6 --maxzoom=12
+          # The street-level patch for the 3D dive: Hoboken, with Midtown and Chelsea across the river
+          # in view. Must contain owner.area.street in site-content.json.
+          rm -f public/assets/map/city.pmtiles
+          ./pmtiles extract "$SOURCE" public/assets/map/city.pmtiles --bbox=-74.050,40.728,-73.975,40.775 --minzoom=13 --maxzoom=15
           ls -la public/assets/map
           for f in public/assets/map/*.pmtiles; do ./pmtiles show "$f" | head -20; done
           printf '{\n  "build": "%s",\n  "source": "Protomaps basemap (OpenStreetMap)",\n  "attribution": "© OpenStreetMap contributors"\n}\n' "$BUILD" > public/assets/map/manifest.json
