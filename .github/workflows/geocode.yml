@@ -1,0 +1,32 @@
+# One-off: geocode the descent's street target (the build container can't reach geocoders). Not merged to main.
+name: Geocode
+on:
+  push:
+    branches: [fetch/geocode]
+    paths: [.github/workflows/geocode.yml]
+permissions:
+  contents: write
+jobs:
+  geocode:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: |
+          UA="MicrocosmGeocode/1.0 (https://github.com/srir4m/srir4m.github.io)"
+          {
+            echo "== census"
+            curl -fsSL -G "https://geocoding.geo.census.gov/geocoder/locations/onelineaddress" \
+              --data-urlencode "address=800 Willow Ave, Hoboken, NJ 07030" --data-urlencode benchmark=Public_AR_Current --data-urlencode format=json \
+              | jq -c '.result.addressMatches[] | {matchedAddress, coordinates}' || true
+            echo "== nominatim"
+            curl -fsSL -A "$UA" -G "https://nominatim.openstreetmap.org/search" \
+              --data-urlencode "q=800 Willow Avenue, Hoboken, NJ 07030" --data-urlencode format=jsonv2 --data-urlencode polygon_geojson=1 \
+              | jq -c '.[] | {display_name, lat, lon, category, type, bbox: .boundingbox, geom: .geojson.type}' || true
+            sleep 1
+            curl -fsSL -A "$UA" -G "https://nominatim.openstreetmap.org/search" \
+              --data-urlencode "street=800 Willow Avenue" --data-urlencode city=Hoboken --data-urlencode state=NJ --data-urlencode format=jsonv2 --data-urlencode polygon_geojson=1 \
+              | jq -c '.[] | {display_name, lat, lon, category, type, geojson}' || true
+          } | tee geocode.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add geocode.txt && git commit -m "Geocode result" && git push
