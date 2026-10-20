@@ -11,6 +11,12 @@
   /* The globe's circle radius; keep in step with GLOBE_RADIUS_VMIN in src/acts/Act1Globe/layout.ts. */
   --globe-r: 34vmin;
 
+  /* One easing and duration scale for every timed animation; mirrors src/stage/motion.ts. */
+  --ease: cubic-bezier(0.45, 0, 0.55, 1);
+  --dur-quick: 200ms;
+  --dur-base: 400ms;
+  --dur-slow: 1200ms;
+
   --font-display: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
   --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 }

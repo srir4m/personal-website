@@ -1,9 +1,11 @@
 import { useEffect } from "react";
 import { loadGlobeData } from "../acts/Act1Globe/globeData";
 import { parseHash } from "./acts";
+import { DURATION } from "./motion";
 import { useStage } from "./store";
 
-const INK_MS = 1400;
+/** The title ink-in (Act 0) takes this long; scrolling never opens before it ends. */
+const INK_MS = DURATION.slow * 1000;
 const MAX_WAIT_MS = 4000;
 
 /**

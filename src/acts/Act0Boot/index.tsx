@@ -3,6 +3,7 @@ import gsap from "gsap";
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
 import { content } from "../../content";
 import { text } from "../../content/text";
+import { DURATION, EASE } from "../../stage/motion";
 import { useStage } from "../../stage/store";
 import { graticulePaths } from "../Act1Globe/ortho";
 import { IDLE_START_LNG, IDLE_TILT_DEG } from "../Act1Globe/layout";
@@ -10,8 +11,6 @@ import type { ActProps } from "../registry";
 
 gsap.registerPlugin(DrawSVGPlugin);
 
-/** Seconds the opening ink-in takes; the boot gate waits at least this long. */
-export const BOOT_INK_SECONDS = 1.4;
 
 export default function Act0Boot(_: ActProps) {
   const name = text(content.owner.name);
@@ -21,17 +20,12 @@ export default function Act0Boot(_: ActProps) {
   const drawing = useRef<SVGSVGElement>(null);
   const paths = useMemo(() => graticulePaths(IDLE_TILT_DEG, IDLE_START_LNG), []);
 
-  // Time-based, not scrubbed: the codex page inks itself in on load (PRD Act 0).
+  // Time-based, not scrubbed: the codex page inks itself in on load (PRD Act 0). The
+  // graticule draws in one stroke with the title's ink-in, on the same curve and time.
   useLayoutEffect(() => {
     if (calm || !drawing.current) return;
     const ctx = gsap.context(() => {
-      gsap.from(".boot-rim", { drawSVG: 0, duration: BOOT_INK_SECONDS * 0.7, ease: "power2.out" });
-      gsap.from(".boot-line", {
-        drawSVG: 0,
-        duration: BOOT_INK_SECONDS * 0.6,
-        ease: "power2.out",
-        stagger: { amount: BOOT_INK_SECONDS * 0.4, from: "random" },
-      });
+      gsap.from([".boot-rim", ".boot-line"], { drawSVG: 0, duration: DURATION.slow, ease: EASE });
     }, drawing);
     return () => ctx.revert();
   }, [calm]);
