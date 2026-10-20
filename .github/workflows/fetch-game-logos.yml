@@ -1,0 +1,53 @@
+# One-off: find candidate logo files for the five games on Wikimedia Commons and
+# English Wikipedia, and commit them to this branch for review. The container that
+# builds the site cannot reach Wikimedia directly. Not merged to main.
+name: Fetch game logo candidates
+
+on:
+  push:
+    branches: [fetch/game-logos]
+    paths: [.github/workflows/fetch-game-logos.yml]
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Search and download
+        run: |
+          UA="MicrocosmLogoFetch/1.0 (https://github.com/srir4m/srir4m.github.io)"
+          mkdir -p logo-candidates
+          search() { # host, id, query
+            curl -fsSL -A "$UA" -G "https://$1/w/api.php" \
+              --data-urlencode action=query --data-urlencode list=search --data-urlencode srnamespace=6 \
+              --data-urlencode srlimit=12 --data-urlencode format=json --data-urlencode "srsearch=$3" \
+              | jq -r '.query.search[].title' > "logo-candidates/$2.$1.txt" || true
+            n=0
+            while IFS= read -r title; do
+              case "$title" in *.svg|*.SVG|*.png|*.PNG) ;; *) continue ;; esac
+              n=$((n+1)); [ $n -gt 6 ] && break
+              name="${title#File:}"
+              ext="${name##*.}"
+              curl -fsSL -A "$UA" -o "logo-candidates/$2.${1%%.*}.$n.${ext,,}" \
+                "https://$1/wiki/Special:FilePath/$(jq -rn --arg s "$name" '$s|@uri')" || true
+              echo "$n $title" >> "logo-candidates/$2.index.txt"
+              sleep 1
+            done < "logo-candidates/$2.$1.txt"
+          }
+          for host in commons.wikimedia.org en.wikipedia.org; do
+            search $host cs2 "Counter-Strike 2 logo"
+            search $host valorant "Valorant logo"
+            search $host r6 "Rainbow Six Siege logo"
+            search $host minecraft "Minecraft logo"
+            search $host roblox "Roblox logo"
+          done
+          ls -la logo-candidates
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add logo-candidates
+          git commit -m "Game logo candidates" && git push
