@@ -1,0 +1,5 @@
+== census
+{"matchedAddress":"800 WILLOW AVE, HOBOKEN, NJ, 07030","coordinates":{"x":-74.03195908855,"y":40.74670251818}}
+== nominatim
+{"display_name":"800, Willow Avenue, Downtown, Hoboken, Hudson County, New Jersey, 07030, United States","lat":"40.7467489","lon":"-74.0319836","category":"place","type":"house","bbox":["40.7466989","40.7467989","-74.0320336","-74.0319336"],"geom":"Point"}
+{"display_name":"800, Willow Avenue, Downtown, Hoboken, Hudson County, New Jersey, 07030, United States","lat":"40.7467489","lon":"-74.0319836","category":"place","type":"house","geojson":{"type":"Point","coordinates":[-74.0319836,40.7467489]}}
