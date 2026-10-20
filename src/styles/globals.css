@@ -315,12 +315,12 @@ html.lenis body {
   transform: translateY(-50%);
   cursor: default;
 }
+/* Phones: just below the resting globe, so the leader from the marker stays short. */
 @media (max-width: 767px) {
   .globe-card {
-    top: auto;
+    top: calc(50% + var(--globe-r) + 1.5rem);
     left: max(16px, env(safe-area-inset-left, 0px));
     right: max(16px, env(safe-area-inset-right, 0px));
-    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
     width: auto;
     transform: none;
   }
@@ -458,7 +458,7 @@ html.lenis body {
 .descent-hud {
   position: absolute;
   right: max(1.5rem, env(safe-area-inset-right, 0px));
-  bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+  bottom: calc(2.5rem + env(safe-area-inset-bottom, 0px));
   min-width: 13rem;
   padding: 0.7rem 0.9rem 0.8rem;
 }
@@ -470,7 +470,7 @@ html.lenis body {
   .descent-hud {
     right: auto;
     left: max(16px, env(safe-area-inset-left, 0px));
-    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    bottom: calc(2.25rem + env(safe-area-inset-bottom, 0px));
   }
 }
 
@@ -1126,16 +1126,35 @@ html.lenis body {
   padding: 0.6rem 0.85rem;
   white-space: nowrap;
 }
+/* Phones: centred under the area, so the label never runs off the screen's edge. */
+@media (max-width: 767px) {
+  .area-pin__label {
+    left: 0;
+    top: 2.5rem;
+    transform: translateX(-50%);
+  }
+}
 .area-pin__label::after {
   /* Overridden corner tick: a leader back to the area's centre. */
   content: "";
 }
+/* The credit sits on its own quiet line along the map's bottom edge, not in the HUD. */
 .map-attribution {
-  margin-top: 0.5rem;
+  position: absolute;
+  right: max(1.5rem, env(safe-area-inset-right, 0px));
+  bottom: calc(0.6rem + env(safe-area-inset-bottom, 0px));
+  padding: 0.1rem 0.4rem;
+  background: color-mix(in srgb, var(--parchment) 75%, transparent);
   font-family: var(--font-mono);
   font-size: 0.6rem;
   letter-spacing: 0.08em;
-  opacity: 0.7;
+  color: color-mix(in srgb, var(--ink) 80%, transparent);
+}
+@media (max-width: 767px) {
+  .map-attribution {
+    right: auto;
+    left: max(16px, env(safe-area-inset-left, 0px));
+  }
 }
 
 /* ---- Activities ------------------------------------------------------------------ */

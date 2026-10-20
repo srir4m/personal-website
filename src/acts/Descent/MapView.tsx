@@ -75,8 +75,8 @@ export default function MapView({ range, center, areaLabel, radiusKm = 32 }: Pro
       element.dataset.zoom = camera.zoom.toFixed(2);
       const glow = highlightAt(t);
       if (map.isStyleLoaded()) {
-        map.setPaintProperty("area-fill", "fill-opacity", 0.1 * glow);
-        map.setPaintProperty("area-hatch", "fill-opacity", 0.55 * glow);
+        map.setPaintProperty("area-fill", "fill-opacity", 0.06 * glow);
+        map.setPaintProperty("area-hatch", "fill-opacity", 0.4 * glow);
         map.setPaintProperty("area-rim", "line-opacity", glow);
       }
       if (label.current) {
@@ -123,8 +123,8 @@ export default function MapView({ range, center, areaLabel, radiusKm = 32 }: Pro
           <div ref={bar} className="scale-bar__rule" />
           <span ref={barLabel} className="hud-label" />
         </div>
-        <p className="map-attribution">© OpenStreetMap contributors · Protomaps</p>
       </div>
+      <p className="map-attribution">© OpenStreetMap contributors · Protomaps</p>
     </div>
   );
 }
