@@ -11,6 +11,8 @@ export const ItemSchema = z.object({
   link: z.url().nullable().optional(),
   mode: z.enum(["now", "reaching"]).optional(),
   draft: z.boolean().optional(),
+  /** Also list this item in the Activities section (items in hobby regions are listed anyway). */
+  activity: z.boolean().optional(),
 });
 
 export const RegionSchema = z.object({

@@ -3,3 +3,9 @@ declare module "virtual:vault" {
   const vault: VaultFile | null;
   export default vault;
 }
+
+declare module "virtual:game-emblems" {
+  /** File names present in public/assets/games, e.g. "cs2.svg". */
+  const files: string[];
+  export default files;
+}

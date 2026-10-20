@@ -1,5 +1,5 @@
 /// <reference types="vitest/config" />
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
@@ -78,10 +78,28 @@ function vaultModule(mode: string): Plugin {
   };
 }
 
+/**
+ * `virtual:game-emblems`: which owner-supplied emblem files exist in public/assets/games
+ * (PRD §8.4), so the page shows a neutral glyph instead of requesting a missing file.
+ */
+function gameEmblems(): Plugin {
+  const id = "virtual:game-emblems";
+  const dir = fileURLToPath(new URL("./public/assets/games/", import.meta.url));
+  return {
+    name: "microcosm:game-emblems",
+    resolveId: (source) => (source === id ? `\0${id}` : undefined),
+    load(resolved) {
+      if (resolved !== `\0${id}`) return undefined;
+      const files = existsSync(dir) ? readdirSync(dir).filter((f) => /\.(svg|png|webp|avif)$/.test(f)) : [];
+      return `export default ${JSON.stringify(files)};`;
+    },
+  };
+}
+
 export default defineConfig(({ mode }) => ({
   // The site is served from the root of srir4m.github.io; BASE_PATH overrides it (e.g. "./" for previews).
   base: process.env.BASE_PATH ?? "/",
-  plugins: [contentValidation(), vaultModule(mode), regionsEndpoint(), react(), tailwindcss()],
+  plugins: [contentValidation(), vaultModule(mode), regionsEndpoint(), gameEmblems(), react(), tailwindcss()],
   build: {
     // three.js makes the globe chunk large by nature; scripts/check-budget.ts enforces the real budget.
     chunkSizeWarningLimit: 1200,

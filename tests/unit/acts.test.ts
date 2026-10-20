@@ -3,7 +3,7 @@ import { ACTS, ACT_RANGES, actAt, actIndex, parseHash, settleProgress } from "..
 
 describe("acts", () => {
   it("has acts whose ranges tile 0–1", () => {
-    expect(ACTS.map((a) => a.id)).toEqual(["boot", "about", "globe", "descent", "squad", "becoming", "body", "outro"]);
+    expect(ACTS.map((a) => a.id)).toEqual(["boot", "about", "globe", "descent", "activities", "becoming", "body", "outro"]);
     expect(ACT_RANGES[0]!.start).toBe(0);
     expect(ACT_RANGES.at(-1)!.end).toBeCloseTo(1);
     ACT_RANGES.slice(1).forEach((range, i) => expect(range.start).toBe(ACT_RANGES[i]!.end));
@@ -16,7 +16,7 @@ describe("acts", () => {
   it("parses deep links", () => {
     expect(parseHash("#globe")).toEqual({ act: actIndex("globe"), region: null });
     expect(parseHash("#body/heart")).toEqual({ act: actIndex("body"), region: "heart" });
-    expect(parseHash("#squad/heart")).toEqual({ act: actIndex("squad"), region: null });
+    expect(parseHash("#activities/heart")).toEqual({ act: actIndex("activities"), region: null });
     expect(parseHash("#nope")).toBeNull();
     expect(parseHash("")).toBeNull();
   });

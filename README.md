@@ -90,7 +90,7 @@ tests/e2e           Playwright
 | M0 Scaffold, Stage, master timeline, progress rail, placeholder acts, schema, Content Status | ✅ v0.1.0 |
 | M1 Boot + globe + education card | ✅ v0.2.0 |
 | M2 Infinite zoom with placeholder plates, globe handoff, rebasing | ✅ v0.3.0 |
-| M3 Squad: silhouettes, emblems, cards | on hold, see #5 |
+| M3 Activities (replaces the Squad room) | ✅ v0.11.0 |
 | M4 Vitruvian pipeline, region editor, Becoming transition | ✅ v0.5.0 (placeholder figure, see #6) |
 | M5 Body map: regions, panels, Now / Reaching, dormant regions | ✅ v0.7.0 |
 | M2b Live-map descent to the owner's area (replaces the plates) | ✅ v0.10.0 |

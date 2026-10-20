@@ -305,7 +305,8 @@
           },
           {
             "title": "Chess",
-            "subtitle": "chess.com 1850 · FIDE 1600"
+            "subtitle": "chess.com 1850 · FIDE 1600",
+            "activity": true
           },
           {
             "title": "Open to junior-year internships",

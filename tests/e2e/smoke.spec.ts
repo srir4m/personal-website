@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
-const ACTS = ["boot", "about", "globe", "descent", "squad", "becoming", "body", "outro"];
+const ACTS = ["boot", "about", "globe", "descent", "activities", "becoming", "body", "outro"];
 
 const activeAct = (page: Page) => page.locator("[data-active-act]").getAttribute("data-active-act");
 
@@ -41,9 +41,9 @@ test("deep link #body/<region> keeps the region in the URL", async ({ page }) =>
 
 test("progress rail ticks jump to their act", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("navigation", { name: "Acts" }).getByRole("link", { name: "Squad" }).click();
-  await expect.poll(() => activeAct(page)).toBe("squad");
-  await expect(page).toHaveURL(/#squad$/);
+  await page.getByRole("navigation", { name: "Acts" }).getByRole("link", { name: "Activities" }).click();
+  await expect.poll(() => activeAct(page)).toBe("activities");
+  await expect(page).toHaveURL(/#activities$/);
 });
 
 test("motion toggle switches to calm mode and still reaches deep links", async ({ page }) => {

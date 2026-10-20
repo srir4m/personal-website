@@ -25,7 +25,8 @@ export const ACTS = [
   { id: "globe", hash: "globe", name: "Globe", share: 15, settle: 0.5, exitLag: 0.08 },
   // Settles on the metro view, with the owner's area highlighted.
   { id: "descent", hash: "descent", name: "Descent", share: 20, settle: 0.42, enterLead: 0.1 },
-  { id: "squad", hash: "squad", name: "Squad", share: 15, settle: 0.5 },
+  // PRD v1.1: Activities replaces the gaming-only Squad room; gaming is one activity among several.
+  { id: "activities", hash: "activities", name: "Activities", share: 15, settle: 0.6 },
   { id: "becoming", hash: "becoming", name: "Becoming", share: 15, settle: 0.95 },
   { id: "body", hash: "body", name: "Body map", share: 30, settle: 0.1 },
   { id: "outro", hash: "outro", name: "Outro", share: 5, settle: 1 },

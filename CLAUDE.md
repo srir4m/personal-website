@@ -7,8 +7,9 @@
 - Do not redraw game logos; use files in `public/assets/games/` or neutral placeholder glyphs.
 - Track owner-input items, open questions, and later ideas as GitHub issues on srir4m/srir4m.github.io
   (`gh api repos/srir4m/srir4m.github.io/issues`). Reference them in milestone notes instead of re-listing.
-- The narrative is being reworked (issues #1, #4, #5): don't build Act 2/3 further as PRD v1.0 specs them
-  (campus zoom, Squad room) without checking those issues for the current direction.
+- The narrative follows PRD v1.1 (`docs/PRD-v1.1-draft.md`, owner decisions recorded there): name, About,
+  globe to the owner's area, the live-map descent, Activities, Becoming, body map, outro. The v1.0 campus zoom and
+  Squad room are gone.
 - The repo is the owner's GitHub Pages user site, `srir4m/srir4m.github.io` (it was renamed from `personal-website`),
   served at the root of https://srir4m.github.io/. Reference public assets through `import.meta.env.BASE_URL`,
   never a bare leading `/`, so preview builds with another base keep working. There is no server, so any
