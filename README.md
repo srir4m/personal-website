@@ -42,12 +42,14 @@ Owner input and later ideas are tracked as [GitHub issues](https://github.com/sr
 
 ## The Vitruvian figure
 
-- `npm run vitruvian:trace` traces `assets-src/vitruvian-source.jpg`, Luc Viatour's photograph of Leonardo's
-  drawing (Wikimedia Commons, public domain). It crops to the drawing, flattens the paper tone, and thresholds
-  the ink. It then follows and erases Leonardo's hand-drawn circle and square, clears his notes and stray
-  specks, and vectorises the figure with potrace. The site redraws the circle and square as clean lines from
-  `src/content/vitruvian.json`. The default crop matches that photograph; for another scan, pass `--crop x,y,w,h`.
-- `npm run vitruvian:placeholder` writes the placeholder mannequin used until a scan is traced (#6).
+- `npm run vitruvian:trace` renders `assets-src/vitruvian-source.jpg`, Luc Viatour's photograph of Leonardo's
+  drawing (Wikimedia Commons, public domain), as `public/assets/vitruvian/figure.webp`. It crops to the drawing
+  and flattens the paper tone. It then follows and erases Leonardo's hand-drawn circle and square, and clears
+  his notes and stray specks. Last, it lifts the remaining ink off the paper at 2.5× the viewBox, so every pen
+  line and hatch keeps its own weight. The site redraws the circle and square as clean lines from
+  `src/content/vitruvian.json`, which the script keeps as committed unless you pass `--refit`. The default crop
+  matches that photograph; for another scan, pass `--crop x,y,w,h`.
+- A fig leaf (`src/vitruvian/figLeaf.ts`) covers the groin, and the image is erased under it.
 - Body regions and pose masks live in `src/content/regions.json`, normalised to the figure. To edit them,
   run `npm run dev`, open `/?edit=regions`, and Save. The editor is dev-only.
 

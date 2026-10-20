@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import regions from "../../src/content/regions.json";
 import geometry from "../../src/content/vitruvian.json";
 import { BODY_REGION_IDS, RegionsSchema } from "../../src/content/regionsSchema";
+import { GROIN, insidePolygon, leafPolygon } from "../../src/vitruvian/figLeaf";
 
 describe("Vitruvian geometry", () => {
   it("follows Leonardo's layout: circle on the square's axis, touching its base", () => {
@@ -10,6 +11,19 @@ describe("Vitruvian geometry", () => {
     expect(Math.abs(circle.cy + circle.r - (square.y + square.size))).toBeLessThan(square.size * 0.03);
     expect(circle.r / square.size).toBeGreaterThan(0.55);
     expect(circle.r / square.size).toBeLessThan(0.7);
+  });
+});
+
+describe("fig leaf", () => {
+  it("covers all of the genitals' ink, with a margin", () => {
+    const leaf = leafPolygon();
+    const [cx, cy] = [800, 910];
+    for (const [x, y] of GROIN) {
+      // Pushed 3 units further out from the centre.
+      const d = Math.hypot(x - cx, y - cy);
+      const point: [number, number] = [x + ((x - cx) / d) * 3, y + ((y - cy) / d) * 3];
+      expect(insidePolygon(point, leaf), `(${point.map(Math.round).join(", ")})`).toBe(true);
+    }
   });
 });
 

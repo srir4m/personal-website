@@ -6,13 +6,18 @@
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
+import { figLeafMarkup } from "../src/vitruvian/figLeaf.ts";
 
 const root = new URL("../", import.meta.url);
 const path = (p: string) => fileURLToPath(new URL(p, root));
 const { owner } = JSON.parse(readFileSync(path("src/content/site-content.json"), "utf8"));
 const filled = (v: unknown) => (typeof v === "string" && v.trim() && !/^TODO\b/.test(v) ? v.trim() : "");
 
-const figure = readFileSync(path("public/assets/vitruvian/figure.svg"), "utf8").replace(/^<\?xml[^>]*>/, "");
+// The figure as the site draws it: the ink image, with its fig leaf.
+const geometry = JSON.parse(readFileSync(path("src/content/vitruvian.json"), "utf8"));
+const [, , vw, vh] = geometry.viewBox as number[];
+const ink = readFileSync(path("public/assets/vitruvian/figure.webp")).toString("base64");
+const figure = `<svg viewBox="0 0 ${vw} ${vh}" style="color:#2b2118"><image href="data:image/webp;base64,${ink}" width="${vw}" height="${vh}"/>${figLeafMarkup("#efe4cc")}</svg>`;
 // Inlined as data URLs: a page set from a string may not load file:// fonts.
 const font = (family: string, file: string, weight: number) =>
   `@font-face{font-family:"${family}";font-weight:${weight};src:url("data:font/woff2;base64,${readFileSync(

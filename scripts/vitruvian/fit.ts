@@ -1,7 +1,7 @@
 /**
- * Image analysis for the Vitruvian tracing pipeline (PRD §8.2): threshold a scan into an
- * ink mask, find the drawing's square and circle, and erase them so potrace only traces
- * the figure. The clean geometry is then redrawn as real <rect> and <circle> elements.
+ * Image analysis for the Vitruvian pipeline (PRD §8.2): threshold a scan into an ink
+ * mask, find the drawing's square and circle, and erase them, so only the figure's ink is
+ * kept. The clean geometry is then redrawn as real <rect> and <circle> elements.
  */
 export type Mask = { width: number; height: number; data: Uint8Array };
 export type Circle = { cx: number; cy: number; r: number };

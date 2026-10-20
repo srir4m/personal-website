@@ -11,8 +11,8 @@ describe("asset budgets (PRD §10.3)", () => {
     expect(total / 1024).toBeLessThan(60);
   });
 
-  it("keeps the traced figure and globe data within reason", () => {
-    expect(kb("public/assets/vitruvian/figure.svg")).toBeLessThan(600);
+  it("keeps the figure and globe data within reason", () => {
+    expect(kb("public/assets/vitruvian/figure.webp")).toBeLessThan(900);
     expect(kb("public/assets/globe/coastlines.bin")).toBeLessThan(400);
     expect(kb("public/assets/globe/land-mask.png")).toBeLessThan(200);
   });
