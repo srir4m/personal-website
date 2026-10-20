@@ -1084,8 +1084,25 @@ html.lenis body {
 .about__margin {
   grid-area: margin;
   align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.about__note {
   padding-left: 1rem;
   border-left: 1px solid color-mix(in srgb, var(--sepia) 60%, transparent);
+}
+.about__rank {
+  display: block;
+  margin-top: 0;
+  font-size: 0.85rem;
+  color: var(--sanguine);
+}
+@media (max-width: 767px) {
+  .about__margin {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
 }
 @media (max-width: 767px) {
   .about__page {

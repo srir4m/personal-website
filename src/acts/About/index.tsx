@@ -8,6 +8,11 @@ import type { ActProps } from "../registry";
 const intro = text(content.owner.intro);
 const paragraphs = intro ? intro.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean) : [];
 const area = content.owner.area ? text(content.owner.area.label) : null;
+/** Gaming sits in the margin, not the intro (owner's call): only games with a rank filled in. */
+const ranked = content.squad.games.flatMap((game) => {
+  const rank = text(game.rank);
+  return rank ? [{ name: game.name, rank }] : [];
+});
 
 /**
  * The About section (PRD v1.1, decision Q2): the owner's own words, right after the
@@ -46,11 +51,28 @@ export default function About({ index }: ActProps) {
             </p>
           ))}
         </div>
-        {area && (
-          <aside className="about__margin about-reveal" aria-label="Location">
-            <p className="hud-label text-sepia">Based in</p>
-            <p className="font-display text-xl italic">{area}</p>
-          </aside>
+        {(area || ranked.length > 0) && (
+          <div className="about__margin">
+            {area && (
+              <aside className="about__note about-reveal" aria-label="Location">
+                <p className="hud-label text-sepia">Based in</p>
+                <p className="font-display text-xl italic">{area}</p>
+              </aside>
+            )}
+            {ranked.length > 0 && (
+              <aside className="about__note about-reveal" aria-label="On the side">
+                <p className="hud-label text-sepia">On the side</p>
+                <ul>
+                  {ranked.map((game) => (
+                    <li key={game.name}>
+                      <span className="font-display text-xl italic">{game.name}</span>
+                      <span className="hud-readout about__rank">{game.rank}</span>
+                    </li>
+                  ))}
+                </ul>
+              </aside>
+            )}
+          </div>
         )}
       </div>
     </div>

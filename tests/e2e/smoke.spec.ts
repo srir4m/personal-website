@@ -79,4 +79,7 @@ test("the opening shows the owner's name and one-liner; About shows the intro", 
   await expect(page.locator("[data-active-act]")).toHaveAttribute("data-active-act", "about");
   await expect(page.locator("#act-about")).toContainText("Stevens Institute of Technology");
   await expect(page.locator("#act-about")).toContainText("New York area");
+  // Gaming is an aside, not part of the intro.
+  await expect(page.locator("#act-about .about__body")).not.toContainText("Counter-Strike");
+  await expect(page.getByRole("complementary", { name: "On the side" })).toContainText("17,000 Premier");
 });

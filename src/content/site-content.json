@@ -3,63 +3,263 @@
   "owner": {
     "name": "Sriram",
     "tagline": "Architecting perfection",
-    "intro": "I am Sriram, a student at Stevens Institute of Technology. I co-founded Sponge, an AI-native technical assessment platform, and I develop for ISNNetwork, a revenue-generating server network built for advanced players. My hackathon project Morphexis, which measures epistemic drift in news coverage, placed in the top 7 at RAISE-26.\n\nOff the keyboard I was a three-time state placer in high school wrestling, swam competitively for ten years, and was selected for the national round of the Darien Young Composers competition on piano. I lift, climb, play chess (1850 on chess.com, 1600 FIDE), and hold a 17,000 Premier rating in Counter-Strike 2.",
-    "area": { "label": "New York area", "lat": 40.71, "lng": -74.01 },
+    "intro": "I am Sriram, a computer science student at Stevens Institute of Technology, class of 2028. I work mostly on backends and data: this summer I was a data engineering intern at Bloom Value Corporation, building ETL views on Microsoft Fabric, a clinical document pipeline, and an HL7 FHIR integration that passed all four federal conformance submissions. I co-founded Sponge, an AI-native technical assessment platform, and since 2023 I have built and run ISNNetwork, a revenue-generating game server for advanced players. My hackathon project Morphexis, which measures epistemic drift in news coverage, placed in the top 7 of 188 teams at RAISE-26.\n\nOff the keyboard I was a three-time state placer in high school wrestling, swam competitively for ten years, and was selected for the national round of the Darien Young Composers competition on piano. I also lift, climb, and play chess (1850 on chess.com, 1600 FIDE).",
+    "area": {
+      "label": "New York area",
+      "lat": 40.71,
+      "lng": -74.01
+    },
     "contact": {
-      "email": null,
+      "email": "pankanti.sriram@gmail.com",
       "github": "https://github.com/srir4m",
-      "linkedin": null
+      "linkedin": "https://www.linkedin.com/in/sriram-pankanti"
     }
   },
   "education": {
     "school": "Stevens Institute of Technology",
-    "degree": "TODO",
-    "classOf": "TODO",
-    "location": { "label": "Castle Point, Hoboken, NJ", "lat": 40.745, "lng": -74.024 },
+    "degree": "B.S. Computer Science",
+    "classOf": "2028",
+    "location": {
+      "label": "Castle Point, Hoboken, NJ",
+      "lat": 40.745,
+      "lng": -74.024
+    },
     "courses": [
-      { "code": "CS 115",   "title": "Introduction to Computer Science", "term": "2024 Fall",   "termOrder": 20243, "status": "completed" },
-      { "code": "HASS 103", "title": null, "term": "2024 Fall",   "termOrder": 20243, "status": "completed" },
-      { "code": "MA 125",   "title": null, "term": "2024 Fall",   "termOrder": 20243, "status": "completed" },
-      { "code": "MA 126",   "title": null, "term": "2024 Fall",   "termOrder": 20243, "status": "completed" },
-      { "code": "PEP 111",  "title": null, "term": "2024 Fall",   "termOrder": 20243, "status": "completed" },
-      { "code": "PRV 101",  "title": null, "term": "2024 Fall",   "termOrder": 20243, "status": "completed" },
-
-      { "code": "CS 284",   "title": "Data Structures", "term": "2025 Spring", "termOrder": 20251, "status": "completed" },
-      { "code": "HASS 105", "title": null, "term": "2025 Spring", "termOrder": 20251, "status": "completed" },
-      { "code": "IDE 105",  "title": null, "term": "2025 Spring", "termOrder": 20251, "status": "completed" },
-      { "code": "MA 222",   "title": null, "term": "2025 Spring", "termOrder": 20251, "status": "completed" },
-      { "code": "PEP 221",  "title": null, "term": "2025 Spring", "termOrder": 20251, "status": "completed" },
-
-      { "code": "CS 135",   "title": "Discrete Structures", "term": "2025 Fall", "termOrder": 20253, "status": "completed" },
-      { "code": "IDE 314",  "title": null, "term": "2025 Fall", "termOrder": 20253, "status": "completed" },
-      { "code": "PRV 202",  "title": null, "term": "2025 Fall", "termOrder": 20253, "status": "completed" },
-
-      { "code": "CS 382",   "title": "Computer Architecture and Organization", "term": "2026 Spring", "termOrder": 20261, "status": "completed" },
-      { "code": "CS 385",   "title": "Algorithms", "term": "2026 Spring", "termOrder": 20261, "status": "completed" },
-      { "code": "IDE 315",  "title": null, "term": "2026 Spring", "termOrder": 20261, "status": "completed" },
-      { "code": "MA 232",   "title": "Linear Algebra", "term": "2026 Spring", "termOrder": 20261, "status": "completed" },
-      { "code": "PRV 201",  "title": null, "term": "2026 Spring", "termOrder": 20261, "status": "completed" },
-
-      { "code": "CS 392",   "title": "Systems Programming", "term": "2026 Summer", "termOrder": 20262, "status": "completed" },
-      { "code": "CS 496",   "title": "Principles of Programming Languages", "term": "2026 Summer", "termOrder": 20262, "status": "completed" },
-
-      { "code": "CS 334",   "title": "Theory of Computation", "term": "2026 Fall", "termOrder": 20263, "status": "in-progress" },
-      { "code": "CS 396",   "title": "Security, Privacy, and Society", "term": "2026 Fall", "termOrder": 20263, "status": "in-progress" },
-      { "code": "CS 561",   "title": "Database Management Systems", "term": "2026 Fall", "termOrder": 20263, "status": "in-progress" },
-      { "code": "HSSC 371", "title": null, "term": "2026 Fall", "termOrder": 20263, "status": "in-progress" },
-      { "code": "MA 331",   "title": null, "term": "2026 Fall", "termOrder": 20263, "status": "in-progress" },
-      { "code": "PRV 203",  "title": null, "term": "2026 Fall", "termOrder": 20263, "status": "in-progress" }
+      {
+        "code": "CS 115",
+        "title": "Introduction to Computer Science",
+        "term": "2024 Fall",
+        "termOrder": 20243,
+        "status": "completed"
+      },
+      {
+        "code": "HASS 103",
+        "title": null,
+        "term": "2024 Fall",
+        "termOrder": 20243,
+        "status": "completed"
+      },
+      {
+        "code": "MA 125",
+        "title": null,
+        "term": "2024 Fall",
+        "termOrder": 20243,
+        "status": "completed"
+      },
+      {
+        "code": "MA 126",
+        "title": null,
+        "term": "2024 Fall",
+        "termOrder": 20243,
+        "status": "completed"
+      },
+      {
+        "code": "PEP 111",
+        "title": null,
+        "term": "2024 Fall",
+        "termOrder": 20243,
+        "status": "completed"
+      },
+      {
+        "code": "PRV 101",
+        "title": null,
+        "term": "2024 Fall",
+        "termOrder": 20243,
+        "status": "completed"
+      },
+      {
+        "code": "CS 284",
+        "title": "Data Structures",
+        "term": "2025 Spring",
+        "termOrder": 20251,
+        "status": "completed"
+      },
+      {
+        "code": "HASS 105",
+        "title": null,
+        "term": "2025 Spring",
+        "termOrder": 20251,
+        "status": "completed"
+      },
+      {
+        "code": "IDE 105",
+        "title": null,
+        "term": "2025 Spring",
+        "termOrder": 20251,
+        "status": "completed"
+      },
+      {
+        "code": "MA 222",
+        "title": null,
+        "term": "2025 Spring",
+        "termOrder": 20251,
+        "status": "completed"
+      },
+      {
+        "code": "PEP 221",
+        "title": null,
+        "term": "2025 Spring",
+        "termOrder": 20251,
+        "status": "completed"
+      },
+      {
+        "code": "CS 135",
+        "title": "Discrete Structures",
+        "term": "2025 Fall",
+        "termOrder": 20253,
+        "status": "completed"
+      },
+      {
+        "code": "IDE 314",
+        "title": null,
+        "term": "2025 Fall",
+        "termOrder": 20253,
+        "status": "completed"
+      },
+      {
+        "code": "PRV 202",
+        "title": null,
+        "term": "2025 Fall",
+        "termOrder": 20253,
+        "status": "completed"
+      },
+      {
+        "code": "CS 382",
+        "title": "Computer Architecture and Organization",
+        "term": "2026 Spring",
+        "termOrder": 20261,
+        "status": "completed"
+      },
+      {
+        "code": "CS 385",
+        "title": "Algorithms",
+        "term": "2026 Spring",
+        "termOrder": 20261,
+        "status": "completed"
+      },
+      {
+        "code": "IDE 315",
+        "title": null,
+        "term": "2026 Spring",
+        "termOrder": 20261,
+        "status": "completed"
+      },
+      {
+        "code": "MA 232",
+        "title": "Linear Algebra",
+        "term": "2026 Spring",
+        "termOrder": 20261,
+        "status": "completed"
+      },
+      {
+        "code": "PRV 201",
+        "title": null,
+        "term": "2026 Spring",
+        "termOrder": 20261,
+        "status": "completed"
+      },
+      {
+        "code": "CS 392",
+        "title": "Systems Programming",
+        "term": "2026 Summer",
+        "termOrder": 20262,
+        "status": "completed"
+      },
+      {
+        "code": "CS 496",
+        "title": "Principles of Programming Languages",
+        "term": "2026 Summer",
+        "termOrder": 20262,
+        "status": "completed"
+      },
+      {
+        "code": "CS 334",
+        "title": "Theory of Computation",
+        "term": "2026 Fall",
+        "termOrder": 20263,
+        "status": "in-progress"
+      },
+      {
+        "code": "CS 396",
+        "title": "Security, Privacy, and Society",
+        "term": "2026 Fall",
+        "termOrder": 20263,
+        "status": "in-progress"
+      },
+      {
+        "code": "CS 561",
+        "title": "Database Management Systems",
+        "term": "2026 Fall",
+        "termOrder": 20263,
+        "status": "in-progress"
+      },
+      {
+        "code": "HSSC 371",
+        "title": null,
+        "term": "2026 Fall",
+        "termOrder": 20263,
+        "status": "in-progress"
+      },
+      {
+        "code": "MA 331",
+        "title": null,
+        "term": "2026 Fall",
+        "termOrder": 20263,
+        "status": "in-progress"
+      },
+      {
+        "code": "PRV 203",
+        "title": null,
+        "term": "2026 Fall",
+        "termOrder": 20263,
+        "status": "in-progress"
+      }
     ]
   },
   "squad": {
     "intro": null,
     "silhouetteCount": 5,
     "games": [
-      { "id": "cs2",       "name": "Counter-Strike 2",   "emblem": "/assets/games/cs2.svg",       "main": null, "rank": "17,000 Premier", "story": null },
-      { "id": "valorant",  "name": "VALORANT",           "emblem": "/assets/games/valorant.svg",  "main": null, "rank": null, "story": null },
-      { "id": "r6",        "name": "Rainbow Six Siege",  "emblem": "/assets/games/r6.svg",        "main": null, "rank": null, "story": null },
-      { "id": "minecraft", "name": "Minecraft",          "emblem": "/assets/games/minecraft.svg", "main": null, "rank": null, "story": null },
-      { "id": "roblox",    "name": "Roblox",             "emblem": "/assets/games/roblox.svg",    "main": null, "rank": null, "story": null }
+      {
+        "id": "cs2",
+        "name": "Counter-Strike 2",
+        "emblem": "/assets/games/cs2.svg",
+        "main": null,
+        "rank": "17,000 Premier",
+        "story": null
+      },
+      {
+        "id": "valorant",
+        "name": "VALORANT",
+        "emblem": "/assets/games/valorant.svg",
+        "main": null,
+        "rank": null,
+        "story": null
+      },
+      {
+        "id": "r6",
+        "name": "Rainbow Six Siege",
+        "emblem": "/assets/games/r6.svg",
+        "main": null,
+        "rank": null,
+        "story": null
+      },
+      {
+        "id": "minecraft",
+        "name": "Minecraft",
+        "emblem": "/assets/games/minecraft.svg",
+        "main": null,
+        "rank": null,
+        "story": null
+      },
+      {
+        "id": "roblox",
+        "name": "Roblox",
+        "emblem": "/assets/games/roblox.svg",
+        "main": null,
+        "rank": null,
+        "story": null
+      }
     ]
   },
   "body": {
@@ -68,61 +268,157 @@
         "label": "Mind",
         "theme": "What I build and play",
         "items": [
-          { "title": "Sponge", "subtitle": "Co-founder", "body": "AI-native technical assessment platform.", "link": "https://getsponge.ai" },
-          { "title": "ISNNetwork", "subtitle": "Developer", "body": "Online server farm selling an enhanced gaming experience to advanced players; revenue-generating.", "link": "https://isnserver.net" },
-          { "title": "Mineman-style knockback plugin", "subtitle": "Minecraft plugin", "body": "Recreates minemen.club-style knockback and combat for PvP on my 1.21.11 factions server." },
-          { "title": "Morphexis", "subtitle": "RAISE-26 hackathon", "body": "Measuring epistemic drift in news coverage.", "badge": "Top 7" },
-          { "title": "Chess", "subtitle": "chess.com 1850 · FIDE 1600" },
-          { "title": "Open to junior-year internships", "mode": "reaching", "draft": true }
+          {
+            "title": "Sponge",
+            "subtitle": "Co-founder",
+            "body": "AI-native technical assessment platform that scores how a candidate directs AI coding tools, not only whether the code passes.",
+            "link": "https://getsponge.ai"
+          },
+          {
+            "title": "ISNNetwork",
+            "subtitle": "Developer",
+            "body": "Java plugins, server operations, and the website and store for a live, paying Minecraft factions server. 2023 to present.",
+            "link": "https://isnserver.net"
+          },
+          {
+            "title": "Mineman-style knockback plugin",
+            "subtitle": "Minecraft plugin",
+            "body": "Recreates minemen.club-style knockback and combat for PvP on my 1.21.11 factions server."
+          },
+          {
+            "title": "Morphexis",
+            "subtitle": "RAISE-26 hackathon",
+            "body": "Scores how far news writing drifts from verifiable toward empty language, with change-point detection over 48 months of headlines.",
+            "badge": "Top 7 of 188"
+          },
+          {
+            "title": "Financial Immune System",
+            "subtitle": "Multi-agent anomaly detection",
+            "body": "Simulator, ingestion, detection and visualisation agents under a YAML-configured orchestrator, flagging volume and price outliers.",
+            "link": "https://github.com/srir4m/FinancialImmuneSystem"
+          },
+          {
+            "title": "Brief AI",
+            "subtitle": "Backend API",
+            "body": "Django REST backend serving word-embedding models for a news summarisation product.",
+            "link": "https://github.com/Brief-Ai/Backend-API"
+          },
+          {
+            "title": "Chess",
+            "subtitle": "chess.com 1850 · FIDE 1600"
+          },
+          {
+            "title": "Open to junior-year internships",
+            "mode": "reaching",
+            "draft": true
+          }
         ]
       },
       "ears": {
         "label": "Ears",
         "theme": "What I hear and compose",
         "items": [
-          { "title": "Darien Young Composers", "subtitle": "Piano", "body": "Selected for the National competition.", "badge": "National" },
-          { "title": "Guitar", "subtitle": "Electric — just started", "body": "First chords: Em, Am, C, G.", "mode": "reaching" }
+          {
+            "title": "Darien Young Composers",
+            "subtitle": "Piano",
+            "body": "Selected for the National competition.",
+            "badge": "National"
+          },
+          {
+            "title": "Guitar",
+            "subtitle": "Electric — just started",
+            "body": "First chords: Em, Am, C, G.",
+            "mode": "reaching"
+          }
         ]
       },
       "chest": {
         "label": "Chest",
         "theme": "Strength",
         "items": [
-          { "title": "Lifting", "subtitle": "Lifting and bodybuilding" }
+          {
+            "title": "Lifting",
+            "subtitle": "Lifting and bodybuilding"
+          }
         ]
       },
       "spine": {
         "label": "Backbone",
         "theme": "Highlights and credentials",
         "items": [
-          { "title": "3× state placer — wrestling", "subtitle": "High school" },
-          { "title": "National selection — Darien Young Composers", "subtitle": "Piano" },
-          { "title": "Top 7 — RAISE-26", "subtitle": "Morphexis" },
-          { "title": "TODO additional credentials", "draft": true }
+          {
+            "title": "B.S. Computer Science",
+            "subtitle": "Stevens Institute of Technology · expected 2028"
+          },
+          {
+            "title": "Data Engineering Intern",
+            "subtitle": "Bloom Value Corporation · 2026",
+            "body": "16 SQL views on a dbt ETL pipeline on Microsoft Fabric; a clinical document extraction pipeline with an audit log and a 328-case benchmark; an HL7 FHIR integration that passed all 4 federal conformance submissions."
+          },
+          {
+            "title": "AI DevOps Intern",
+            "subtitle": "AI-Camp.org · 2022",
+            "body": "Backend and summarisation models for a GPT-3 research search engine, in a selective 10-week incubator."
+          },
+          {
+            "title": "3× state placer — wrestling",
+            "subtitle": "High school"
+          },
+          {
+            "title": "National selection — Darien Young Composers",
+            "subtitle": "Piano"
+          },
+          {
+            "title": "Top 7 of 188 teams — RAISE-26",
+            "subtitle": "Morphexis"
+          },
+          {
+            "title": "TODO additional credentials",
+            "draft": true
+          }
         ]
       },
       "arms": {
         "label": "Arms",
         "theme": "Grapple and climb",
         "items": [
-          { "title": "Wrestling", "subtitle": "3× state placer in high school" },
-          { "title": "Climbing", "subtitle": null, "body": null }
+          {
+            "title": "Wrestling",
+            "subtitle": "3× state placer in high school"
+          },
+          {
+            "title": "Climbing",
+            "subtitle": null,
+            "body": null
+          }
         ]
       },
       "stomach": {
         "label": "Stomach",
         "theme": "Fuel",
         "items": [
-          { "title": "Japanese", "subtitle": "Chicken katsu above all" },
-          { "title": "Indian", "subtitle": null },
-          { "title": "TODO more favorites", "draft": true }
+          {
+            "title": "Japanese",
+            "subtitle": "Chicken katsu above all"
+          },
+          {
+            "title": "Indian",
+            "subtitle": null
+          },
+          {
+            "title": "TODO more favorites",
+            "draft": true
+          }
         ]
       },
       "legs": {
         "label": "Legs",
         "theme": "Endurance",
         "items": [
-          { "title": "Swimming", "subtitle": "Competitive swimmer for 10 years" }
+          {
+            "title": "Swimming",
+            "subtitle": "Competitive swimmer for 10 years"
+          }
         ]
       },
       "feet": {

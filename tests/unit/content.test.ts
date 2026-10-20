@@ -52,8 +52,8 @@ describe("renderableItems", () => {
 describe("content status", () => {
   it("lists every null, TODO and draft field", () => {
     const entries = collectStatus(raw);
-    expect(entries).toContainEqual({ path: "education.degree", kind: "TODO" });
-    expect(entries).toContainEqual({ path: "owner.contact.email", kind: "null" });
-    expect(entries).toContainEqual({ path: "body.regions.head.items[5]", kind: "draft" });
+    expect(entries).toContainEqual({ path: "squad.intro", kind: "null" });
+    expect(entries).toContainEqual({ path: "education.courses[1].title", kind: "null" });
+    expect(entries.some((e) => e.kind === "draft" && e.path.startsWith("body.regions.head.items"))).toBe(true);
   });
 });
