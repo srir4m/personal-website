@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
-import { ACTS, ACT_RANGES, type ActId } from "../stage/acts";
-import { useStage } from "../stage/store";
+import { ACTS, ACT_RANGES, actAt, type ActId } from "../stage/acts";
+import { actProgress, useStage } from "../stage/store";
 import { scrollToAct } from "../stage/timeline";
 
 /**
@@ -25,10 +25,15 @@ export function ProgressRail() {
   const fillRef = useRef<HTMLDivElement>(null);
 
   // Progress changes every frame, so write it straight to the DOM instead of re-rendering.
+  // `--step` is the same progress with every act given an equal share: the phone bar spaces
+  // its ticks evenly, so each one is a full-size tap target.
   useEffect(
     () =>
       useStage.subscribe((s) => {
+        const act = actAt(s.progress);
+        const step = (act + actProgress(ACT_RANGES[act]!, s.progress)) / ACTS.length;
         fillRef.current?.style.setProperty("--progress", String(s.progress));
+        fillRef.current?.style.setProperty("--step", String(step));
       }),
     [],
   );
@@ -42,7 +47,11 @@ export function ProgressRail() {
         {ACTS.map((act, i) => {
           const label = RAIL_LABELS[act.id];
           return (
-            <li key={act.id} className="rail-tick" style={{ "--at": ACT_RANGES[i]!.start } as React.CSSProperties}>
+            <li
+              key={act.id}
+              className="rail-tick"
+              style={{ "--at": ACT_RANGES[i]!.start, "--i": i, "--n": ACTS.length } as React.CSSProperties}
+            >
               <a
                 href={act.hash ? `#${act.hash}` : "#"}
                 aria-current={i === activeAct ? "step" : undefined}

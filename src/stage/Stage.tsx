@@ -75,6 +75,7 @@ export function Stage() {
             if (el) layerRefs.current[i] = el;
           }}
           id={`act-${act.id}`}
+          tabIndex={-1}
           aria-labelledby={`act-${act.id}-title`}
           inert={i !== activeAct}
           className="absolute inset-0"

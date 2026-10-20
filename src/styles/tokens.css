@@ -3,7 +3,8 @@
   --parchment: #efe4cc;
   --parchment-deep: #e2d3b0;
   --ink: #2b2118;
-  --sepia: #8a6b47;
+  /* Dark enough for small text on both parchments (5.6:1 and 4.8:1, WCAG AA). */
+  --sepia: #6e5333;
   --sanguine: #a8432f;
   --hud-cyan: #3fd6e0;
   --hud-amber: #f2a33a;
