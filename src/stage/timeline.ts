@@ -16,8 +16,8 @@ let trigger: ScrollTrigger | null = null;
 let lenis: Lenis | null = null;
 const actTimelines = new Map<ActIndex, Set<gsap.core.Timeline>>();
 
-/** Cross-fade length between act layers, in master-timeline units. */
-const ACT_FADE = 0.008;
+/** Length of each half of a fade through the parchment between acts, in master-timeline units. */
+const ACT_FADE = 0.01;
 /** Calm mode: act-to-act cross-fade, in seconds (PRD §10.1). */
 const CALM_FADE = 0.3;
 
@@ -62,8 +62,14 @@ function buildMaster(layers: HTMLElement[]) {
     const nextLength = ACT_RANGES[i]!.end - boundary;
     const lead = actFades(i).enterLead;
     const lag = actFades(i - 1).exitLag;
-    const fadeIn = lead ? { at: boundary - lead * prevLength, duration: lead * prevLength } : { at: boundary - ACT_FADE / 2, duration: ACT_FADE };
-    const fadeOut = lag ? { at: boundary, duration: lag * nextLength } : { at: boundary - ACT_FADE / 2, duration: ACT_FADE };
+    // A dissolve (enterLead) keeps the outgoing act opaque underneath until the boundary;
+    // otherwise the outgoing act fades out before the boundary and the incoming one after it.
+    const fadeIn = lead ? { at: boundary - lead * prevLength, duration: lead * prevLength } : { at: boundary, duration: ACT_FADE };
+    const fadeOut = lag
+      ? { at: boundary, duration: lag * nextLength }
+      : lead
+        ? { at: boundary, duration: ACT_FADE }
+        : { at: boundary - ACT_FADE, duration: ACT_FADE };
     const opts = { immediateRender: false };
     tl.fromTo(layers[i - 1]!, { autoAlpha: 1 }, { autoAlpha: 0, duration: fadeOut.duration, ...opts }, fadeOut.at);
     tl.fromTo(layers[i]!, { autoAlpha: 0 }, { autoAlpha: 1, duration: fadeIn.duration, ...opts }, fadeIn.at);

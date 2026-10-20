@@ -3,9 +3,12 @@
  * scroll. Boot has no share in the PRD table (it runs on load), so it gets a small
  * runway here, and every share is normalised against the total.
  *
- * Act layers cross-fade briefly at each boundary unless an act overrides it:
- * `enterLead` fades the act in over that share of the previous act, ending at the
- * boundary; `exitLag` fades the act out over that share of the next act, starting at it.
+ * By default an act hands over by fading through the parchment: the outgoing act fades
+ * out just before the boundary and the incoming one fades in just after it, so two
+ * unrelated scenes never double-expose. Where the two frames match, the incoming act
+ * dissolves over the outgoing one instead: `enterLead` fades the act in over that share
+ * of the previous act, ending at the boundary; `exitLag` fades the act out over that
+ * share of the next act, starting at it.
  */
 type ActDef = {
   id: string;
@@ -28,8 +31,10 @@ export const ACTS = [
   // PRD v1.1: Activities replaces the gaming-only Squad room; gaming is one activity among several.
   { id: "activities", hash: "activities", name: "Activities", share: 15, settle: 0.6 },
   { id: "becoming", hash: "becoming", name: "Becoming", share: 15, settle: 0.95 },
-  { id: "body", hash: "body", name: "Body map", share: 30, settle: 0.1 },
-  { id: "outro", hash: "outro", name: "Outro", share: 5, settle: 1 },
+  // Becoming ends on the same figure, square and circle the body map opens on: dissolve.
+  { id: "body", hash: "body", name: "Body map", share: 30, settle: 0.1, enterLead: 0.04 },
+  // The Outro opens on the body map's figure before its montage plays: dissolve.
+  { id: "outro", hash: "outro", name: "Outro", share: 5, settle: 1, enterLead: 0.04 },
 ] as const satisfies readonly ActDef[];
 
 export type ActId = (typeof ACTS)[number]["id"];
