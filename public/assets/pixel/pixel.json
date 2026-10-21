@@ -1,0 +1,31 @@
+{
+  "city": {
+    "w": 800,
+    "h": 800,
+    "ring": {
+      "cx": 400,
+      "cy": 400,
+      "r": 296
+    }
+  },
+  "street": {
+    "w": 800,
+    "h": 800
+  },
+  "figure": {
+    "w": 800,
+    "h": 788,
+    "circle": {
+      "cx": 401.8,
+      "cy": 381.8,
+      "r": 380.9
+    },
+    "square": {
+      "left": 83,
+      "top": 142,
+      "right": 717.5,
+      "bottom": 761.5
+    }
+  },
+  "credit": "Map data © OpenStreetMap contributors · Protomaps"
+}

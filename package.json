@@ -13,7 +13,8 @@
     "globe:data": "node scripts/build-globe-data.ts",
     "vault:encrypt": "node scripts/encrypt-vault.ts",
     "vitruvian:trace": "node scripts/trace-vitruvian.ts",
-    "og": "node scripts/build-og.ts"
+    "og": "node scripts/build-og.ts",
+    "pixel:bake": "node scripts/bake-pixel.ts"
   },
   "dependencies": {
     "@fontsource/im-fell-english": "^5.3.0",

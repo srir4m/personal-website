@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Pixel bake: map frames</title>
+    <style>
+      html, body { margin: 0; background: #efe4cc; }
+      /* Over anything the site's HTML plugins add to every page. */
+      #map { position: fixed; inset: 0; z-index: 10; }
+    </style>
+  </head>
+  <!-- Dev-only page for scripts/bake-pixel.ts; never built or deployed. -->
+  <body>
+    <div id="map"></div>
+    <script type="module" src="./map.ts"></script>
+  </body>
+</html>
