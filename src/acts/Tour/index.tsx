@@ -1,22 +1,17 @@
-import { lazy, Suspense, useEffect, useId, useMemo, useRef, useState } from "react";
-import emblemFiles from "virtual:game-emblems";
+import { Suspense, useEffect, useId, useMemo, useRef, useState } from "react";
 import { CodexPanel } from "../../components/CodexPanel";
 import { content } from "../../content";
-import type { Item } from "../../content/schema";
 import { text } from "../../content/text";
 import { ACT_RANGES } from "../../stage/acts";
 import { actProgress, useStage } from "../../stage/store";
 import { CLOSING_START, STOP_PHASES, STOP_RANGES, TOUR_STOPS, type TourStop } from "../../stage/tour";
 import { FIGURE_MARKUP, FRAME, VIEWBOX, VITRUVIAN } from "../../vitruvian/figure";
-import { EmblemGlyph } from "../Activities/Glyph";
+import { GameList } from "../../components/GameList";
+import { Vault } from "../../vault/LazyVault";
+import { ItemList } from "../../components/ItemList";
 import { BODY_REGIONS, pointsAttr } from "../Act5Body/regions";
 import type { ActProps } from "../registry";
 
-// The vault ships in its own chunk, loaded only when opened (as on the body map).
-const Vault = lazy(async () => {
-  const [{ VaultPanel }, { default: vault }] = await Promise.all([import("../../vault/VaultPanel"), import("virtual:vault")]);
-  return { default: () => <VaultPanel vault={vault} /> };
-});
 
 const [, , VB_W, VB_H] = VITRUVIAN.viewBox;
 const { circle } = VITRUVIAN;
@@ -68,57 +63,6 @@ function tourState(t: number, frames: Frame[]) {
   // The figure steps aside for the text as the first stop arrives.
   const aside = i === 0 ? k : 1;
   return { frame, aside, opacity };
-}
-
-function ItemList({ items }: { items: Item[] }) {
-  return (
-    <ul className="tour-items">
-      {items.map((item) => {
-        const subtitle = text(item.subtitle);
-        const body = text(item.body);
-        const badge = text(item.badge);
-        const link = text(item.link);
-        return (
-          <li key={item.title} className="tour-item">
-            <p className="tour-item__title">
-              {link ? (
-                <a href={link} target="_blank" rel="noopener">
-                  {item.title}
-                  <span aria-hidden="true"> ↗</span>
-                </a>
-              ) : (
-                item.title
-              )}
-              {badge && <span className="codex-badge">{badge}</span>}
-            </p>
-            {subtitle && <p className="tour-item__sub">{subtitle}</p>}
-            {body && <p className="tour-item__body">{body}</p>}
-          </li>
-        );
-      })}
-    </ul>
-  );
-}
-
-function Games() {
-  return (
-    <ul className="game-emblems tour-games">
-      {content.squad.games.map((g) => {
-        const file = g.emblem.split("/").pop()!;
-        const present = emblemFiles.includes(file);
-        const detail = [text(g.rank), text(g.main)].filter(Boolean).join(" · ") || null;
-        return (
-          <li key={g.id} className="game-emblem">
-            <div className="game-emblem__mark">
-              {present ? <img src={`${import.meta.env.BASE_URL}${g.emblem.replace(/^\//, "")}`} alt={g.name} /> : <EmblemGlyph id={g.id} />}
-            </div>
-            {!present && <span className="game-emblem__name">{g.name}</span>}
-            {detail && <span className="game-emblem__detail">{detail}</span>}
-          </li>
-        );
-      })}
-    </ul>
-  );
 }
 
 /**
@@ -226,7 +170,7 @@ export default function Tour({ index }: ActProps) {
                   {stop.items.length > 0 && <ItemList items={stop.items} />}
                   {content.squad.games.length > 0 && (
                     <>
-                      <Games />
+                      <GameList />
                       <p className="tour-note">Game names and logos are trademarks of their respective owners.</p>
                     </>
                   )}

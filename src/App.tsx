@@ -16,6 +16,12 @@ const RegionEditor = import.meta.env.DEV ? lazy(() => import("./dev/RegionEditor
 const params = new URLSearchParams(window.location.search);
 const showStatus = params.get("status") === "1";
 const editRegions = params.get("edit") === "regions";
+/**
+ * The pixel layout (pixel move, issue #8) is previewed with `?pixel` until it is complete;
+ * the cleanup PR makes it the only layout. Its own chunk, so the act layout's budget holds.
+ */
+const PIXEL = params.has("pixel");
+const ChapterSite = lazy(() => import("./chapters/ChapterSite").then((m) => ({ default: m.ChapterSite })));
 const BODY_ACT = ACTS.findIndex((act) => act.id === "body");
 /** The page's one h1 names the owner; the codename is only a fallback. */
 const OWNER_NAME = text(content.owner.name) ?? "Microcosm";
@@ -28,7 +34,23 @@ export function App() {
       </Suspense>
     );
   }
+  if (PIXEL) {
+    return (
+      <Suspense fallback={null}>
+        <PixelSite />
+      </Suspense>
+    );
+  }
   return <Site />;
+}
+
+function PixelSite() {
+  const motion = useStage((s) => s.motion);
+  useEffect(() => {
+    document.documentElement.dataset.motion = motion;
+    document.documentElement.dataset.layout = "pixel";
+  }, [motion]);
+  return <ChapterSite />;
 }
 
 function Site() {
