@@ -28,18 +28,19 @@ const now = (items: Item[], isProd: boolean) => renderableItems(items, "now", is
 /** At most this many items per stop, so every stop reads on one screen, even a small phone's. */
 export const PAGE_SIZE = 3;
 
-/** A region's items as one stop, or as consecutive pages of PAGE_SIZE. */
-function paged(stop: Omit<TourStop, "page">, perItem = 0.45): TourStop[] {
-  const pages = Math.ceil(stop.items.length / PAGE_SIZE);
+/** A region's items as one stop, or as consecutive pages of `size`. */
+function paged(stop: Omit<TourStop, "page">, perItem = 0.45, size = PAGE_SIZE): TourStop[] {
+  const pages = Math.ceil(stop.items.length / size);
   if (pages <= 1) return [{ ...stop, weight: Math.max(stop.weight, 0.6 + perItem * stop.items.length) }];
   return Array.from({ length: pages }, (_, i) => {
-    const items = stop.items.slice(i * PAGE_SIZE, (i + 1) * PAGE_SIZE);
+    const items = stop.items.slice(i * size, (i + 1) * size);
     return { ...stop, id: `${stop.id}-${i + 1}`, items, page: [i + 1, pages] as [number, number], weight: 0.6 + perItem * items.length };
   });
 }
 
 // `import.meta.env` is Vite's; Node (the e2e specs import the act layout) has none, so count as production.
-export function buildTourStops(isProd = import.meta.env?.PROD ?? true): TourStop[] {
+// `pageSize`: the pixel layout's chapters scroll, so they take each region whole (Infinity).
+export function buildTourStops(isProd = import.meta.env?.PROD ?? true, pageSize = PAGE_SIZE): TourStop[] {
   const regions = content.body.regions;
   const stops: TourStop[] = [];
   const name = text(content.owner.name);
@@ -49,14 +50,14 @@ export function buildTourStops(isProd = import.meta.env?.PROD ?? true): TourStop
   const mind = now(regions.head.items, isProd);
   const build = mind.filter((item) => !item.activity);
   const play = mind.filter((item) => item.activity);
-  if (build.length) stops.push(...paged({ id: "build", region: "head", label: regions.head.label, title: "What I build", kind: "items", items: build, weight: 1 }));
+  if (build.length) stops.push(...paged({ id: "build", region: "head", label: regions.head.label, title: "What I build", kind: "items", items: build, weight: 1 }, undefined, pageSize));
   const spine = now(regions.spine.items, isProd);
-  if (spine.length) stops.push(...paged({ id: "spine", region: "spine", label: regions.spine.label, title: regions.spine.theme, kind: "items", items: spine, weight: 1 }));
+  if (spine.length) stops.push(...paged({ id: "spine", region: "spine", label: regions.spine.label, title: regions.spine.theme, kind: "items", items: spine, weight: 1 }, undefined, pageSize));
   if (play.length || content.squad.games.length)
     stops.push({ id: "play", region: "head", label: regions.head.label, title: "What I play", kind: "play", items: play, weight: 1.2 });
   for (const id of ["ears", "arms", "chest", "legs", "stomach", "feet"] as const) {
     const items = now(regions[id].items, isProd);
-    if (items.length) stops.push(...paged({ id, region: id, label: regions[id].label, title: regions[id].theme, kind: "items", items, weight: 0.8 }, 0.25));
+    if (items.length) stops.push(...paged({ id, region: id, label: regions[id].label, title: regions[id].theme, kind: "items", items, weight: 0.8 }, 0.25, pageSize));
   }
   stops.push({ id: "heart", region: "heart", label: "Heart", title: "The vault", kind: "vault", items: [], weight: 0.9 });
   return stops;

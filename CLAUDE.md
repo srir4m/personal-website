@@ -26,6 +26,14 @@
 - Scroll progress lives in the Zustand store (`src/stage/store.ts`). Read it with `useStage.getState()`
   (e.g. inside R3F `useFrame`) or `useStage.subscribe`; never select `progress` in a React component.
 - Act ranges, settle points and deep-link parsing are in `src/stage/acts.ts`.
+- **Pixel move (in progress, issue #8):** the site is moving to a pixel layout, previewed with `?pixel`.
+  It is one column of chapters (`src/stage/chapters.ts`, rendered by `src/chapters/ChapterSite.tsx`) over a
+  fixed pixel scene. The page scrolls natively: there is no pin and no master timeline. The reading position
+  in chapter units is the store's `chapterP` (written by `src/stage/chapterScroll.ts`); read it with
+  `getState()` or `subscribe`, like `progress`. Each chapter names its `scene` and, on the figure, its
+  `region`. The scene's map and figure frames are baked by `npm run pixel:bake` into `public/assets/pixel/`.
+  Calm mode snaps to chapters with CSS. Old act hashes are chapter aliases. When the move is done, the act
+  layout and everything above about the master timeline go.
 
 ## Checks before finishing a milestone
 

@@ -8,6 +8,14 @@ type StageState = {
   /** Master timeline progress, 0–1. Written every scroll frame: read it with getState(), never subscribe. */
   progress: number;
   activeAct: ActIndex;
+  /**
+   * The pixel layout's reading position in chapter units (src/stage/chapters.ts): 2.5 is
+   * halfway from the third chapter to the fourth. Written every scroll frame: read it with
+   * getState() or subscribe, never select it in a component.
+   */
+  chapterP: number;
+  /** The chapter being read: chapterP rounded. */
+  activeChapter: number;
   motion: MotionMode;
   poseMode: PoseMode;
   /** Region id of the open codex panel, if any. */
@@ -27,6 +35,8 @@ const prefersReducedMotion =
 export const useStage = create<StageState>()((set) => ({
   progress: 0,
   activeAct: 0,
+  chapterP: 0,
+  activeChapter: 0,
   motion: prefersReducedMotion ? "calm" : "full",
   poseMode: "now",
   openPanel: null,
@@ -48,4 +58,9 @@ export function actProgress(range: { start: number; end: number }, progress: num
  */
 export function writeProgress(progress: number, activeAct: ActIndex) {
   useStage.setState({ progress, activeAct });
+}
+
+/** Setter for the chapter scroll loop: like writeProgress, it re-renders only when the chapter changes. */
+export function writeChapterP(chapterP: number, activeChapter: number) {
+  useStage.setState({ chapterP, activeChapter });
 }
