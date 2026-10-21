@@ -1,6 +1,6 @@
 /* GitHub Pages' not-found page (404.html): the same parchment, ink and type as the site, no JS. */
-@import "@fontsource/cormorant-garamond/400.css";
-@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/pixelify-sans/700.css";
+@import "@fontsource/silkscreen/400.css";
 @import "./tokens.css";
 
 .not-found {
@@ -22,23 +22,23 @@
 }
 .not-found__label {
   margin: 0;
-  font-family: var(--font-mono);
+  font-family: var(--font-label);
   font-size: 0.75rem;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--sanguine);
 }
 .not-found__title {
   margin: 0;
-  font-family: var(--font-display);
+  font-family: var(--font-pixel);
   font-size: clamp(2rem, 6vw, 3.25rem);
-  font-weight: 400;
+  font-weight: 700;
   line-height: 1.1;
 }
 .not-found__link {
-  font-family: var(--font-mono);
+  font-family: var(--font-label);
   font-size: 0.8rem;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ink);
   text-decoration: none;

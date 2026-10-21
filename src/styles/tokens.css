@@ -18,6 +18,12 @@
   --dur-base: 400ms;
   --dur-slow: 1200ms;
 
-  --font-display: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  /* Pixel direction (issue #8): Fell for reading, Pixelify for titles, Silkscreen for labels, JetBrains Mono for data. */
+  --font-display: "IM Fell English", "Iowan Old Style", Georgia, serif;
+  --font-pixel: "Pixelify Sans", "Silkscreen", ui-monospace, monospace;
+  --font-label: "Silkscreen", "Pixelify Sans", ui-monospace, monospace;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* One art pixel in the UI chrome: borders, marks and steps are multiples of it. */
+  --px: 3px;
 }

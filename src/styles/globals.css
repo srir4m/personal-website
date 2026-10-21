@@ -10,6 +10,8 @@
   --color-hud-cyan: var(--hud-cyan);
   --color-hud-amber: var(--hud-amber);
   --font-display: var(--font-display);
+  --font-pixel: var(--font-pixel);
+  --font-label: var(--font-label);
   --font-mono: var(--font-mono);
 }
 
@@ -68,15 +70,23 @@ html.lenis body {
   transform: none;
 }
 
-/* Chip: an outlined ink control. */
+/* Chip: an ink control with a notched pixel border; it steps up a pixel on hover and down when pressed. */
 .hud-chip {
+  --chip-edge: 0 calc(-1 * var(--px)) 0 0 var(--ink), 0 var(--px) 0 0 var(--ink), calc(-1 * var(--px)) 0 0 0 var(--ink), var(--px) 0 0 0 var(--ink);
   color: var(--ink);
-  padding: 0.45rem 0.8rem;
-  border: 1px solid color-mix(in srgb, var(--ink) 40%, transparent);
-  transition: border-color var(--dur-quick) var(--ease);
+  background: var(--parchment);
+  padding: 0.5rem 0.85rem;
+  border: 0;
+  box-shadow: var(--chip-edge), calc(2 * var(--px)) calc(2 * var(--px)) 0 0 var(--parchment-deep);
+  transition: transform var(--dur-quick) steps(2), box-shadow var(--dur-quick) steps(2);
 }
 .hud-chip:hover {
-  border-color: var(--ink);
+  transform: translate(calc(-1 * var(--px) / 1.5), calc(-1 * var(--px) / 1.5));
+  box-shadow: var(--chip-edge), calc(3 * var(--px)) calc(3 * var(--px)) 0 0 var(--sanguine);
+}
+.hud-chip:active {
+  transform: translate(var(--px), var(--px));
+  box-shadow: var(--chip-edge);
 }
 
 /* Motion switch: a quiet text control in the top-right corner, not a chip. */
@@ -86,9 +96,9 @@ html.lenis body {
   display: flex;
   gap: 0.4rem;
   padding: 0.35rem 0.1rem;
-  font-family: var(--font-mono);
+  font-family: var(--font-label);
   font-size: 0.75rem;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--sepia);
   cursor: pointer;
@@ -113,17 +123,18 @@ html.lenis body {
 }
 
 /* Progress rail: a codex margin on the left (desktop), a thin top bar (phone). */
+/* Pixel rail (issue #8): a tick every 2.5 % of the scroll, a red fill, a square per act. */
 .progress-rail {
   --rail-length: calc(100dvh - 8rem);
   top: 4rem;
   left: 1.25rem;
   height: var(--rail-length);
-  width: 2px;
+  width: 4px;
 }
 .rail-track {
   position: absolute;
-  inset: 0;
-  background: color-mix(in srgb, var(--sepia) 35%, transparent);
+  inset: 0 -3px;
+  background: repeating-linear-gradient(to bottom, color-mix(in srgb, var(--sepia) 55%, transparent) 0 2px, transparent 2px 2.5%);
 }
 .rail-fill {
   --progress: 0;
@@ -148,11 +159,11 @@ html.lenis body {
   align-items: center;
   gap: 0.6rem;
   min-height: 44px;
-  transform: translate(-6px, -50%);
+  transform: translate(-4px, -50%);
   color: var(--sepia);
-  font-family: var(--font-mono);
+  font-family: var(--font-label);
   font-size: 0.75rem;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   text-decoration: none;
   white-space: nowrap;
@@ -163,21 +174,25 @@ html.lenis body {
   color: var(--ink);
 }
 .rail-mark {
-  width: 14px;
-  height: 1px;
-  background: var(--sepia);
+  width: 12px;
+  height: 12px;
+  flex: none;
+  background: var(--parchment);
+  box-shadow: inset 0 0 0 var(--px) var(--ink);
 }
 /* Passages between places get a shorter tick and no label. */
 .rail-tick a[data-minor] {
   min-height: 24px;
 }
 .rail-tick a[data-minor] .rail-mark {
-  width: 8px;
+  width: 6px;
+  height: 6px;
   margin-left: 3px;
+  background: var(--sepia);
+  box-shadow: none;
 }
 .rail-tick a[aria-current="step"] .rail-mark {
   background: var(--sanguine);
-  height: 2px;
 }
 
 @media (max-width: 767px) {
@@ -185,7 +200,11 @@ html.lenis body {
     top: 0;
     left: 0;
     width: 100%;
-    height: 3px;
+    height: 4px;
+  }
+  .rail-track {
+    inset: 0;
+    background: color-mix(in srgb, var(--sepia) 30%, transparent);
   }
   .rail-fill {
     --step: 0;
@@ -207,8 +226,10 @@ html.lenis body {
     align-items: flex-start;
   }
   .rail-mark {
-    width: 2px;
+    width: 4px;
     height: 8px;
+    background: var(--ink);
+    box-shadow: none;
   }
   /* Phones: the top bar keeps its ticks; the labels stay for screen readers only. */
   .rail-label {
@@ -281,9 +302,9 @@ html.lenis body {
 /* ---- HUD --------------------------------------------------------------------- */
 
 .hud-label {
-  font-family: var(--font-mono);
+  font-family: var(--font-label);
   font-size: 0.75rem;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
@@ -313,9 +334,9 @@ html.lenis body {
   margin-top: 0.9rem;
   padding: 0.35rem 0.7rem;
   border: 1px solid color-mix(in srgb, var(--ink) 40%, transparent);
-  font-family: var(--font-mono);
+  font-family: var(--font-label);
   font-size: 0.75rem;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ink);
   cursor: pointer;
@@ -328,9 +349,9 @@ html.lenis body {
   margin-left: auto;
   padding: 0 0.35rem;
   border: 1px solid var(--sepia);
-  font-family: var(--font-mono);
+  font-family: var(--font-label);
   font-size: 0.75rem;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--sepia);
   white-space: nowrap;
@@ -634,9 +655,9 @@ html.lenis body {
   padding: 0.5rem 0.9rem;
   background: var(--ink);
   color: var(--parchment);
-  font-family: var(--font-mono);
+  font-family: var(--font-label);
   font-size: 0.8rem;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
 }
@@ -984,9 +1005,9 @@ html.lenis body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-mono);
+  font-family: var(--font-label);
   font-size: 0.75rem;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--sepia);
   cursor: pointer;
@@ -1031,9 +1052,9 @@ html.lenis body {
   padding: 0.05rem 0.45rem;
   border: 1px solid var(--sepia);
   color: var(--sepia);
-  font-family: var(--font-mono);
+  font-family: var(--font-label);
   font-size: 0.75rem;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 .codex-link {
@@ -1082,9 +1103,9 @@ html.lenis body {
   text-decoration-color: currentColor;
 }
 .outro-top {
-  font-family: var(--font-mono);
+  font-family: var(--font-label);
   font-size: 0.75rem;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--sepia);
   cursor: pointer;
@@ -1103,15 +1124,15 @@ html.lenis body {
   gap: 1.25rem;
 }
 .section-title {
-  font-family: var(--font-display);
+  font-family: var(--font-pixel);
   font-size: clamp(2rem, 1.6rem + 1.2vw, 2.75rem);
-  font-weight: 500;
+  font-weight: 700;
   line-height: 1;
 }
 .section-rule {
   flex: 1;
-  height: 1px;
-  background: color-mix(in srgb, var(--sepia) 70%, transparent);
+  height: var(--px);
+  background: repeating-linear-gradient(to right, color-mix(in srgb, var(--sepia) 70%, transparent) 0 var(--px), transparent var(--px) calc(2 * var(--px)));
 }
 /* ---- Descent map ---------------------------------------------------------------- */
 
@@ -1200,7 +1221,7 @@ html.lenis body {
 }
 .game-emblem__name {
   grid-column: 1;
-  font-family: var(--font-mono);
+  font-family: var(--font-label);
   font-size: 0.75rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1208,7 +1229,7 @@ html.lenis body {
 .game-emblem__detail {
   grid-column: 2;
   grid-row: 1;
-  font-family: var(--font-mono);
+  font-family: var(--font-label);
   font-size: 0.75rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1303,28 +1324,42 @@ html.lenis body {
   gap: 0.9rem;
 }
 .tour-eyebrow {
-  font-family: var(--font-mono);
+  font-family: var(--font-label);
   font-size: 0.75rem;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--sepia);
 }
 .tour-title {
-  font-family: var(--font-display);
+  font-family: var(--font-pixel);
   font-size: clamp(1.9rem, 1.4rem + 1.4vw, 2.75rem);
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.05;
   padding-bottom: 0.9rem;
-  border-bottom: 1px solid color-mix(in srgb, var(--sepia) 60%, transparent);
+  border-bottom: var(--px) dotted color-mix(in srgb, var(--sepia) 70%, transparent);
 }
 .tour-intro {
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
   font-family: var(--font-display);
-  font-size: clamp(1rem, min(0.95rem + 0.35vw, 2.3dvh), 1.3rem);
+  /* Fell sets larger than the old serif at the same size, so the scale starts a step lower. */
+  font-size: clamp(0.94rem, min(0.9rem + 0.33vw, 2.2dvh), 1.22rem);
   line-height: 1.5;
   text-wrap: pretty;
+}
+/* The tour's opening lede gets an illuminated initial, in pixels. */
+.tour-intro p:first-child::first-letter {
+  float: left;
+  font-family: var(--font-pixel);
+  font-weight: 700;
+  font-size: 3.6em;
+  line-height: 0.86;
+  color: var(--parchment);
+  background: var(--sanguine);
+  padding: 0.12em 0.14em 0.08em;
+  margin: 0.08em 0.3em 0 0;
+  box-shadow: var(--px) var(--px) 0 0 var(--ink);
 }
 .tour-items {
   display: flex;
@@ -1368,9 +1403,9 @@ html.lenis body {
 }
 .tour-vault {
   align-self: flex-start;
-  font-family: var(--font-mono);
+  font-family: var(--font-label);
   font-size: 0.75rem;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
@@ -1456,9 +1491,9 @@ html.lenis body {
 /* The opening's role line: what the owner does, under the name and tagline. */
 .boot-role {
   margin-top: 0.75rem;
-  font-family: var(--font-mono);
+  font-family: var(--font-label);
   font-size: 0.75rem;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--sepia);
   text-wrap: balance;

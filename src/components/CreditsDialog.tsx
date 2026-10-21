@@ -32,7 +32,7 @@ export function CreditsDialog({ open, onClose }: Props) {
         <li>Globe data: Natural Earth (public domain).</li>
         <li>Map data © OpenStreetMap contributors (ODbL), via the Protomaps basemap.</li>
         <li>Game names and logos are trademarks of their respective owners.</li>
-        <li>Cormorant Garamond and IBM Plex Mono, SIL Open Font License 1.1.</li>
+        <li>IM Fell English, Pixelify Sans, Silkscreen and JetBrains Mono, SIL Open Font License 1.1.</li>
       </ul>
       <button type="button" onClick={onClose} className="mt-6 font-mono text-sm underline underline-offset-4">
         Close

@@ -1,10 +1,12 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "@fontsource/cormorant-garamond/400.css";
-import "@fontsource/cormorant-garamond/400-italic.css";
-import "@fontsource/cormorant-garamond/600.css";
-import "@fontsource/ibm-plex-mono/400.css";
-import "@fontsource/ibm-plex-mono/500.css";
+import "@fontsource/im-fell-english/400.css";
+import "@fontsource/im-fell-english/400-italic.css";
+import "@fontsource/pixelify-sans/500.css";
+import "@fontsource/pixelify-sans/700.css";
+import "@fontsource/silkscreen/400.css";
+import "@fontsource/jetbrains-mono/400.css";
+import "@fontsource/jetbrains-mono/500.css";
 import "./styles/globals.css";
 import { App } from "./App";
 
