@@ -27,3 +27,18 @@
   /* One art pixel in the UI chrome: borders, marks and steps are multiples of it. */
   --px: 3px;
 }
+
+/*
+ * Dark mode (owner decision, issue #8): the pixel layout follows the system setting with
+ * parchment and ink swapped. The act layout's globe and map have fixed colours, so it stays light.
+ */
+@media (prefers-color-scheme: dark) {
+  :root[data-layout="pixel"] {
+    --parchment: #1b1510;
+    --parchment-deep: #3a2d20;
+    --ink: #f0e5cd;
+    --sepia: #b0916a;
+    --sanguine: #d9694f;
+    color-scheme: dark;
+  }
+}
