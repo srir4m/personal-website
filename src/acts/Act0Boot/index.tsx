@@ -56,7 +56,7 @@ export default function Act0Boot(_: ActProps) {
           className={`relative flex flex-col items-center gap-3 px-6 text-center ${calm ? "" : "ink-reveal"}`}
           style={inkDelay ? { animationDelay: inkDelay } : undefined}
         >
-          {name && <p className="font-display text-6xl leading-none font-semibold md:text-8xl">{name}</p>}
+          {name && <p className="font-pixel text-6xl leading-none font-bold md:text-8xl">{name}</p>}
           {tagline && <p className="font-display text-2xl italic md:text-3xl">{tagline}</p>}
           {role.length > 0 && (
             // Each fact wraps as a whole, its separator kept with it, so no line starts with one.
@@ -77,7 +77,7 @@ export default function Act0Boot(_: ActProps) {
           <path d="M12 2V34M5 27L12 36L19 27" className="fill-none stroke-ink" strokeWidth="1.25" />
           <path d="M9 8H15M9 12H15M9 16H15" className="stroke-sepia" strokeWidth="0.75" />
         </svg>
-        <span className="font-mono text-xs tracking-[0.35em] uppercase">scroll</span>
+        <span className="font-label text-xs tracking-[0.1em] uppercase">scroll</span>
       </div>
       {!ready && (
         <p className="hud-label absolute bottom-6 left-1/2 -translate-x-1/2 text-sepia" role="status">

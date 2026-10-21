@@ -67,7 +67,7 @@ function siteMeta(): Plugin {
               attrs: { id: "boot-title", class: "boot-title", "aria-hidden": "true" },
               children:
                 `<div class="relative flex flex-col items-center gap-3 px-6 text-center ink-reveal">` +
-                `<p class="font-display text-6xl leading-none font-semibold md:text-8xl">${escapeHtml(name)}</p>` +
+                `<p class="font-pixel text-6xl leading-none font-bold md:text-8xl">${escapeHtml(name)}</p>` +
                 (tagline ? `<p class="font-display text-2xl italic md:text-3xl">${escapeHtml(tagline)}</p>` : "") +
                 (role ? `<p class="boot-role">${role}</p>` : "") +
                 `</div>`,

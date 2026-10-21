@@ -27,7 +27,7 @@ export function ActPlaceholder({ index, tone, summary, children }: Props) {
 
   return (
     <div className={`flex h-full w-full flex-col items-center justify-center gap-4 px-6 text-center ${tone}`}>
-      <p className="font-mono text-sm tracking-[0.3em] uppercase opacity-80">
+      <p className="font-label text-sm tracking-[0.1em] uppercase opacity-80">
         Act {index} · placeholder
       </p>
       <p aria-hidden="true" className="font-display text-6xl leading-none md:text-8xl">
