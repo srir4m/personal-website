@@ -13,6 +13,7 @@ import { text } from "../content/text";
 import { CHAPTERS, chapterHash, chapterIndex, parseChapterHash, type Chapter } from "../stage/chapters";
 import { scrollToChapter, startChapterScroll } from "../stage/chapterScroll";
 import { useStage } from "../stage/store";
+import { PixelScene } from "../pixel/PixelScene";
 import { Vault } from "../vault/LazyVault";
 import { RegionItems } from "../acts/Act5Body/RegionItems";
 import { BODY_REGIONS, regionItems } from "../acts/Act5Body/regions";
@@ -105,8 +106,8 @@ export function ChapterSite() {
         <ChapterRail />
         <MotionToggle />
       </header>
-      {/* The PixelScene draws here (PR 3); its text equivalent is the column itself. */}
-      <div id="pixel-scene" className="pixel-scene" aria-hidden="true" />
+      {/* The scene is decoration over the same facts the column states, so it stays hidden from screen readers. */}
+      <PixelScene />
       <main className="chapter-col">
         {section(CHAPTERS[0]!, 0, <Hero />)}
         <div className="paper">{CHAPTERS.slice(1).map((chapter, i) => section(chapter, i + 1, <ChapterBody chapter={chapter} />))}</div>
