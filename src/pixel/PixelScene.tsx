@@ -6,7 +6,7 @@ import { CHAPTERS } from "../stage/chapters";
 import { useStage } from "../stage/store";
 import { readPalette, watchPalette } from "./palette";
 import { circle, frameAt, highlight, renderGlobe, sample, sourceOffset, square, wholeView, wipe, type View } from "./scene";
-import { chapterViews, CUTS, loadPixel, regionPolygons, type Loaded } from "./sources";
+import { chapterViews, CUTS, figureGrid as figureLines, loadPixel, regionPolygons, type Loaded } from "./sources";
 import { useBodyFocus } from "./bodyFocus";
 
 const area = content.owner.area ? { lat: content.owner.area.lat, lng: content.owner.area.lng } : null;
@@ -65,7 +65,7 @@ export function PixelScene() {
       }
       const view = f.view ?? views!.whole;
       return cached(`figure:${f.res}:${view.cx.toFixed(1)}:${view.cy.toFixed(1)}:${view.s.toFixed(3)}:${f.draw.toFixed(3)}`, () => {
-        const g = sample(L!.figure, f.res, view, CUTS.figure, "line");
+        const g = figureLines(L!, f.res, view);
         if (f.draw > 0) {
           const off = sourceOffset(L!.figure, geo.figure.w, geo.figure.h), c = geo.figure.circle, s = geo.figure.square;
           circle(g, f.res, view, L!.figure.size, { cx: c.cx + off.x, cy: c.cy + off.y, r: c.r }, f.draw, false);

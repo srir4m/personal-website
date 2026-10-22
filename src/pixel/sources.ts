@@ -1,6 +1,7 @@
 import { BODY_REGIONS } from "../acts/Act5Body/regions";
 import { CHAPTERS } from "../stage/chapters";
-import { makeSource, sourceOffset, viewFor, wholeView, type Source, type View } from "./scene";
+import { cleanLuminance, tidy } from "./clean";
+import { luminance, makeSource, sample, sourceFromLuminance, sourceOffset, viewFor, wholeView, type Source, type View } from "./scene";
 
 /*
  * The pixel layout's sources (pixel move, issue #8): the baked frames and their geometry,
@@ -28,7 +29,8 @@ const base = import.meta.env.BASE_URL;
 export const CUTS: Record<"city" | "street" | "figure", [number, number, number]> = {
   city: [0.45, 0.7, 0.86],
   street: [0.5, 0.74, 0.88],
-  figure: [0.3, 0.5, 0.82],
+  // The figure is line art: ink and sepia on paper only, no mid-tone, so strokes read crisp.
+  figure: [0.32, 0.6, 0.6],
 };
 
 function image(src: string): Promise<HTMLImageElement> {
@@ -66,7 +68,8 @@ async function loadOnce(): Promise<Loaded> {
     land: { lum, w: lw, h: lh },
     city: makeSource(pixels(cityImg), cityImg.naturalWidth, cityImg.naturalHeight),
     street: streetImg && makeSource(pixels(streetImg), streetImg.naturalWidth, streetImg.naturalHeight),
-    figure: makeSource(pixels(figureImg), figureImg.naturalWidth, figureImg.naturalHeight),
+    // The scan's specks and stray marks are cleaned off once, here (src/pixel/clean.ts).
+    figure: sourceFromLuminance(cleanLuminance(luminance(pixels(figureImg), figureImg.naturalWidth, figureImg.naturalHeight), figureImg.naturalWidth, figureImg.naturalHeight), figureImg.naturalWidth, figureImg.naturalHeight),
   };
 }
 
@@ -117,4 +120,9 @@ export function paint(canvas: HTMLCanvasElement, grid: Uint8Array, res: number, 
     d[i * 4 + 3] = 255;
   }
   ctx.putImageData(image, 0, 0);
+}
+
+/** The figure through a camera at a resolution: sampled as line art, then tidied (lone pixels out, one-pixel breaks closed). */
+export function figureGrid(L: Loaded, res: number, view: View): Uint8Array {
+  return tidy(sample(L.figure, res, view, CUTS.figure, "line"), res);
 }

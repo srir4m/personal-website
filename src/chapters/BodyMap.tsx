@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { BODY_REGIONS, regionItems } from "../acts/Act5Body/regions";
 import { useBodyFocus } from "../pixel/bodyFocus";
 import { readPalette, watchPalette } from "../pixel/palette";
-import { highlight, sample, wholeView, type View } from "../pixel/scene";
-import { CUTS, loadPixel, paint, regionPolygons, type Loaded } from "../pixel/sources";
+import { highlight, wholeView, type View } from "../pixel/scene";
+import { figureGrid, loadPixel, paint, regionPolygons, type Loaded } from "../pixel/sources";
 import { useStage } from "../stage/store";
 
 /** The regions the reader can open: those with something to read now, and the heart (the vault). */
@@ -72,7 +72,7 @@ export function BodyHotspots() {
 }
 
 /** The plate's resolution: coarse enough to read as pixels at phone width. */
-const PLATE_RES = 128;
+const PLATE_RES = 176;
 
 /**
  * Narrow screens, where the column covers the scene: the figure as a pixel plate inside the
@@ -86,7 +86,7 @@ export function BodyPlate() {
   useEffect(() => watchPalette(() => setPalette(readPalette())), []);
   useEffect(() => {
     if (!figure || !canvas.current) return;
-    const base = sample(figure.L.figure, PLATE_RES, figure.whole, CUTS.figure, "line");
+    const base = figureGrid(figure.L, PLATE_RES, figure.whole);
     const grid = focus && figure.polygons[focus] ? highlight(base, PLATE_RES, figure.whole, figure.L.figure.size, figure.polygons[focus]) : base;
     paint(canvas.current, grid, PLATE_RES, palette);
   }, [figure, focus, palette]);
