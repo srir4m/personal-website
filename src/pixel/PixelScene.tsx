@@ -5,6 +5,7 @@ import { BODY_REGIONS } from "../acts/Act5Body/regions";
 import type { SceneId } from "../stage/chapters";
 import { CHAPTERS } from "../stage/chapters";
 import { useStage } from "../stage/store";
+import { readPalette, watchPalette } from "./palette";
 import { circle, frameAt, makeSource, renderGlobe, sample, sourceOffset, square, viewFor, wholeView, wipe, type Source, type View } from "./scene";
 
 /** public/assets/pixel/pixel.json, written by `npm run pixel:bake` (scripts/bake-pixel.ts). */
@@ -76,19 +77,6 @@ async function load(): Promise<Loaded> {
     street: streetImg && makeSource(pixels(streetImg), streetImg.naturalWidth, streetImg.naturalHeight),
     figure: makeSource(pixels(figureImg), figureImg.naturalWidth, figureImg.naturalHeight),
   };
-}
-
-/** The theme's ramp and accent as RGB, read from the colour tokens (they change with dark mode). */
-function readPalette(): [number, number, number][] {
-  const probe = document.createElement("canvas").getContext("2d")!;
-  const style = getComputedStyle(document.documentElement);
-  return ["--ink", "--sepia", "--parchment-deep", "--parchment", "--sanguine"].map((token) => {
-    probe.fillStyle = "#000";
-    probe.fillStyle = style.getPropertyValue(token).trim() || "#000";
-    probe.fillRect(0, 0, 1, 1);
-    const [r, g, b] = probe.getImageData(0, 0, 1, 1).data;
-    return [r!, g!, b!];
-  });
 }
 
 /** The figure camera for each chapter: its region framed, or the whole figure. */
@@ -211,19 +199,14 @@ export function PixelScene() {
 
     // Dark mode swaps the colour tokens, and only once the page is marked as the pixel layout
     // (App sets data-layout after this effect runs): re-read them and repaint on either change.
-    const scheme = window.matchMedia("(prefers-color-scheme: dark)");
-    const repaint = () => {
+    const unwatch = watchPalette(() => {
       palette = readPalette();
       last = "";
-    };
-    scheme.addEventListener("change", repaint);
-    const layout = new MutationObserver(repaint);
-    layout.observe(document.documentElement, { attributes: true, attributeFilter: ["data-layout"] });
+    });
     return () => {
       cancelled = true;
       cancelAnimationFrame(raf);
-      scheme.removeEventListener("change", repaint);
-      layout.disconnect();
+      unwatch();
     };
   }, []);
 
