@@ -286,15 +286,23 @@
             "link": "https://isnserver.net"
           },
           {
-            "title": "Mineman-style knockback plugin",
-            "subtitle": "Minecraft plugin",
-            "body": "Recreates minemen.club-style knockback and combat for PvP on my 1.21.11 factions server."
-          },
-          {
             "title": "Morphexis",
             "subtitle": "RAISE-26 hackathon",
             "body": "Scores how far news writing drifts from verifiable toward empty language, with change-point detection over 48 months of headlines.",
             "badge": "Top 7 of 188"
+          },
+          {
+            "title": "debATE",
+            "subtitle": "Pitch competition",
+            "body": "A gamified version of debate and mock trial competitions.",
+            "badge": "Winner"
+          },
+          {
+            "title": "Clairvoyant",
+            "subtitle": "MIT Hacking Medicine",
+            "body": "A YOLO model for medical scans, served from a Flask web app.",
+            "badge": "Placed",
+            "link": "https://github.com/JustKorolev/Clairvoyant-MedicalScan-YOLO"
           },
           {
             "title": "Financial Immune System",
