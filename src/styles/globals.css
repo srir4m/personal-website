@@ -258,18 +258,6 @@ html.lenis body {
   overflow: visible;
 }
 
-/* The title as served in the HTML, centred exactly where Act 0 draws it. */
-.boot-title {
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--ink);
-  pointer-events: none;
-}
-
 /* Title ink-in: a soft-edged mask sweeps left to right (PRD Act 0, "mask reveal"). */
 .ink-reveal {
   mask-image: linear-gradient(90deg, #000 45%, transparent 55%);

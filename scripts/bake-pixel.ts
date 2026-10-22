@@ -17,7 +17,7 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { chromium } from "playwright";
 import sharp from "sharp";
 import { createServer } from "vite";
-import { AREA_RADIUS_KM, STREET, zoomForRing } from "../src/acts/Descent/camera.ts";
+import { AREA_RADIUS_KM, STREET, zoomForRing } from "./bake/camera.ts";
 import { figLeafMarkup } from "../src/vitruvian/figLeaf.ts";
 
 const OUT = "public/assets/pixel";

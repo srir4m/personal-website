@@ -7,8 +7,8 @@ import { addProtocol, Map as MapLibreMap, setWorkerUrl } from "maplibre-gl";
 import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { Protocol } from "pmtiles";
-import { AREA_RADIUS_KM, circlePolygon } from "../../src/acts/Descent/camera";
-import { buildStyle, hatchImage, MAP_COLORS } from "../../src/acts/Descent/style";
+import { AREA_RADIUS_KM, circlePolygon } from "./camera";
+import { buildStyle, hatchImage, MAP_COLORS } from "./style";
 
 export type Shot = { lng: number; lat: number; zoom: number; pitch: number; bearing: number };
 

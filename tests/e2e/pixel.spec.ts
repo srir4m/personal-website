@@ -1,7 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
-/** The pixel scene (pixel move, issue #8, PR 3), previewed with ?pixel. */
+/** The pixel scene, the companion, the typed hero and the body map (issue #8). */
 const scene = (page: Page) => page.locator("#pixel-scene");
 
 async function readChapter(page: Page, id: string) {
@@ -26,7 +26,7 @@ const pixelAt = (page: Page, x: number, y: number) =>
 test("the scene zooms from the Earth to the area, the campus street and the figure as the chapters are read", async ({ page }) => {
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
-  await page.goto("/?pixel");
+  await page.goto("/");
   await expect(scene(page)).toHaveAttribute("data-ready", "true");
   await expect(scene(page)).toHaveAttribute("data-scene", "globe");
   for (const [chapter, shown] of [["location", "city"], ["campus", "street"], ["about", "figure"], ["contact", "figure"]] as const) {
@@ -42,7 +42,7 @@ test("the scene zooms from the Earth to the area, the campus street and the figu
 });
 
 test("the figure is drawn at full resolution while a chapter is read", async ({ page }) => {
-  await page.goto("/?pixel");
+  await page.goto("/");
   await expect(scene(page)).toHaveAttribute("data-ready", "true");
   await readChapter(page, "about");
   await expect.poll(() => page.locator("#pixel-scene canvas").evaluate((c: HTMLCanvasElement) => c.width)).toBe(320);
@@ -51,13 +51,13 @@ test("the figure is drawn at full resolution while a chapter is read", async ({ 
 test.describe("dark mode", () => {
   test.use({ colorScheme: "dark" });
   test("the scene follows the system's dark setting, paper and ink swapped", async ({ page }) => {
-    await page.goto("/?pixel");
+    await page.goto("/");
     await expect(scene(page)).toHaveAttribute("data-ready", "true");
     // The globe's corner is the page's paper: the dark parchment.
     await expect.poll(() => pixelAt(page, 0.01, 0.01)).toBe("27,21,16");
   });
   test("has no accessibility violations in dark mode", async ({ page }) => {
-    await page.goto("/?pixel");
+    await page.goto("/");
     await expect(scene(page)).toHaveAttribute("data-ready", "true");
     await readChapter(page, "build");
     const { violations } = await new AxeBuilder({ page }).analyze();
@@ -67,7 +67,7 @@ test.describe("dark mode", () => {
 
 test.describe("motion", () => {
   test("the name and tagline are whole for screen readers, and the tagline types itself in", async ({ page }) => {
-    await page.goto("/?pixel");
+    await page.goto("/");
     await expect(page.getByRole("heading", { level: 1 })).toHaveAccessibleName("Sriram");
     const tagline = page.locator(".hero-tagline");
     await expect(tagline.locator(".sr-only")).toHaveText("Architecting perfection");
@@ -75,7 +75,7 @@ test.describe("motion", () => {
   });
 
   test("the companion flaps while scrolling and perches by the Contact title", async ({ page }) => {
-    await page.goto("/?pixel");
+    await page.goto("/");
     const companion = page.locator(".companion");
     await expect(companion).toHaveAttribute("data-pose", "mid");
     const poses = new Set<string>();
@@ -96,7 +96,7 @@ test.describe("motion", () => {
 test.describe("calm", () => {
   test.use({ reducedMotion: "reduce" });
   test("reduced motion types nothing and keeps the companion still", async ({ page }) => {
-    await page.goto("/?pixel");
+    await page.goto("/");
     await expect(page.locator(".hero-tagline")).toHaveAttribute("data-typing", "false");
     await expect(page.locator(".hero-letter").first()).toHaveCSS("animation-name", "none");
     await page.mouse.wheel(0, 400);
@@ -108,7 +108,7 @@ test.describe("calm", () => {
 
 test.describe("body map", () => {
   test("the figure's regions open their panels, and pointing at one hatches it", async ({ page, isMobile }) => {
-    await page.goto("/?pixel#body");
+    await page.goto("/#body");
     await expect(page.locator(".chapter-site")).toHaveAttribute("data-active-chapter", "body");
     const hotspots = page.locator(isMobile ? ".body-plate__hotspots" : ".body-hotspots");
     const chest = hotspots.locator("[data-region=chest] polygon").first();
@@ -131,7 +131,7 @@ test.describe("body map", () => {
 
   test("the hotspots are live only in the body chapter", async ({ page, isMobile }) => {
     test.skip(isMobile, "phones use the plate inside the chapter");
-    await page.goto("/?pixel#about");
+    await page.goto("/#about");
     await expect(page.locator(".body-hotspots")).toBeHidden();
   });
 });

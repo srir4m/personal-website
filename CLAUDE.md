@@ -7,33 +7,33 @@
 - Do not redraw game logos; use files in `public/assets/games/` or neutral placeholder glyphs.
 - Track owner-input items, open questions, and later ideas as GitHub issues on srir4m/srir4m.github.io
   (`gh api repos/srir4m/srir4m.github.io/issues`). Reference them in milestone notes instead of re-listing.
-- The narrative is the owner-approved redesign (issue #8), which supersedes PRD v1.1's act list: one zoom from
-  the world into the person. Name and role over the globe, the globe to the owner's area, the map descent,
-  Becoming (the circle becomes the Vitruvian circle), the tour (`src/acts/Tour`, stops in `src/stage/tour.ts`:
-  the figure zooms to each region with its content beside it), the body map to explore, contact. The separate
-  About and Activities acts are gone; `#about` and `#activities` land on the tour.
+- The narrative is the owner-approved pixel layout (issue #8), which supersedes PRD v1.1's act list: one zoom
+  from the world into the person, as one column of chapters over a fixed pixel scene. The hero (name, tagline,
+  role), the owner's area, the campus, About, one chapter per tour stop (stops in `src/stage/tour.ts`; the figure
+  frames each stop's body region), the body map to explore, contact. Old act hashes (`#globe`, `#descent`,
+  `#becoming`, `#profile`, `#activities`, `#outro`) are chapter aliases.
 - The repo is the owner's GitHub Pages user site, `srir4m/srir4m.github.io` (it was renamed from `personal-website`),
   served at the root of https://srir4m.github.io/. Reference public assets through `import.meta.env.BASE_URL`,
   never a bare leading `/`, so preview builds with another base keep working. There is no server, so any
   runtime data has to be a static file.
 - Bump `SITE_VERSION` in `src/version.ts` (and `package.json` version) at every milestone.
 
-## Scroll architecture
+## Page architecture
 
-- One master GSAP timeline (`src/stage/timeline.ts`) with a single ScrollTrigger. Acts never create
-  their own ScrollTrigger; they build a paused sub-timeline and pass it to `registerActTimeline(index, tl)`,
-  which stretches it over the act's range.
-- Scroll progress lives in the Zustand store (`src/stage/store.ts`). Read it with `useStage.getState()`
-  (e.g. inside R3F `useFrame`) or `useStage.subscribe`; never select `progress` in a React component.
-- Act ranges, settle points and deep-link parsing are in `src/stage/acts.ts`.
-- **Pixel move (in progress, issue #8):** the site is moving to a pixel layout, previewed with `?pixel`.
-  It is one column of chapters (`src/stage/chapters.ts`, rendered by `src/chapters/ChapterSite.tsx`) over a
-  fixed pixel scene. The page scrolls natively: there is no pin and no master timeline. The reading position
-  in chapter units is the store's `chapterP` (written by `src/stage/chapterScroll.ts`); read it with
-  `getState()` or `subscribe`, like `progress`. Each chapter names its `scene` and, on the figure, its
-  `region`. The scene's map and figure frames are baked by `npm run pixel:bake` into `public/assets/pixel/`.
-  Calm mode snaps to chapters with CSS. Old act hashes are chapter aliases. When the move is done, the act
-  layout and everything above about the master timeline go.
+- Chapters are built from content in `src/stage/chapters.ts` and rendered by `src/chapters/ChapterSite.tsx`.
+  The page scrolls natively (Lenis smooths the wheel in full motion; `src/chapters/smoothScroll.ts`); there is
+  no pin and no scroll timeline.
+- The reading position in chapter units is the store's `chapterP` (written by `src/stage/chapterScroll.ts`);
+  `activeChapter` is its rounded index. Read `chapterP` with `useStage.getState()` or `useStage.subscribe`,
+  never select it in a React component.
+- Each chapter names its `scene` (`globe`, `city`, `street`, `figure`) and, on the figure, its `region`. The
+  scene (`src/pixel/`) takes its timing only from adjacent chapters' scenes: a change of scene coarsens to
+  48 px and wipes. `scene.ts` is pure and unit-tested; `PixelScene.tsx` paints it; `sources.ts` loads the frames.
+- The map and figure frames are baked by `npm run pixel:bake` into `public/assets/pixel/` (geometry in
+  `pixel.json`). The map tiles under `public/assets/map/` feed the bake only and are left out of the build.
+- Calm mode (and reduced motion) snaps to chapters with CSS and turns off the globe's spin, the companion's
+  flapping, the typed hero and Lenis. Dark mode follows the system through the colour tokens.
+- The first-load JS budget is 200 KB gzip (`scripts/check-budget.ts`).
 
 ## Checks before finishing a milestone
 

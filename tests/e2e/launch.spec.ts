@@ -16,5 +16,5 @@ test("the not-found page matches the site and links back to the start", async ({
   await expect(page).toHaveTitle("Not found · Sriram");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("This page is not on the map.");
   await page.getByRole("link", { name: "Back to the start" }).click();
-  await expect(page.locator("[data-active-act]")).toBeVisible();
+  await expect(page.locator(".chapter-site")).toBeVisible();
 });

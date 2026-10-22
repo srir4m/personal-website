@@ -28,12 +28,9 @@
   --px: 3px;
 }
 
-/*
- * Dark mode (owner decision, issue #8): the pixel layout follows the system setting with
- * parchment and ink swapped. The act layout's globe and map have fixed colours, so it stays light.
- */
+/* Dark mode (owner decision, issue #8): the site follows the system setting with parchment and ink swapped. */
 @media (prefers-color-scheme: dark) {
-  :root[data-layout="pixel"] {
+  :root {
     --parchment: #1b1510;
     --parchment-deep: #3a2d20;
     --ink: #f0e5cd;

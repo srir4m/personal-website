@@ -1,5 +1,5 @@
 /// <reference types="vitest/config" />
-import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
@@ -41,7 +41,7 @@ function siteMeta(): Plugin {
       const { owner } = JSON.parse(readFileSync(contentPath, "utf8"));
       const name = filled(owner.name) ?? "Microcosm";
       const tagline = filled(owner.tagline);
-      // The opening's role line, as Act0Boot builds it: degree · school · area.
+      // The hero's role line, as the chapter layout builds it: degree · school · area.
       const { education } = JSON.parse(readFileSync(contentPath, "utf8"));
       const role = [filled(education?.degree), filled(education?.school), filled(owner.area?.label)]
         .filter((fact): fact is string => Boolean(fact))
@@ -56,28 +56,31 @@ function siteMeta(): Plugin {
       const page = ctx.path.endsWith("404.html") ? `Not found · ${name}` : title;
       const meta = (attr: "name" | "property", key: string, value: string | null) =>
         value ? [{ tag: "meta", attrs: { [attr]: key, content: value }, injectTo: "head" as const }] : [];
-      // The opening title, in the HTML itself: it paints and starts inking in before any
-      // JavaScript runs, and Act 0 takes it over seamlessly when it mounts (Act0Boot).
-      // A deep link removes it at once, since the page opens on another act.
+      // The hero, in the HTML itself: it paints before any JavaScript runs, in the same
+      // markup and classes as the chapter layout's hero (src/chapters/ChapterSite.tsx), which
+      // takes it over in place when it mounts. A deep link removes it at once, since the
+      // page opens on another chapter.
+      const contact = owner.contact ?? {};
+      const touch = [contact.email, contact.github, contact.linkedin].some((v: unknown) => filled(v as string | null));
       const bootTitle = ctx.path.endsWith("404.html")
         ? []
         : [
             {
               tag: "div",
-              attrs: { id: "boot-title", class: "boot-title", "aria-hidden": "true" },
+              attrs: { id: "boot-title", class: "chapter-site boot-splash", "aria-hidden": "true" },
               children:
-                `<div class="relative flex flex-col items-center gap-3 px-6 text-center ink-reveal">` +
-                `<p class="font-pixel text-6xl leading-none font-bold md:text-8xl">${escapeHtml(name)}</p>` +
-                (tagline ? `<p class="font-display text-2xl italic md:text-3xl">${escapeHtml(tagline)}</p>` : "") +
-                (role ? `<p class="boot-role">${role}</p>` : "") +
-                `</div>`,
+                `<div class="chapter-col"><div class="chapter-hero"><div class="hero-card">` +
+                `<p class="hero-name">${escapeHtml(name)}</p>` +
+                // The tagline types itself in once the page runs: hold its line.
+                (tagline ? `<p class="hero-tagline"><span class="hero-rest">${escapeHtml(tagline)}</span></p>` : "") +
+                (role ? `<p class="hero-role">${role}</p>` : "") +
+                (touch ? `<span class="hud-chip">Get in touch ↓</span>` : "") +
+                `</div></div></div>`,
               injectTo: "body-prepend" as const,
             },
             {
               tag: "script",
-              children:
-                `(function(){var t=document.getElementById("boot-title");` +
-                `if(location.hash.length>1){t.remove();return}t.dataset.start=String(performance.now())})();`,
+              children: `(function(){if(location.hash.length>1)document.getElementById("boot-title").remove()})();`,
               injectTo: "body-prepend" as const,
             },
           ];
@@ -173,13 +176,33 @@ function gameEmblems(): Plugin {
   };
 }
 
+/**
+ * Public files the site no longer loads but the tooling still needs (pixel move, issue #8):
+ * the map tiles feed `npm run pixel:bake`, the coastlines `npm run globe:data`. They stay in
+ * public/ for those, and are left out of the build so they are never deployed.
+ */
+function sourceOnlyAssets(): Plugin {
+  const paths = ["assets/map", "assets/globe/coastlines.bin"];
+  let outDir = "dist";
+  return {
+    name: "microcosm:source-only-assets",
+    apply: "build",
+    configResolved(config) {
+      outDir = config.build.outDir;
+    },
+    closeBundle() {
+      for (const path of paths) rmSync(`${outDir}/${path}`, { recursive: true, force: true });
+    },
+  };
+}
+
 export default defineConfig(({ mode }) => ({
   // The site is served from the root of srir4m.github.io; BASE_PATH overrides it (e.g. "./" for previews).
   base: process.env.BASE_PATH ?? "/",
-  plugins: [contentValidation(), siteMeta(), vaultModule(mode), regionsEndpoint(), gameEmblems(), react(), tailwindcss()],
+  plugins: [contentValidation(), siteMeta(), vaultModule(mode), regionsEndpoint(), gameEmblems(), sourceOnlyAssets(), react(), tailwindcss()],
   build: {
-    // three.js makes the globe chunk large by nature; scripts/check-budget.ts enforces the real budget.
-    chunkSizeWarningLimit: 1200,
+    // One app chunk (React, zod, Lenis, the scene) of about 500 KB raw, 155 KB gzip; scripts/check-budget.ts enforces the real budget.
+    chunkSizeWarningLimit: 600,
     // dist/.vite/manifest.json lets scripts/check-budget.ts follow the real chunk graph.
     manifest: true,
     // 404.html is GitHub Pages' not-found page: built like the main page so it gets the fonts and base path.

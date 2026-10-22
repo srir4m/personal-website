@@ -389,3 +389,14 @@
 .chapter-site .chapter-title {
   font-variant-ligatures: none;
 }
+
+/* The hero as served in the HTML (vite.config.ts): laid over the page in the hero's own place until the page takes it over. */
+.boot-splash {
+  position: absolute;
+  inset: 0 0 auto;
+  pointer-events: none;
+}
+/* Once served, the name is already on screen: the page doesn't step it in again. */
+.hero-name[data-served] .hero-letter {
+  animation: none;
+}

@@ -11,8 +11,10 @@ export const TYPE_MS = 55;
  * the whole name; Calm mode and reduced motion show it at once (the CSS drops the animation).
  */
 export function HeroName({ name }: { name: string }) {
+  // The served HTML already painted the name (vite.config.ts): read before the page removes it.
+  const [served] = useState(() => Boolean(document.getElementById("boot-title")));
   return (
-    <h1 id="chapter-home-title" className="hero-name" aria-label={name}>
+    <h1 id="chapter-home-title" className="hero-name" aria-label={name} data-served={served ? "" : undefined}>
       {[...name].map((letter, i) => (
         <span key={i} className="hero-letter" aria-hidden="true" style={{ animationDelay: `${i * LETTER_MS}ms` }}>
           {letter}
