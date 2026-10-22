@@ -64,3 +64,44 @@ test.describe("dark mode", () => {
     expect(violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target).join(", ")}`)).toEqual([]);
   });
 });
+
+test.describe("motion", () => {
+  test("the name and tagline are whole for screen readers, and the tagline types itself in", async ({ page }) => {
+    await page.goto("/?pixel");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveAccessibleName("Sriram");
+    const tagline = page.locator(".hero-tagline");
+    await expect(tagline.locator(".sr-only")).toHaveText("Architecting perfection");
+    await expect(tagline).toHaveAttribute("data-typing", "false", { timeout: 5000 });
+  });
+
+  test("the companion flaps while scrolling and perches by the Contact title", async ({ page }) => {
+    await page.goto("/?pixel");
+    const companion = page.locator(".companion");
+    await expect(companion).toHaveAttribute("data-pose", "mid");
+    const poses = new Set<string>();
+    for (let i = 0; i < 12; i++) {
+      await page.mouse.wheel(0, 60);
+      await page.waitForTimeout(40);
+      poses.add((await companion.getAttribute("data-pose")) ?? "");
+    }
+    expect(poses.size).toBeGreaterThan(1);
+    // Let the smooth scroll's momentum settle before jumping, as a reader's next scroll would.
+    await page.waitForTimeout(1000);
+    await readChapter(page, "contact");
+    await expect(companion).toHaveAttribute("data-perched", "true");
+    await expect(companion).toHaveAttribute("data-pose", "folded");
+  });
+});
+
+test.describe("calm", () => {
+  test.use({ reducedMotion: "reduce" });
+  test("reduced motion types nothing and keeps the companion still", async ({ page }) => {
+    await page.goto("/?pixel");
+    await expect(page.locator(".hero-tagline")).toHaveAttribute("data-typing", "false");
+    await expect(page.locator(".hero-letter").first()).toHaveCSS("animation-name", "none");
+    await page.mouse.wheel(0, 400);
+    await page.waitForTimeout(100);
+    await expect(page.locator(".companion")).toHaveAttribute("data-pose", "mid");
+    expect(await page.evaluate(() => document.documentElement.classList.contains("lenis"))).toBe(false);
+  });
+});

@@ -14,6 +14,9 @@ import { CHAPTERS, chapterHash, chapterIndex, parseChapterHash, type Chapter } f
 import { scrollToChapter, startChapterScroll } from "../stage/chapterScroll";
 import { useStage } from "../stage/store";
 import { PixelScene } from "../pixel/PixelScene";
+import { Companion } from "../pixel/Companion";
+import { HeroName, HeroTagline, LETTER_MS } from "./HeroType";
+import { useSmoothScroll } from "./smoothScroll";
 import { Vault } from "../vault/LazyVault";
 import { RegionItems } from "../acts/Act5Body/RegionItems";
 import { BODY_REGIONS, regionItems } from "../acts/Act5Body/regions";
@@ -47,6 +50,8 @@ export function ChapterSite() {
   const activeChapter = useStage((s) => s.activeChapter);
   const openPanel = useStage((s) => s.openPanel);
   const synced = useRef({ activeChapter, openPanel });
+
+  useSmoothScroll();
 
   useLayoutEffect(() => {
     // The HTML paints the act layout's title before any JavaScript; the hero replaces it here.
@@ -108,6 +113,7 @@ export function ChapterSite() {
       </header>
       {/* The scene is decoration over the same facts the column states, so it stays hidden from screen readers. */}
       <PixelScene />
+      <Companion />
       <main className="chapter-col">
         {section(CHAPTERS[0]!, 0, <Hero />)}
         <div className="paper">{CHAPTERS.slice(1).map((chapter, i) => section(chapter, i + 1, <ChapterBody chapter={chapter} />))}</div>
@@ -121,10 +127,8 @@ export function ChapterSite() {
 function Hero() {
   return (
     <div className="hero-card">
-      <h1 id="chapter-home-title" className="hero-name">
-        {NAME ?? "Microcosm"}
-      </h1>
-      {TAGLINE && <p className="hero-tagline">{TAGLINE}</p>}
+      <HeroName name={NAME ?? "Microcosm"} />
+      {TAGLINE && <HeroTagline text={TAGLINE} after={(NAME ?? "Microcosm").length * LETTER_MS + 500} />}
       {ROLE.length > 0 && (
         // Each fact wraps as a whole, its separator kept with it, so no line starts with one.
         <p className="hero-role">

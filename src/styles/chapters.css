@@ -82,6 +82,52 @@
   font: 700 clamp(4rem, 9vw, 7.75rem) / 1 var(--font-pixel);
   letter-spacing: 0.01em;
 }
+/* Each letter steps in from a blur, in five steps, a beat after the one before (src/chapters/HeroType.tsx). */
+.hero-letter {
+  display: inline-block;
+  animation: hero-letter-in 0.7s steps(5) both;
+}
+@keyframes hero-letter-in {
+  from {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translateY(10px);
+  }
+}
+/* The tagline's block cursor blinks while it types, then stays as a red full stop. */
+.hero-cursor {
+  display: inline-block;
+  width: 0.42em;
+  height: 0.85em;
+  margin-left: 0.15em;
+  vertical-align: -0.08em;
+  background: var(--sanguine);
+}
+.hero-tagline[data-typing="true"] .hero-cursor {
+  animation: hero-cursor-blink 1.1s steps(1) infinite;
+}
+@keyframes hero-cursor-blink {
+  50% {
+    opacity: 0;
+  }
+}
+.hero-rest {
+  visibility: hidden;
+}
+.companion {
+  position: fixed;
+  z-index: 3;
+  top: 0;
+  left: 0;
+  width: 200px;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  pointer-events: none;
+}
+:root[data-motion="calm"] .hero-letter,
+:root[data-motion="calm"] .hero-cursor {
+  animation: none;
+}
 .hero-tagline {
   margin: 0;
   font: 500 clamp(1.25rem, 2.2vw, 1.625rem) / 1.25 var(--font-pixel);
@@ -239,6 +285,10 @@
 }
 :root[data-motion="full"]:has(.chapter-site) {
   scroll-behavior: smooth;
+}
+/* Lenis animates the wheel itself; CSS smooth scrolling would fight it. */
+:root.lenis.lenis-smooth:has(.chapter-site) {
+  scroll-behavior: auto;
 }
 
 @media (max-width: 860px) {
