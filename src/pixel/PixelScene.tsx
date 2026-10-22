@@ -1,30 +1,14 @@
 import { useEffect, useRef } from "react";
 import { content } from "../content";
 import { text } from "../content/text";
-import { BODY_REGIONS } from "../acts/Act5Body/regions";
 import type { SceneId } from "../stage/chapters";
 import { CHAPTERS } from "../stage/chapters";
 import { useStage } from "../stage/store";
 import { readPalette, watchPalette } from "./palette";
-import { circle, frameAt, makeSource, renderGlobe, sample, sourceOffset, square, viewFor, wholeView, wipe, type Source, type View } from "./scene";
+import { circle, frameAt, highlight, renderGlobe, sample, sourceOffset, square, wholeView, wipe, type View } from "./scene";
+import { chapterViews, CUTS, loadPixel, regionPolygons, type Loaded } from "./sources";
+import { useBodyFocus } from "./bodyFocus";
 
-/** public/assets/pixel/pixel.json, written by `npm run pixel:bake` (scripts/bake-pixel.ts). */
-type PixelGeometry = {
-  city: { w: number; h: number; ring: { cx: number; cy: number; r: number } };
-  street: { w: number; h: number };
-  figure: { w: number; h: number; circle: { cx: number; cy: number; r: number }; square: { left: number; top: number; right: number; bottom: number } };
-  credit: string;
-};
-
-type Loaded = {
-  geo: PixelGeometry;
-  land: { lum: Float32Array; w: number; h: number };
-  city: Source;
-  street: Source | null;
-  figure: Source;
-};
-
-const base = import.meta.env.BASE_URL;
 const area = content.owner.area ? { lat: content.owner.area.lat, lng: content.owner.area.lng } : null;
 /** What the readout calls each scene: facts from site-content.json only. */
 const LABELS: Record<SceneId, string> = {
@@ -33,69 +17,6 @@ const LABELS: Record<SceneId, string> = {
   street: text(content.education.location?.label) ?? (content.owner.area && text(content.owner.area.label)) ?? "",
   figure: text(content.owner.name) ?? "",
 };
-/** Posterising cuts per source: where luminance splits into ink, sepia, deep paper and paper. */
-const CUTS: Record<"city" | "street" | "figure", [number, number, number]> = {
-  city: [0.45, 0.7, 0.86],
-  street: [0.5, 0.74, 0.88],
-  figure: [0.3, 0.5, 0.82],
-};
-
-function image(src: string): Promise<HTMLImageElement> {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.decoding = "async";
-    img.onload = () => resolve(img);
-    img.onerror = () => reject(new Error(`${src} failed to load`));
-    img.src = src;
-  });
-}
-
-function pixels(img: HTMLImageElement, w = img.naturalWidth, h = img.naturalHeight) {
-  const canvas = document.createElement("canvas");
-  canvas.width = w;
-  canvas.height = h;
-  const ctx = canvas.getContext("2d", { willReadFrequently: true })!;
-  ctx.drawImage(img, 0, 0, w, h);
-  return ctx.getImageData(0, 0, w, h).data;
-}
-
-async function load(): Promise<Loaded> {
-  const geo = (await fetch(`${base}assets/pixel/pixel.json`).then((r) => r.json())) as PixelGeometry;
-  const hasStreet = CHAPTERS.some((c) => c.scene === "street");
-  const [landImg, cityImg, figureImg, streetImg] = await Promise.all([
-    image(`${base}assets/globe/land-mask.png`),
-    image(`${base}assets/pixel/city.webp`),
-    image(`${base}assets/pixel/figure.webp`),
-    hasStreet ? image(`${base}assets/pixel/street.webp`) : Promise.resolve(null),
-  ]);
-  const lw = 1024, lh = 512, landRgba = pixels(landImg, lw, lh), lum = new Float32Array(lw * lh);
-  for (let i = 0; i < lum.length; i++) lum[i] = landRgba[i * 4]! / 255;
-  return {
-    geo,
-    land: { lum, w: lw, h: lh },
-    city: makeSource(pixels(cityImg), cityImg.naturalWidth, cityImg.naturalHeight),
-    street: streetImg && makeSource(pixels(streetImg), streetImg.naturalWidth, streetImg.naturalHeight),
-    figure: makeSource(pixels(figureImg), figureImg.naturalWidth, figureImg.naturalHeight),
-  };
-}
-
-/** The figure camera for each chapter: its region framed, or the whole figure. */
-function chapterViews(L: Loaded): { views: (View | null)[]; whole: View } {
-  const { figure, geo } = L;
-  const whole = wholeView(figure.size, geo.figure.w, geo.figure.h);
-  const off = sourceOffset(figure, geo.figure.w, geo.figure.h);
-  // Region polygons are in the drawing's viewBox units; the baked figure is that viewBox at its own size.
-  const k = geo.figure.w / 1600;
-  const views = CHAPTERS.map((chapter) => {
-    const region = chapter.region && BODY_REGIONS.find((r) => r.id === chapter.region);
-    if (!region) return null;
-    const pts = region.polygons.flat();
-    const xs = pts.map((p) => p[0] * k + off.x), ys = pts.map((p) => p[1] * k + off.y);
-    return viewFor({ x0: Math.min(...xs), y0: Math.min(...ys), x1: Math.max(...xs), y1: Math.max(...ys) }, figure.size, whole);
-  });
-  return { views, whole };
-}
-
 /**
  * The pixel scene (pixel move, issue #8, PR 3): one canvas behind the chapter column that
  * zooms from the Earth to the owner's area, the campus street and the figure, sharpening
@@ -124,6 +45,9 @@ export function PixelScene() {
       return grid;
     };
     let views: { views: (View | null)[]; whole: View } | null = null;
+    let polygons: Record<string, [number, number][][]> = {};
+    /** The region hatched on the figure: the body map's focus, only while its chapter is read. */
+    let focus: string | null = null;
 
     const grid = (scene: SceneId, f: ReturnType<typeof frameAt>): Uint8Array => {
       const { geo } = L!;
@@ -150,20 +74,28 @@ export function PixelScene() {
         return g;
       });
     };
+    const figureGrid = (f: ReturnType<typeof frameAt>) => {
+      const g = grid("figure", f);
+      if (!focus || !polygons[focus]) return g;
+      const view = f.view ?? views!.whole;
+      return cached(`hatch:${focus}:${f.res}:${view.cx.toFixed(1)}:${view.cy.toFixed(1)}:${view.s.toFixed(3)}:${f.draw.toFixed(3)}`, () => highlight(g, f.res, view, L!.figure.size, polygons[focus!]!));
+    };
 
     const tick = (now: number) => {
       raf = requestAnimationFrame(tick);
       if (!L || !views || !canvas.current) return;
-      const { chapterP, motion } = useStage.getState();
+      const { chapterP, motion, activeChapter } = useStage.getState();
+      focus = CHAPTERS[activeChapter]?.kind === "body" ? useBodyFocus.getState().region : null;
       const still = motion === "calm";
       const f = frameAt(chapterP, CHAPTERS, { time: now, still, area, views: views.views, whole: views.whole });
       const globeKey = f.a === "globe" || f.b === "globe" ? `${f.globe.lng0.toFixed(3)}:${f.globe.lat0.toFixed(3)}:${f.globe.radius.toFixed(3)}:${f.globe.marker}` : "";
       const viewKey = f.view ? `${f.view.cx.toFixed(1)}:${f.view.cy.toFixed(1)}:${f.view.s.toFixed(3)}` : "";
-      const key = `${f.a}|${f.b}|${f.res}|${f.k.toFixed(3)}|${f.draw.toFixed(3)}|${globeKey}|${viewKey}`;
+      const key = `${f.a}|${f.b}|${f.res}|${f.k.toFixed(3)}|${f.draw.toFixed(3)}|${globeKey}|${viewKey}|${focus}`;
       if (key === last) return;
       last = key;
-      const A = grid(f.a, f);
-      const out = f.b ? wipe(A, grid(f.b, f), f.res, f.k) : A;
+      const pick = (scene: SceneId) => (scene === "figure" ? figureGrid(f) : grid(scene, f));
+      const A = pick(f.a);
+      const out = f.b ? wipe(A, pick(f.b), f.res, f.k) : A;
       const c = canvas.current;
       if (c.width !== f.res) {
         c.width = c.height = f.res;
@@ -187,11 +119,12 @@ export function PixelScene() {
       host.current?.setAttribute("data-scene", shown);
     };
 
-    load()
+    loadPixel()
       .then((loaded) => {
         if (cancelled) return;
         L = loaded;
         views = chapterViews(loaded);
+        polygons = regionPolygons(loaded);
         host.current?.setAttribute("data-ready", "true");
       })
       .catch((error: unknown) => console.error("Pixel scene:", error));

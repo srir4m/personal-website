@@ -15,11 +15,13 @@ import { scrollToChapter, startChapterScroll } from "../stage/chapterScroll";
 import { useStage } from "../stage/store";
 import { PixelScene } from "../pixel/PixelScene";
 import { Companion } from "../pixel/Companion";
+import { useBodyFocus } from "../pixel/bodyFocus";
+import { BodyHotspots, BodyPlate, OPEN_REGIONS } from "./BodyMap";
 import { HeroName, HeroTagline, LETTER_MS } from "./HeroType";
 import { useSmoothScroll } from "./smoothScroll";
 import { Vault } from "../vault/LazyVault";
 import { RegionItems } from "../acts/Act5Body/RegionItems";
-import { BODY_REGIONS, regionItems } from "../acts/Act5Body/regions";
+import { regionItems } from "../acts/Act5Body/regions";
 
 const { owner, education } = content;
 const NAME = text(owner.name);
@@ -114,6 +116,7 @@ export function ChapterSite() {
       {/* The scene is decoration over the same facts the column states, so it stays hidden from screen readers. */}
       <PixelScene />
       <Companion />
+      <BodyHotspots />
       <main className="chapter-col">
         {section(CHAPTERS[0]!, 0, <Hero />)}
         <div className="paper">{CHAPTERS.slice(1).map((chapter, i) => section(chapter, i + 1, <ChapterBody chapter={chapter} />))}</div>
@@ -275,7 +278,8 @@ function BodyIndex({ title }: { title: (children: React.ReactNode) => React.Reac
   const setOpenPanel = useStage((s) => s.setOpenPanel);
   const buttons = useRef<Record<string, HTMLButtonElement | null>>({});
   const returnFocus = useRef<HTMLButtonElement | null>(null);
-  const regions = BODY_REGIONS.filter((r) => r.id === "heart" || regionItems(r, "now").length > 0);
+  const setFocus = useBodyFocus((s) => s.setRegion);
+  const regions = OPEN_REGIONS;
   const open = regions.find((r) => r.id === openPanel) ?? null;
   returnFocus.current = open ? (buttons.current[open.id] ?? null) : null;
   return (
@@ -283,6 +287,7 @@ function BodyIndex({ title }: { title: (children: React.ReactNode) => React.Reac
       <Eyebrow>Explore</Eyebrow>
       {title("The figure")}
       <p>Each part of the figure holds part of the story. Choose one to read it.</p>
+      <BodyPlate />
       <ul className="chapter-regions">
         {regions.map((region) => (
           <li key={region.id}>
@@ -294,6 +299,10 @@ function BodyIndex({ title }: { title: (children: React.ReactNode) => React.Reac
               className="hud-chip"
               aria-haspopup="dialog"
               onClick={() => setOpenPanel(region.id)}
+              onPointerEnter={() => setFocus(region.id)}
+              onPointerLeave={() => setFocus(null)}
+              onFocus={() => setFocus(region.id)}
+              onBlur={() => setFocus(null)}
             >
               {region.label}
               <span className="chapter-regions__theme"> · {region.theme}</span>

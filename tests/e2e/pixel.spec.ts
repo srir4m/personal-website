@@ -105,3 +105,33 @@ test.describe("calm", () => {
     expect(await page.evaluate(() => document.documentElement.classList.contains("lenis"))).toBe(false);
   });
 });
+
+test.describe("body map", () => {
+  test("the figure's regions open their panels, and pointing at one hatches it", async ({ page, isMobile }) => {
+    await page.goto("/?pixel#body");
+    await expect(page.locator(".chapter-site")).toHaveAttribute("data-active-chapter", "body");
+    const hotspots = page.locator(isMobile ? ".body-plate__hotspots" : ".body-hotspots");
+    const chest = hotspots.locator("[data-region=chest] polygon").first();
+    await expect(chest).toBeVisible();
+    const box = (await chest.boundingBox())!;
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+    // Pointing hatches the region: the figure gains red pixels.
+    const reds = () =>
+      page.evaluate((selector) => {
+        const c = document.querySelector<HTMLCanvasElement>(selector)!;
+        const d = c.getContext("2d")!.getImageData(0, 0, c.width, c.height).data;
+        let n = 0;
+        for (let i = 0; i < d.length; i += 4) if (d[i]! > 150 && d[i + 1]! < 90) n++;
+        return n;
+      }, isMobile ? ".body-plate canvas" : "#pixel-scene canvas");
+    await expect.poll(reds).toBeGreaterThan(20);
+    await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+    await expect(page.getByRole("dialog")).toContainText("Chest");
+  });
+
+  test("the hotspots are live only in the body chapter", async ({ page, isMobile }) => {
+    test.skip(isMobile, "phones use the plate inside the chapter");
+    await page.goto("/?pixel#about");
+    await expect(page.locator(".body-hotspots")).toBeHidden();
+  });
+});

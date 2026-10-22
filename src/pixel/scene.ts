@@ -324,3 +324,31 @@ export function wipe(a: Uint8Array, b: Uint8Array, res: number, k: number): Uint
   }
   return out;
 }
+
+/** Whether a point is inside a polygon (even-odd rule). */
+export function inPolygon(poly: [number, number][], x: number, y: number): boolean {
+  let inside = false;
+  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+    const [xi, yi] = poly[i]!, [xj, yj] = poly[j]!;
+    if (yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) inside = !inside;
+  }
+  return inside;
+}
+
+/**
+ * Marks a body region on a grid (the body map, PR 4): its paper inside the polygons turns
+ * to a red checker, a pixel hatch, while the ink stays, so the drawing reads through.
+ */
+export function highlight(grid: Uint8Array, res: number, view: View, size: number, polygons: [number, number][][]): Uint8Array {
+  const out = grid.slice();
+  const span = size / view.s, x0 = view.cx - span / 2, y0 = view.cy - span / 2, block = span / res;
+  for (let y = 0; y < res; y++) {
+    for (let x = 0; x < res; x++) {
+      const i = y * res + x;
+      if (out[i] !== PAPER && out[i] !== DEEP) continue;
+      const sx = x0 + (x + 0.5) * block, sy = y0 + (y + 0.5) * block;
+      if ((x + y) % 2 === 0 && polygons.some((p) => inPolygon(p, sx, sy))) out[i] = ACCENT;
+    }
+  }
+  return out;
+}
