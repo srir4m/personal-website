@@ -159,16 +159,23 @@ export type Source = { size: number; mean: Float32Array[]; min: Float32Array[] }
 
 /** Builds a source from RGBA pixels, letterboxed onto a power-of-two square of paper. */
 export function makeSource(rgba: Uint8ClampedArray | Uint8Array, w: number, h: number): Source {
+  return sourceFromLuminance(luminance(rgba, w, h), w, h);
+}
+
+/** An image's luminance, 0 (black) to 1 (white). */
+export function luminance(rgba: Uint8ClampedArray | Uint8Array, w: number, h: number): Float32Array {
+  const lum = new Float32Array(w * h);
+  for (let i = 0; i < lum.length; i++) lum[i] = (0.299 * rgba[i * 4]! + 0.587 * rgba[i * 4 + 1]! + 0.114 * rgba[i * 4 + 2]!) / 255;
+  return lum;
+}
+
+/** Builds a source from a w × h luminance image, letterboxed like makeSource. */
+export function sourceFromLuminance(lum: Float32Array, w: number, h: number): Source {
   let size = 1;
   while (size < Math.max(w, h)) size *= 2;
   const base = new Float32Array(size * size).fill(1);
   const ox = Math.floor((size - w) / 2), oy = Math.floor((size - h) / 2);
-  for (let y = 0; y < h; y++) {
-    for (let x = 0; x < w; x++) {
-      const i = (y * w + x) * 4;
-      base[(y + oy) * size + x + ox] = (0.299 * rgba[i]! + 0.587 * rgba[i + 1]! + 0.114 * rgba[i + 2]!) / 255;
-    }
-  }
+  for (let y = 0; y < h; y++) base.set(lum.subarray(y * w, (y + 1) * w), (y + oy) * size + ox);
   const mean = [base], min = [base];
   for (let n = size / 2; n >= 1; n /= 2) {
     const pm = mean.at(-1)!, pn = min.at(-1)!, m = new Float32Array(n * n), q = new Float32Array(n * n);
