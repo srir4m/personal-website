@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+// The descent's camera now feeds only the pixel bake (scripts/bake-pixel.ts), which still frames the map with it.
 import {
   AREA_RADIUS_KM,
   cameraAt,
@@ -14,7 +15,7 @@ import {
   CITY_BOUNDS,
   zoomForRing,
   zoomForScale,
-} from "../../src/acts/Descent/camera";
+} from "../../scripts/bake/camera";
 import { content } from "../../src/content";
 
 const START = 5.8;

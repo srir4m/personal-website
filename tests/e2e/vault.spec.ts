@@ -41,8 +41,7 @@ test("a wrong passphrase shakes, blots, and locks after five tries", async ({ pa
 
 test("closing clears the vault and returns focus to the heart", async ({ page }) => {
   await page.goto("/#body");
-  const heart = page.getByRole("button", { name: "Heart: the vault" });
-  // Keyboard, not a click: the heart sits inside the chest, so its centre is ambiguous to click.
+  const heart = page.getByRole("button", { name: /^Heart · The vault/ });
   await heart.focus();
   await page.keyboard.press("Enter");
   await field(page).fill(TEST_PASSPHRASE);

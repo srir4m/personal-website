@@ -4,13 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow" />
-    <meta name="theme-color" content="#EFE4CC" />
+    <meta name="theme-color" content="#EFE4CC" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1B1510" media="(prefers-color-scheme: dark)" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <title>Microcosm</title>
     <style>
       /* Paint parchment before any JS or CSS loads: no white flash (PRD Act 0). */
       html, body { background: #EFE4CC; margin: 0; }
+      @media (prefers-color-scheme: dark) { html, body { background: #1B1510; } }
     </style>
   </head>
   <body>

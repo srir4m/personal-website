@@ -9,7 +9,7 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { crc32, deflateSync } from "node:zlib";
 import { feature, mesh } from "topojson-client";
-import { latLngToVector } from "../src/acts/Act1Globe/geo.ts";
+import { latLngToVector } from "./geo.ts";
 
 const require = createRequire(import.meta.url);
 const topology = JSON.parse(readFileSync(require.resolve("world-atlas/land-110m.json"), "utf8"));

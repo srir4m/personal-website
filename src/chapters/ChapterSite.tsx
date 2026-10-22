@@ -61,7 +61,6 @@ export function ChapterSite() {
     const stop = startChapterScroll(sections.current);
     // Deep links land once fonts have set the column's height.
     void document.fonts.ready.then(() => jumpToHash(true));
-    useStage.setState({ bootReady: true });
     return stop;
   }, []);
 
