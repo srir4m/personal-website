@@ -1498,3 +1498,14 @@ html.lenis body {
   color: var(--sepia);
   text-wrap: balance;
 }
+
+/* Pixelify Sans draws "fi" as one glyph that reads as an "A": no ligatures in the pixel face. */
+.font-pixel,
+.section-title,
+.tour-title,
+.hero-name,
+.hero-tagline,
+.chapter-title,
+.not-found__title {
+  font-variant-ligatures: none;
+}

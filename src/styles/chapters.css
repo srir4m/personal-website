@@ -331,3 +331,61 @@
   padding: 0.35rem 0.5rem;
   background: var(--glass);
 }
+
+/*
+ * The body map in pixels (pixel move, PR 4). Wide screens: hotspots exactly over the scene's
+ * figure (the same box as .pixel-scene), live only while the body chapter is read; the column
+ * stays above them. Narrow screens: a pixel plate inside the chapter instead.
+ */
+.body-hotspots {
+  position: fixed;
+  z-index: 1;
+  top: 50%;
+  left: 65%;
+  width: max(100vh, 70vw);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.chapter-site:not([data-active-chapter="body"]) .body-hotspots {
+  display: none;
+}
+.body-hotspot {
+  fill: transparent;
+  pointer-events: auto;
+  cursor: pointer;
+}
+.body-plate {
+  display: none;
+}
+@media (max-width: 860px) {
+  .body-hotspots {
+    display: none;
+  }
+  .body-plate {
+    position: relative;
+    display: block;
+    width: min(100%, 22rem);
+    aspect-ratio: 1;
+    margin-inline: auto;
+    box-shadow: var(--pixel-edge);
+    background: var(--parchment);
+  }
+  .body-plate canvas,
+  .body-plate__hotspots {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .body-plate canvas {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+  }
+}
+
+/* After the `font` shorthands above, which reset it: no ligatures in the pixel face ("fi" reads as "A"). */
+.chapter-site .hero-tagline,
+.chapter-site .chapter-title {
+  font-variant-ligatures: none;
+}
